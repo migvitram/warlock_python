@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+import time
+from models.helpers.Drawing import Drawing
+from abilities import checkTheWish
+from abilities import checkWishmasterSatisfied
+
+# displayTheImage('storage/images/warlock_image_0003_120.txt')
+Drawing.displayTheImage('storage/images/warlock_image_0003_160.txt')
+Drawing.displayTheImage('storage/images/warlock_word_0006_96_inv.txt')
+time.sleep(1)
+
+print("Warlock is listening... \n")
+time.sleep(2)
+
+whatToDo = input("What do you want me to do? \n\n")
+
+checkTheWish(whatToDo)
+
+wishes = True
+
+while wishes == True:
+    want = input("Do you want something more? \n")
+    if checkWishmasterSatisfied(want):
+        print("Gooood...")
+        time.sleep(1)
+        print("Call me, any time to make your wish come true...")
+        wishes = False
+        exit
+    else:
+        checkTheWish(want)
