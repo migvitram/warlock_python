@@ -34,12 +34,8 @@ def checkTheWish(theWishText: str):
         if sentence[0] == 'print':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
-                    productName = input("For what product? \n")
-                    while productName == '':
-                        productName = input("Please enter the name of product you want to see the price! \n")
-                    if productName != '':
-                        checkProduct.printTheProductPriceChart(productName)
-                        # print('running ... ')
+                    productName = askUntilAnswer("For what product? \n")
+                    checkProduct.printTheProductPriceChart(productName)
 
                 if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
                     checkProduct.printTheSummaryProductTable()
@@ -50,21 +46,22 @@ def checkTheWish(theWishText: str):
         if sentence[0] == 'add':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = input("Please, enter the product name! \n")
-                    productUrl = input("Please, enter the product URL! \n")
+                    productName = askUntilAnswer("Please, enter the product name! \n")
+                    productUrl = askUntilAnswer("Please, enter the product URL! \n")
                     checkProduct.addProductForTracking(productName, productUrl)
                     pass
 
         if sentence[0] == 'remove':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = input("Please, enter the name of the product you want to REMOVE! \n")
-                    while productName == '':
-                        productName = input("Please, enter the name of the product you want to REMOVE! \n")
+                    productName = askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
                     areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
                     if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                         checkProduct.removeProductByName(productName)
-                        pass
+                    else:
+                        areYouSure = askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
+                        if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
+                            checkProduct.removeProductByName(productName)
 
         for word in sentence:
             # print(word)
@@ -83,6 +80,12 @@ def checkTheWish(theWishText: str):
         else:
             print("Please, clearify you wish, Wishmaster! \n")
         exit
+
+def askUntilAnswer(question: str) -> str:
+    param = ''
+    while param == '':
+        param = input(question)
+    return param
 
 # List of abbilities
 # to run the file, to write the text, to check the text by hyperlink and check some word/data

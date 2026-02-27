@@ -149,7 +149,7 @@ class Printing:
         print("\n")
 
     @staticmethod
-    def convertDictToString(dictionary: dict) -> str:
+    def convertDictToString(dictionary: dict|list) -> str:
         result = ''
         for item, key in dictionary.items():
             result += str(key) + ' : ' + str(item) + ', '
