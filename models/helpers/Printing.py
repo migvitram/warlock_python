@@ -35,6 +35,8 @@ class Printing:
 
                         if isinstance(column, dict) or isinstance(column, list):
                             column = Printing.convertDictToString(column)
+                        else:
+                            column = str(column)
 
                         length = len(column) if len(column) > len(columnName) else len(columnName)
                         if columnName in maximums.keys(): 
@@ -66,6 +68,8 @@ class Printing:
                             
                         if isinstance(column, dict) or isinstance(column, list):
                             column = Printing.convertDictToString(column)
+                        else:
+                            column = str(column)
 
                         rowToPrint += column
                         if len(column) < maximums[columnName]:
