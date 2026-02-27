@@ -1,4 +1,21 @@
-# Warlock
+```bash
+        @@@@%        @@@@%:                                                                   
+         %@%=    %   @@::                                                                     
+         %@%%   @%   @%::   @@%      @@@%%     @@*       @@%%     @@%%    @%  =%              
+          @@%: %@%= @@%:  %@@%%:   %%%::%%%= %%@%:     @@%:-%%%  @@::%%:%%%%  @@%             
+          %@%% @@%% @@%-  @@:%%%     @% *@@%%  @%:   . @%*   @%  @%:     @@% @@%:             
+           @%%:@%*%%@@::  @%: @%.@= -@%@@::    @%:   = @%%  +@%  @%: : . %@%@@:               
+           %@@@%:%@@@%*   @%%@%%:   -@:=%%%%   @%: :   @%#  =@%  @%:     %@:%%%%%             
+            @@%:: @@%::  @@::  @%:  .@%  @%:  .@%:  #@ @%%  #@%  @%:  %  %@% @@%:             
+          : @@%%: @%%%:  @%: : @%%  @@%: %%% +%%%%@@@%: %%%@@::  %%%@@%  @@% @@%%             
+         : .                ..                         .  %#: ==   %+:            .           
+       .   .-===--====---=+=-:-==+--=+=-=+++-::+++++*=-.-:  :=..:-.  .-::-=:-:-=: .           
+     .. .. :  .. .::::...:..::::::.=::-.:=:-::=::-=.-----.:-.:...-..-.:...  .. . .. .    .    
+  . . ..  ..:::.::. ...::.-.--=---:--::-:-:=----=----.::-.-:--:--:-:::-...:.....  .. . .      
+                                         .                                                    
+```
+
+# Warlock (paper warlock)
 
 ### Simple script for routine info tasks
 
@@ -33,5 +50,24 @@ Available commands list:
     show the diagram of product price
     schedule the news tracking
     schedule the message tracking
-    make self-tests
+    make tests
+```
+
+Okey, boys and girls, let's take a look at the python scripts. I'm new in python, so I will learn it with this project development. If this repo will be usefull for you, please like, subscribe and share. And let's learn Python together.
+
+First I've wrote the single script to get info about the products I like. Then, the functions number rise and scripts became many. Classes, of course, was very useful. But, of course, it was just a first version, scratch. So let's do it beter.
+
+One of the most important, I think, is a Test Oriented Development, so I've add some `pytest` tests. They require the `pytest` installed on your OS and can be executed by `warlock` itself:
+
+```bash
+    warlock
+    'Greating...'
+    'What do you want me to do?'
+    make tests
+```
+or with the shell commands:
+
+```bash
+    cd /your_warlock_directory/tests
+    pytest
 ```

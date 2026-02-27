@@ -1,12 +1,12 @@
 import sys
 import os
 import time
-import urllib.request
-sys.path.append(os.path.abspath('./..'))
+# sys.path.append(os.path.abspath('./..'))
 
 from models.helpers.SoupHelper import SoupHelper
 from models.helpers.Printing import Printing
 from models.helpers.JsonFiles import JsonFiles
+from models.providers.HttpProvider import HttpProvider
 from bs4 import BeautifulSoup as BS
 from datetime import datetime
 
@@ -36,12 +36,8 @@ class CheckProductController:
         print("Retrieving ... ")
         print("\n")
 
-        def getHtmlData(url):
-            return urllib.request.urlopen(url)
-
         for item in booksSet:
-            rawHtml = urllib.request.urlopen(item['url'])
-            html = rawHtml.read().decode('utf-8')
+            html = HttpProvider.getHtmlByUrl(item['url'])
             today = datetime.now()
             price = SoupHelper.checkThePrice(html)
             item['presence'] = SoupHelper.checkTheProduct(html)
@@ -64,19 +60,38 @@ class CheckProductController:
     
     def removeProductByName(self, productToDeleteName: str):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
+        result = False
         for product in storedData[:]:
             if product['productName'] == productToDeleteName:
                 storedData.remove(product)
-        JsonFiles.writeToTheLocalJsonStorage(storedData, self.jsonFileStorage)
-        pass
+                JsonFiles.writeToTheLocalJsonStorage(storedData, self.jsonFileStorage)
+                result = True
+                break
+            else:
+                result = False
+        if result == False:
+            Printing.print("Can not find product \'"+productToDeleteName+"\' ", Printing.RED)
 
     def printTheSummaryProductTable(self):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
         Printing.printDictionaryAsTable(storedData, ['productName', 'url', 'price', 'presence', 'date'])
 
-    def printTheProductPriceChart(self, productId):
+    def printTheProductPriceChart(self, productName: str):
+
         productsSet = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
+        productId = False
+        for product in productsSet:
+            if product['productName'] == productName:
+                productId = productsSet.index(product)
+                break
+
+        if productId is False:
+            Printing.print("There is no Price History for product named \'"+productName+"\'!", Printing.RED)
+            return
+
         if 'priceHistory' in productsSet[productId]:
             Printing.printDictionaryAsChart("Price changes for last 5 days", productsSet[productId]['priceHistory'], showOnlyDotValues=False)
         else:
             print("There is no Price History for this product yet! \n")
+
+        return

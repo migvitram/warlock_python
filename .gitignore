@@ -1,7 +1,9 @@
 .idea
 .pytest_cache
 __pycache__
+
 !.gitignore
 
+.env
 
 test.py

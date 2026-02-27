@@ -34,10 +34,17 @@ def checkTheWish(theWishText: str):
         if sentence[0] == 'print':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
-                    checkProduct.printTheProductPriceChart(0)
-                    # print('running ... ')
+                    productName = input("For what product? \n")
+                    while productName == '':
+                        productName = input("Please enter the name of product you want to see the price! \n")
+                    if productName != '':
+                        checkProduct.printTheProductPriceChart(productName)
+                        # print('running ... ')
 
                 if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
+                    checkProduct.printTheSummaryProductTable()
+
+                if sentence[2] == 'product' and sentence[3] == 'summary' and sentence[4] == 'table':
                     checkProduct.printTheSummaryProductTable()
 
         if sentence[0] == 'add':
@@ -52,8 +59,12 @@ def checkTheWish(theWishText: str):
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
                     productName = input("Please, enter the name of the product you want to REMOVE! \n")
-                    checkProduct.removeProductByName(productName)
-                    pass
+                    while productName == '':
+                        productName = input("Please, enter the name of the product you want to REMOVE! \n")
+                    areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
+                    if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
+                        checkProduct.removeProductByName(productName)
+                        pass
 
         for word in sentence:
             # print(word)
@@ -87,18 +98,6 @@ def knownComands() -> dict:
         'check': [], 
         'find': []
     }
-
-def isHyperlink(url_string):
-    # A simple regex for http/https URLs
-    regex = re.compile(
-        r'^(?:http|ftp)s?://'  # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|\\'
-        r'localhost|'  # localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
-        r'(?::\d+)?'  # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-    
-    return bool(regex.match(url_string))
 
 def correctWord(word: str):
     return not wrongWord(word)

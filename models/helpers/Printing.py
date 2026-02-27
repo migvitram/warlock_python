@@ -1,8 +1,22 @@
 class Printing:
 
+    # Colors
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    CYAN = '\033[96m'
+    RESET = '\033[0m'
+
     def __init__(self) -> None:
         pass
         
+    @staticmethod
+    def print(text: str, color: bool|str=False, fParam: bool=False):
+        if color != False and color in [Printing.RED, Printing.GREEN, Printing.YELLOW, Printing.CYAN]:
+            print(f"{color}"+text+f"{Printing.RESET}"+" \n")
+        else:
+            print(text)
+
     @staticmethod
     def printDictionaryAsTable(dataSet: list, columnsToShow: list = []):
 
