@@ -61,7 +61,7 @@ One of the most important, I think, is a Test Oriented Development, so I've add 
 
 ```bash
     warlock
-    'Greating...'
+    'Greeting...'
     'What do you want me to do?'
     make tests
 ```
