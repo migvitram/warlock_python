@@ -1,4 +1,6 @@
 from libraries.printing.PrintingBasic import PrintingBasic
+from models.AppContext import AppContext
+from monadas.translation import _
 
 class PrintingTable(PrintingBasic):
 
@@ -23,7 +25,9 @@ class PrintingTable(PrintingBasic):
 
                         column = PrintingTable.prepareColumnTextForTable(column)    
 
-                        length = len(column) if len(column) > len(columnName) else len(columnName)
+                        preparedColumnName = _('app', columnName, str(AppContext.get('lang'))).strip()
+                        # preparedColumnName = columnName
+                        length = len(column) if len(column) > len(preparedColumnName) else len(preparedColumnName)
                         if columnName in maximums.keys(): 
                             if length > maximums[columnName]:
                                 maximums[columnName] = length
@@ -32,7 +36,7 @@ class PrintingTable(PrintingBasic):
 
                         tableWidth += (2 + length)
 
-                        headCell = (" "+columnName+" ") if len(columnName) > maximums[columnName] else (' '+columnName+' '*(maximums[columnName] - len(columnName)))
+                        headCell = (" "+preparedColumnName) if len(preparedColumnName) > maximums[columnName] else (' '+preparedColumnName+' '*(maximums[columnName] - len(preparedColumnName)))
                         tableHeadCells[columnName] = headCell
 
             deviderLine = PrintingTable.makeTableDeviderLine(tableHeadCells)

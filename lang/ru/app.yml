@@ -1,0 +1,17 @@
+date: дата
+productName: Наименование продукта
+url: url
+price: цена
+presence: наличие
+
+Warlock is listening...: Колдун слушает...
+What do you want me to do?: Что ты желаешь, чтобы я сделал?
+Do you want something more?: Ты хотел бы что-то ещё?
+Gooood...: Хорошоооо...
+Call me, any time to make your wish come true...: Визывай, когда что-нибудь пожелаешь...
+
+For what product?: Для какого продукта?
+Please, enter the product name!: Пожалуйста, укажите название продукта
+Please, enter the product URL!: Пожалуйста, укажите URL продукта
+Please, enter the name of the product you want to REMOVE!: Пожалуйста, введите название продукта, который вы хотите УДАЛИТЬ!
+Please, enter \'yes\' or \'no\', or \'y\' or \'n\': Пожалуйста, введите с клавиатуры \'yes\' или \'no\', или \'y\' или \'n\'

@@ -5,6 +5,12 @@ from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
 from datetime import datetime
+from dotenv import load_dotenv
+from monadas.translation import _
+
+load_dotenv()
+
+lang = os.getenv("APP_LANGUAGE", 'ua')
 
 def checkWishmasterSatisfied(want: str) -> bool:
     sentence = list(filter(correctWord, str.split(want.lower())))
@@ -52,7 +58,7 @@ def checkTheWish(theWishText: str):
             
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
-                    productName = askUntilAnswer("For what product? \n")
+                    productName = askUntilAnswer(_('app', 'For what product?', lang)+" \n")
                     checkProduct.printTheProductPriceChart(productName)
 
                 if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
@@ -78,8 +84,8 @@ def checkTheWish(theWishText: str):
         if sentence[0] == 'add':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = askUntilAnswer("Please, enter the product name! \n")
-                    productUrl = askUntilAnswer("Please, enter the product URL! \n")
+                    productName = askUntilAnswer(_('app', "Please, enter the product name!", lang)+" \n")
+                    productUrl = askUntilAnswer(_('app', "Please, enter the product URL!", lang)+" \n")
                     checkProduct.addProductForTracking(productName, productUrl)
                     pass
 
@@ -93,12 +99,12 @@ def checkTheWish(theWishText: str):
         if sentence[0] == 'remove' or sentence[0] == 'delete':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
+                    productName = askUntilAnswer(_('app', "Please, enter the name of the product you want to REMOVE!", lang)+" \n")
                     areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
                     if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                         checkProduct.removeProductByName(productName)
                     else:
-                        areYouSure = askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
+                        areYouSure = askUntilAnswer(_('app', "Please, enter \'yes\' or \'no\', or \'y\' or \'n\'", lang)+" \n")
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkProduct.removeProductByName(productName)
 
