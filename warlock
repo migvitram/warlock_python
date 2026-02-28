@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
-import subprocess
 import time
 from models.helpers.Drawing import Drawing
 from abilities import checkTheWish
@@ -13,7 +11,7 @@ Drawing.displayTheImage('storage/images/warlock_word_0006_96_inv.txt')
 time.sleep(1)
 
 print("Warlock is listening... \n")
-time.sleep(2)
+time.sleep(1)
 
 whatToDo = input("What do you want me to do? \n\n")
 

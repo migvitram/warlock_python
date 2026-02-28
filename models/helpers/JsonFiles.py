@@ -26,10 +26,7 @@ class JsonFiles:
     @staticmethod
     def runSelfDiagnostics(storageFileName):
         if not JsonFiles.checkFileExist(storageFileName):
-            JsonFiles.initiateJsonStorageFile(storageFileName,
-                # TODO : need to choose default structure of the storage responsibility where
-                JsonFiles.defaultStructureOfJsonStorage()
-            )
+            JsonFiles.initiateJsonStorageFile(storageFileName, [])
 
     @staticmethod
     def checkFileExist(fileName: str) -> bool:
@@ -37,12 +34,8 @@ class JsonFiles:
 
     @staticmethod
     def initiateJsonStorageFile(fileName: str, defaultStructure):
-
         file = open(fileName, 'w+')
-        file.write(json.dumps(defaultStructure))
-
-        # print(json.load(open(os.path.abspath('storage/products_to_check.json'))))
-        # file.write
+        file.write(json.dumps([]))
         pass    
 
     @staticmethod

@@ -15,7 +15,6 @@ class SoupHelper:
             return False
         else:
             answer = 'Yes' if presenceCheckResult else 'No'
-            # print("The product is : ", answer)
             return answer
 
     @staticmethod

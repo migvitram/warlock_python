@@ -29,13 +29,12 @@ def checkTheWish(theWishText: str):
                 if sentence[2] == 'product':
                     if sentence[3] == 'tracking':
                         checkProduct.run()
-                        # print('running ... ')
 
         if sentence[0] == 'print':
             if sentence[1] == 'demo':
                 checkProduct.printDemo()
                 pass
-            if len(sentence) > 2 and sentence[2] == 'table':
+            if len(sentence) > 2 and sentence[1] == 'demo' and sentence[2] == 'table':
                 checkProduct.printDemoTable()
                 pass
 
@@ -83,10 +82,10 @@ def checkTheWish(theWishText: str):
         pass
     else:
         if sentence[0] == 'exit':
-            print("Greating to you, Wishmaster! \n")
+            print("Greeting to you, Wishmaster! \n")
         else:
             print("Please, clearify you wish, Wishmaster! \n")
-        exit
+    exit
 
 def askUntilAnswer(question: str) -> str:
     param = ''

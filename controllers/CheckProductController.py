@@ -90,9 +90,9 @@ class CheckProductController:
             return
 
         if 'priceHistory' in productsSet[productId]:
-            Printing.printDictionaryAsChart("Price changes for last 5 days", productsSet[productId]['priceHistory'], showOnlyDotValues=False)
+            Printing.printDictionaryAsChart("Price changes for product \'"+productName+"\' for last 5 days", productsSet[productId]['priceHistory'], showOnlyDotValues=False)
         else:
-            print("There is no Price History for this product yet! \n")
+            Printing.print("There is no Price History for this product yet! \n", Printing.YELLOW)
         return
 
     def printDemo(self):

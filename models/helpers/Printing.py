@@ -130,7 +130,7 @@ class Printing:
             for k,v in dictionary.items():
                 v = float(v)
                 if(v == current):
-                    newLine += Printing.alignDotInCenter(keyLength, hl) + hl*len(columnsSeparator)
+                    newLine += Printing.alignDotInCenter(keyLength, hl, Printing.GREEN) + hl*len(columnsSeparator)
                 else:
                     newLine += hl*keyLength + hl*len(columnsSeparator)
                     
@@ -157,9 +157,10 @@ class Printing:
         return result
 
     @staticmethod
-    def alignDotInCenter(stringLength: int, line: str = '_'):
+    def alignDotInCenter(stringLength: int, line: str = '_', color: str|bool=False):
         half = stringLength//2
-        return line*half + str(Printing.blackDot(2, Printing.GREEN)) + line*(stringLength - half - 1)
+        color = Printing.GREEN if color is False else color
+        return line*half + str(Printing.blackDot(2, color)) + line*(stringLength - half - 1)
 
     @staticmethod
     def convertListToString(list, separator: str='|') -> str:
