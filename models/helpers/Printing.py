@@ -159,7 +159,7 @@ class Printing:
     @staticmethod
     def alignDotInCenter(stringLength: int, line: str = '_'):
         half = stringLength//2
-        return line*half + str(Printing.blackDot()) + line*(stringLength - half - 1)
+        return line*half + str(Printing.blackDot(2, Printing.GREEN)) + line*(stringLength - half - 1)
 
     @staticmethod
     def convertListToString(list, separator: str='|') -> str:
@@ -174,11 +174,17 @@ class Printing:
 
     # black Dot for charts with Unicode 
     @staticmethod
-    def blackDot(size: int=2) -> str:
+    def blackDot(size: int=2, color: str|bool=False) -> str:
+        preparedColor = ''
+        reset = ''
+        if color != False and color in [Printing.RED, Printing.GREEN, Printing.YELLOW, Printing.CYAN]:
+            preparedColor = color
+            reset = Printing.RESET
+            
         match size:
-            case 1: return "\u2022"
-            case 3: return "\u2B24"
-            case _: return "\u25CF"
+            case 1: return preparedColor + "\u2022" + reset
+            case 3: return preparedColor + "\u2B24" + reset
+            case _: return preparedColor + "\u25CF" + reset
 
     @staticmethod
     def makeTableDeviderLine(tableHeadCellsDict: dict) -> str:

@@ -93,5 +93,19 @@ class CheckProductController:
             Printing.printDictionaryAsChart("Price changes for last 5 days", productsSet[productId]['priceHistory'], showOnlyDotValues=False)
         else:
             print("There is no Price History for this product yet! \n")
-
         return
+
+    def printDemo(self):
+        testDict = {'22/05': 153, '12/06': 152, '14/07': 150, '25/08': 148, '14/09': 149, '05/10': 151,
+            '18/11': 155, '02/12': 161, '23/01': 157, '23/02': 164}
+        Printing.printDictionaryAsChart("DEMO History diagram (for single data set)", testDict)
+        return
+
+    def printDemoTable(self):
+        demoData = [
+            {'productName': 'Product 1', 'url': 'http://some.url/for/product-1', 'price': 155, 'presence': 'Yes', 'date': '12/03/2026'},
+            {'productName': 'Another test Product for table', 'url': 'http://some.url/for/another-product', 'price': 1628.00, 'presence': 'No', 'date': '10/02/2025'},
+            {'productName': 'Test product 3', 'url': 'http://some.url/for/another-one test-product-3', 'price': 628.00, 'presence': 'Yes', 'date': '8/08/2025'},
+        ]
+        Printing.printDictionaryAsTable(demoData, ['productName', 'url', 'price', 'presence', 'date'])
+        pass

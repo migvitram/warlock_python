@@ -33,7 +33,16 @@ or, to make it easy, you can update your `~/.bashrc` with
     alias warlock='/usr/bin/python3 warlock'
 ```
 
-Available commands list:
+If you want to check some available functions, you can type in `warlock` dialog
+```bash
+    print demo
+```
+or
+```bash
+    print demo table
+```
+
+Available (in the future) commands list:
 
 ```bash
     run the product tracking
@@ -53,9 +62,27 @@ Available commands list:
     make tests
 ```
 
+### Chapter 1
+
 Okey, boys and girls, let's take a look at the python scripts. I'm new in python, so I will learn it with this project development. If this repo will be usefull for you, please like, subscribe and share. And let's learn Python together.
 
 First I've wrote the single script to get info about the products I like. Then, the functions number rise and scripts became many. Classes, of course, was very useful. But, of course, it was just a first version, scratch. So let's do it beter.
+
+After we add the products for tracking (`add product for tracking`) and run the tracking for first time (`run the product tracking`), we'll get the main info about product presence, price and date of tracking.
+
+Warlock can print this info in the command line by request (`print the product summary table`):
+
+```text
+---------------------------------------------------------------------------------------------------------
+| productName                 | url                                    | price | presence | date        |
+|-----------------------------+----------------------------------------+-------+----------+-------------|
+| Кіберіада                   | https://knigoland.com.ua/kiberiada-... | 399   | No       | 27/02/2026  | 
+| Повернення із зірок         | https://knigoland.com.ua/povernenny... | 289   | Yes      | 27/02/2026  | 
+| Розповіді про пілота Піркса | https://knigoland.com.ua/rozpovidi-... | 299   | No       | 27/02/2026  | 
+| Test prod 2                 | some.fake@url.dod?adfas;dfjoai j   ... | False | False    | 27/02/2026  | 
+---------------------------------------------------------------------------------------------------------
+
+```
 
 One of the most important, I think, is a Test Oriented Development, so I've add some `pytest` tests. They require the `pytest` installed on your OS and can be executed by `warlock` itself:
 
@@ -71,3 +98,4 @@ or with the shell commands:
     cd /your_warlock_directory/tests
     pytest
 ```
+

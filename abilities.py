@@ -32,6 +32,13 @@ def checkTheWish(theWishText: str):
                         # print('running ... ')
 
         if sentence[0] == 'print':
+            if sentence[1] == 'demo':
+                checkProduct.printDemo()
+                pass
+            if len(sentence) > 2 and sentence[2] == 'table':
+                checkProduct.printDemoTable()
+                pass
+
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
                     productName = askUntilAnswer("For what product? \n")
@@ -51,7 +58,7 @@ def checkTheWish(theWishText: str):
                     checkProduct.addProductForTracking(productName, productUrl)
                     pass
 
-        if sentence[0] == 'remove':
+        if sentence[0] == 'remove' or sentence[0] == 'delete':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
                     productName = askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
