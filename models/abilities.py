@@ -9,11 +9,18 @@ from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
 from datetime import datetime
 from models.PersonalSettings import Settings
+from dotenv import load_dotenv
+from monadas.translation import _
 
 class Abilities:
 
+    lang: str
+
     def __init__(self) -> None:
-        pass
+        load_dotenv()
+        self.lang = os.getenv("APP_LANGUAGE", 'ua')
+        if Settings.paramExists('lang'):
+            self.lang = str(Settings.getParam('lang'))
 
     def checkWishmasterSatisfied(self, want: str) -> bool:
         sentence = list(filter(self.correctWord, str.split(want.lower())))
@@ -93,7 +100,7 @@ class Abilities:
                 
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
-                        productName = self.askUntilAnswer("For what product? \n")
+                        productName = self.askUntilAnswer(_('app', 'For what product?', self.lang)+" \n")
                         checkProduct.printTheProductPriceChart(productName)
 
                     if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
@@ -137,8 +144,8 @@ class Abilities:
             if sentence[0] == 'add':
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                        productName = self.askUntilAnswer("Please, enter the product name! \n")
-                        productUrl = self.askUntilAnswer("Please, enter the product URL! \n")
+                        productName = self.askUntilAnswer(_('app', "Please, enter the product name!", self.lang)+" \n")
+                        productUrl = self.askUntilAnswer(_('app', "Please, enter the product URL!", self.lang)+" \n")
                         checkProduct.addProductForTracking(productName, productUrl)
                         pass
 
@@ -158,12 +165,12 @@ class Abilities:
             if sentence[0] == 'remove' or sentence[0] == 'delete':
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                        productName = self.askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
+                        productName = self.askUntilAnswer(_('app', "Please, enter the name of the product you want to REMOVE!", self.lang)+" \n")
                         areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkProduct.removeProductByName(productName)
                         else:
-                            areYouSure = self.askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
+                            areYouSure = self.askUntilAnswer(_('app', "Please, enter \'yes\' or \'no\', or \'y\' or \'n\'", self.lang)+" \n")
                             if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                                 checkProduct.removeProductByName(productName)
 
