@@ -1,0 +1,17 @@
+date: date
+productName: Product name
+url: url
+price: price
+presence: presence
+
+Warlock is listening...: Warlock is listening...
+What do you want me to do?: What do you want me to do?
+Do you want something more?: Do you want something more?
+Gooood...: Gooood...
+Call me, any time to make your wish come true...: Call me, any time to make your wish come true...
+
+For what product?: For what product?
+Please, enter the product name!: Please, enter the product name!
+Please, enter the product URL!: Please, enter the product URL!
+Please, enter the name of the product you want to REMOVE!: Please, enter the name of the product you want to REMOVE!
+Please, enter \'yes\' or \'no\', or \'y\' or \'n\': Please, enter ''yes'' or ''no'', or ''y'' or ''n''
