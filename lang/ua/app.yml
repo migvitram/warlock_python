@@ -1,0 +1,17 @@
+date: дата
+productName: Найменування продукту
+url: url
+price: ціна
+presence: наявність
+
+Warlock is listening...: Чаклун слухає...
+What do you want me to do?: Що ти бажаєш, щоб я зробив?
+Do you want something more?: Ти хотів би щось іще?
+Gooood...: Гарааазд...
+Call me, any time to make your wish come true...: Викликай, коли щось побажаєш...
+
+For what product?: Для якого продукту?
+Please, enter the product name!: Будь ласка, вкажіть назву продукту
+Please, enter the product URL!: Будь ласка, вкажіть URL продукту
+Please, enter the name of the product you want to REMOVE!: Будь ласка, введіть назву продукту, який ви хочете ВИДАЛИТИ!
+Please, enter \'yes\' or \'no\', or \'y\' or \'n\': Будь ласка, введіть з клавіатури ''yes'' або ''no'', або ''y'' або ''n''
