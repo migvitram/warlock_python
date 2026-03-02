@@ -1,46 +1,34 @@
 import bs4
 from bs4 import BeautifulSoup as BS
 import re
+from models.helpers.Logger import Logger
 
 class SoupHelper:
 
     @staticmethod
-    def checkTheProduct(rawHtml):
-        soup = BS(rawHtml, 'html.parser')
-        presenceCheckResult = SoupHelper.checkPresence(soup)
-        absenceCheckResult = SoupHelper.checkAbsence(soup)
-
-        if presenceCheckResult == False and absenceCheckResult == False:
-            print("something went wrong, or there is no product status on the page")
-            return False
-        else:
-            answer = 'Yes' if presenceCheckResult else 'No'
-            return answer
-
-    @staticmethod
-    def checkPresence(soupObject, status='В наявності', tagName='span'):
-        if isinstance(soupObject.find(tagName, text=status), bs4.element.Tag):
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def checkAbsence(soupObject, status='Немає в наявності', tagName='span'):
-        if isinstance(soupObject.find(tagName, text=status), bs4.element.Tag):
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def checkThePrice(rawHtml):
-        soup = BS(rawHtml, 'html.parser')
-
-        soupObject = soup.find('div', {'class': 'price'})
-
-        if isinstance(soupObject, bs4.element.Tag):
-            text = soupObject.get_text()
-            value = re.findall('\d+', text)
-            return value[0] if len(value) > 0 else False
+    def checkElementTextEquals(element: bs4.element.Tag|None, textToCompare: str):
+        if isinstance(element, bs4.element.Tag):
+            string = re.sub(r'[^\w]', '', str(element.get_text()))
+            compare = re.sub(r'[^\w]', '', textToCompare)
+            print('stirng : ', string, ' ', len(string), ' compare : ', compare, ' ', len(compare))
+            return string.strip().lower() == compare.strip().lower()
         else:
             return False
         
+    @staticmethod
+    def trimText(text: str) -> str:
+        return text.strip()
+    
+    @staticmethod
+    def trimNumberText(numberText: str) -> int|float:
+
+        replacements = {
+            '&nbsp;': '',
+            ' ': '',
+            '   ': '',
+        }
+
+        for search, replace in replacements.items():
+            numberText = numberText.replace(search, replace)
+
+        return int(numberText.strip())

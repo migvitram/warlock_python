@@ -1,6 +1,8 @@
-import re
 import os
 from controllers.CheckProductController import CheckProductController
+from models.helpers.Logger import Logger
+from models.helpers.Printing import Printing
+from datetime import datetime
 
 def checkWishmasterSatisfied(want: str) -> bool:
     sentence = list(filter(correctWord, str.split(want.lower())))
@@ -18,6 +20,12 @@ def checkTheWish(theWishText: str):
 
         iterator = filter(correctWord, sentence)
         sentence = list(iterator)
+
+        if sentence[0] == 'clean' or sentence[0] == 'clear' or sentence[0] == 'purge':
+            if sentence[1] == 'log':
+                deleted = Logger.clean()
+                if deleted:
+                    Printing.print('Log file removed successfuly.', Printing.GREEN)
 
         if sentence[0] == 'make':
             if sentence[1] == 'tests' or sentence[1] == 'self-tests':
@@ -78,13 +86,11 @@ def checkTheWish(theWishText: str):
         # print('args type', type(sentence))
         # print(sentence)
 
-        pass
-    else:
         if sentence[0] == 'exit':
-            print("Greeting to you, Wishmaster! \n")
-            return
-        else:
-            print("Please, clearify you wish, Wishmaster! \n")
+            print("Glory to you, Wishmaster! \n")
+            return exit
+    else:
+        print("Please, clearify you wish, Wishmaster! \n")
     return
 
 def askUntilAnswer(question: str) -> str:
