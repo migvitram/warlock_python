@@ -33,10 +33,7 @@ class Printing:
                 for columnName, column in row.items():
                     if columnName in columnsToShow:
 
-                        if isinstance(column, dict) or isinstance(column, list):
-                            column = Printing.convertDictToString(column)
-                        else:
-                            column = str(column)
+                        column = Printing.prepareColumnForTable(column)    
 
                         length = len(column) if len(column) > len(columnName) else len(columnName)
                         if columnName in maximums.keys(): 
@@ -65,12 +62,8 @@ class Printing:
                 
                 for columnName, column in row.items():
                     if columnName in columnsToShow:
-                            
-                        if isinstance(column, dict) or isinstance(column, list):
-                            column = Printing.convertDictToString(column)
-                        else:
-                            column = str(column)
-
+                        column = Printing.prepareColumnForTable(column)    
+                        
                         rowToPrint += column
                         if len(column) < maximums[columnName]:
                             rowToPrint += ' ' * (maximums[columnName] - len(column))
@@ -157,9 +150,21 @@ class Printing:
         return result
 
     @staticmethod
+    def prepareColumnForTable(column, displayLength: int=65) -> str:
+        if isinstance(column, dict) or isinstance(column, list):
+            column = Printing.convertDictToString(column)
+        else:
+            column = str(column)
+        column = Printing.shrinkStringForTable(column, displayLength)
+        return column
+
+    @staticmethod
+    def shrinkStringForTable(string: str, displayLength: int=65):
+        return string if len(string) < displayLength else string[0:displayLength-3]+'...'
+
+    @staticmethod
     def alignDotInCenter(stringLength: int, line: str = '_', color: str|bool=False):
         half = stringLength//2
-        color = Printing.GREEN if color is False else color
         return line*half + str(Printing.blackDot(2, color)) + line*(stringLength - half - 1)
 
     @staticmethod

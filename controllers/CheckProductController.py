@@ -1,56 +1,70 @@
-import sys
 import os
 import time
-# sys.path.append(os.path.abspath('./..'))
 
-from models.helpers.SoupHelper import SoupHelper
 from models.helpers.Printing import Printing
 from models.helpers.JsonFiles import JsonFiles
 from models.providers.HttpProvider import HttpProvider
-from bs4 import BeautifulSoup as BS
 from datetime import datetime
+from models.providers.scraping.AbstractScrapingProvider import AbstractScrapingProvider
+from models.providers.scraping.KnigarniaYeProvider import KnigarniaYe
+from models.providers.scraping.KnigolandProvider import Knigoland
 
 class CheckProductController:
 
     jsonFileStorage = ''
-    providers = ['Shop1.py', 'Shop2.py']
+    
+    providers: dict[str, type[AbstractScrapingProvider]]
 
     def __init__(self, storageFile: str) -> None:
         self.jsonFileStorage = os.path.abspath(storageFile)
         JsonFiles.runSelfDiagnostics(self.jsonFileStorage)
+        self.providers = {
+            'knigoland.com.ua': Knigoland, 
+            'book-ye.com.ua': KnigarniaYe
+        }
         pass
 
-    def run(self):
+    def chooseTheScrapingProvider(self, url: str) -> AbstractScrapingProvider|bool:
+        domain = HttpProvider.getDomainFromUrl(url)
+        if domain in self.providers.keys():
+            return self.providers[HttpProvider.getDomainFromUrl(url)]()
+        else:
+            return False
+
+    def runTheTracking(self):
 
         print("Running the tracking...")
-        print("\n")
         time.sleep(1)
         print("this is the processor to parse the data from web-sites...")
-        print("\n")
 
         # according to the root directory (warlock)
         jsonFileStorage = self.jsonFileStorage
 
-        booksSet = JsonFiles.readDataFromJsonFile(jsonFileStorage)
+        productsSet = JsonFiles.readDataFromJsonFile(jsonFileStorage)
 
         print("Retrieving ... ")
-        print("\n")
 
-        for item in booksSet:
-            html = HttpProvider.getHtmlByUrl(item['url'])
-            today = datetime.now()
-            price = SoupHelper.checkThePrice(html)
-            item['presence'] = SoupHelper.checkTheProduct(html)
-            item['price'] = price
-            item['date'] = today.strftime("%d/%m/%Y, %H:%M:%S")
-            if 'priceHistory' not in item:
-                item['priceHistory'] = {}
-            item['priceHistory'][today.strftime("%d/%m/%Y")] = price
+        for item in productsSet:
 
-        Printing.printDictionaryAsTable(booksSet, ['url', 'productName', 'presence', 'price', 'date'])
+            if HttpProvider.isHyperlink(item['url']):
+                scrapProvider = self.chooseTheScrapingProvider(item['url'])
+                if scrapProvider is not False:
+                    today = datetime.now()
+                    scrapProvider.visitThePage(item['url'])
+                    price = scrapProvider.returnTheProductPrice()
+                    item['presence'] = scrapProvider.returnTheProductPresence()
+                    item['price'] = price
+                    item['date'] = today.strftime("%d/%m/%Y, %H:%M:%S")
+                    if 'priceHistory' not in item:
+                        item['priceHistory'] = {}
+                    item['priceHistory'][today.strftime("%d/%m/%Y")] = price
+                else:
+                    Printing.print("Can not find the scraping provider for product \'"+item['productName']+"\'", Printing.YELLOW)
+
+        Printing.printDictionaryAsTable(productsSet, ['url', 'productName', 'presence', 'price', 'date'])
 
         # write the new price data
-        JsonFiles.writeToTheLocalJsonStorage(booksSet, jsonFileStorage)
+        JsonFiles.writeToTheLocalJsonStorage(productsSet, jsonFileStorage)
 
     def addProductForTracking(self, productName: str, url: str):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)

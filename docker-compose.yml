@@ -1,0 +1,10 @@
+services:
+  python:
+    build: ./docker
+    container_name: python_service
+    volumes:
+      - .:/app
+    ports:
+      - 80:80
+    tty: true
+    stdin_open: true

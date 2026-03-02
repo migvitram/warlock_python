@@ -1,7 +1,4 @@
-import sys
-import os
 import pytest
-sys.path.append(os.path.abspath('./..'))
 import abilities
 
 @pytest.mark.abilities

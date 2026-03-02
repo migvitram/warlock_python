@@ -19,3 +19,11 @@ from models.providers.HttpProvider import HttpProvider
 ])
 def test_isHyperLink(set, expected):
     assert HttpProvider.isHyperlink(set) == expected
+
+@pytest.mark.httpProvider
+@pytest.mark.parametrize('set, expected', [
+    ('http://aodif.sodifj.3i3rl/another/dfief', 'aodif.sodifj.3i3rl'),
+    ('sodfi.eiefiefjie.com/sodifiwofie', '')
+])
+def test_getDomainFromUrl(set, expected):
+    assert HttpProvider.getDomainFromUrl(set) == expected

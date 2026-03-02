@@ -43,5 +43,4 @@ class SoupHelper:
             return value[0] if len(value) > 0 else False
         else:
             return False
-
         

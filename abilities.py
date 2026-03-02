@@ -12,13 +12,12 @@ def checkTheWish(theWishText: str):
     # split the wish to the words
     jsonProductStoragePass = 'storage/products_to_check.json'
     sentence = str.split(theWishText)
+    checkProduct = CheckProductController(jsonProductStoragePass)
 
     if len(sentence) > 1:
 
         iterator = filter(correctWord, sentence)
         sentence = list(iterator)
-
-        checkProduct = CheckProductController(jsonProductStoragePass)
 
         if sentence[0] == 'make':
             if sentence[1] == 'tests' or sentence[1] == 'self-tests':
@@ -28,7 +27,7 @@ def checkTheWish(theWishText: str):
             if sentence[1] == 'the':
                 if sentence[2] == 'product':
                     if sentence[3] == 'tracking':
-                        checkProduct.run()
+                        checkProduct.runTheTracking()
 
         if sentence[0] == 'print':
             if sentence[1] == 'demo':
@@ -83,9 +82,10 @@ def checkTheWish(theWishText: str):
     else:
         if sentence[0] == 'exit':
             print("Greeting to you, Wishmaster! \n")
+            return
         else:
             print("Please, clearify you wish, Wishmaster! \n")
-    exit
+    return
 
 def askUntilAnswer(question: str) -> str:
     param = ''
