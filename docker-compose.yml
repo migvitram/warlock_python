@@ -8,3 +8,10 @@ services:
       - 80:80
     tty: true
     stdin_open: true
+
+  python-tests:
+    build: ./docker
+    container_name: python_tests_service
+    volumes:
+      - .:/app
+    tty: true

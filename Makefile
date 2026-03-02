@@ -32,3 +32,6 @@ shell:
 
 images:
 	@docker compose images
+
+pytests:
+	@docker compose -f ${DOCKER_CONFIG} exec python-tests bash -c "cd ./tests && pytest"

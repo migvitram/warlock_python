@@ -23,7 +23,7 @@ class Knigoland(AbstractScrapingProvider):
 
         if isinstance(priceObject, bs4.element.Tag):
             text = priceObject.get_text()
-            value = re.findall('\d+', text)
+            value = re.findall('\\d+', text)
             return value[0] if len(value) > 0 else False
         else:
             return False
