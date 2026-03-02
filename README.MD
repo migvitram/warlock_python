@@ -32,6 +32,11 @@ or, to make it easy, you can update your `~/.bashrc` with
 ```bash
     alias warlock='/usr/bin/python3 warlock'
 ```
+(upd 2.03.2026) or we can use the Makefile to run our app in the Docker container:
+```bash
+    make build
+    make up
+```
 
 If you want to check some available functions, you can type in `warlock` dialog
 ```bash
@@ -99,3 +104,20 @@ or with the shell commands:
     pytest
 ```
 
+### Chapter 2
+
+At some point we have the web pages of the products we like, that encoded (compressed)  with some compress method (gzip, zstd etc.). That means we need most up-to-date modules and OS components. So I've decide to wrap the project in some simple docker container.
+
+I've also use `Makefile`, quite useful tool. We can `up`, `down` the containers, and acces to Warlock by `shell`:
+
+```bash
+    make build
+    make up
+    make up-log
+    make shell
+    make down
+```
+
+### Chapter 3
+
+To implement the different web shop scraping (which have different pages structure), I've added the Abstract scraping provider class to implement inheritance of some common functions for children classes.
