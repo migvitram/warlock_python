@@ -10,13 +10,6 @@ class KnigarniaYe(AbstractScrapingProvider):
         super().__init__()
         pass
 
-    def visitThePage(self, url: str):
-        self.requestResult = self.fetchHtml(url)
-        self.makeSoupObject()
-        self.productPresence = self.fetchTheProductPresence()
-        self.productPrice = self.fetchTheProductPrice()
-        return True
-    
     def fetchTheProductPrice(self):
         priceObject = super().findElementByCssClass('span', 'price')
 
@@ -29,11 +22,4 @@ class KnigarniaYe(AbstractScrapingProvider):
 
     def fetchTheProductPresence(self):
         presenceContainer = self.findElementByCssClass('div', 'availability')
-        print(type(presenceContainer), type(presenceContainer['data-value']))
         return 'Yes' if str(presenceContainer['data-value']) == '1' else "No"
-
-    def returnProductPrice(self):
-        return self.productPrice
-    
-    def returnProductPresence(self):
-        return self.productPresence

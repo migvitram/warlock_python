@@ -23,8 +23,12 @@ class AbstractScrapingProvider:
         pass
 
     def visitThePage(self, url: str):
-        raise NotImplementedError('You need to implement the returnStructureWalkMethod() of base abstract class')
-
+        self.requestResult = self.fetchHtml(url)
+        self.makeSoupObject()
+        self.productPresence = self.fetchTheProductPresence()
+        self.productPrice = self.fetchTheProductPrice()
+        return True
+    
     def makeSoupObject(self):
         if self.soupObject is False:
             self.soupObject = BS(str(self.requestResult), 'html.parser')
@@ -46,7 +50,7 @@ class AbstractScrapingProvider:
     def findElementByText(self, elementText: str, tagName: str='span'):
         return self.soupObject.find(tagName, text=elementText)
     
-    def findElementByCssClass(self, tagName: str, cssClass: str):
+    def findElementByCssClass(self, tagName: str, cssClass: str) -> bs4.element.Tag|None:
         return self.soupObject.find(tagName, {'class': cssClass})
 
     def fetchTheProductPrice(self):

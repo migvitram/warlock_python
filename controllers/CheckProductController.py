@@ -1,6 +1,7 @@
 import os
 import time
 
+from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from models.helpers.JsonFiles import JsonFiles
 from models.providers.HttpProvider import HttpProvider
@@ -8,6 +9,7 @@ from datetime import datetime
 from models.providers.scraping.AbstractScrapingProvider import AbstractScrapingProvider
 from models.providers.scraping.KnigarniaYeProvider import KnigarniaYe
 from models.providers.scraping.KnigolandProvider import Knigoland
+from models.providers.scraping.RozetkaProvider import Rozetka
 
 class CheckProductController:
 
@@ -20,7 +22,8 @@ class CheckProductController:
         JsonFiles.runSelfDiagnostics(self.jsonFileStorage)
         self.providers = {
             'knigoland.com.ua': Knigoland, 
-            'book-ye.com.ua': KnigarniaYe
+            'book-ye.com.ua': KnigarniaYe,
+            'rozetka.com.ua': Rozetka
         }
         pass
 
@@ -32,7 +35,7 @@ class CheckProductController:
             return False
 
     def runTheTracking(self):
-
+        Logger.log("The prouct tracking fetch initiated ("+str(self.__class__)+")")
         print("Running the tracking...")
         time.sleep(1)
         print("this is the processor to parse the data from web-sites...")
