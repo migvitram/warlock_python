@@ -1,9 +1,13 @@
+import os
 import requests
+import zoneinfo
+from dotenv import load_dotenv
 from datetime import datetime
 from models.helpers.JsonFiles import JsonFiles
 
 class MonoBankApiProvider:
 
+    timezone = 'UTC'
     bankApiUrl = 'https://api.monobank.ua/'
     bankCurrRateApiUrl = 'https://api.monobank.ua/bank/currency'
 
@@ -12,17 +16,24 @@ class MonoBankApiProvider:
     CURR_EUR = '978'
     CURR_GBP = '826'
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, timezone = None) -> None:
+        load_dotenv()
+        timezone = timezone if timezone is not None else os.getenv("APP_TIMEZONE")
+
+        if timezone is not None:
+            allTimezones = zoneinfo.available_timezones()
+            for tz in sorted(list(allTimezones)):
+                if timezone == tz:
+                    self.timezone = timezone
+                    break
 
     def retreiveApiData(self):
         return requests.get(MonoBankApiProvider.bankCurrRateApiUrl).json()
 
     def getCurrencyRates(self):
-        # data = self.retreiveApiData()
-        data = JsonFiles.readDataFromJsonFile('storage/currencies_rates.json')
+        data = self.retreiveApiData()
+        # data = JsonFiles.readDataFromJsonFile('storage/currencies_rates.json')
         # choose the currencies to store
-        # self.storeCurrenciesRatesToHistory([])
         preparedData = []
         for row in data[0:4]:
             newRow = {}
@@ -36,11 +47,19 @@ class MonoBankApiProvider:
                 else:
                     newRow[param['name']] = ''
             preparedData.append(newRow)
+
+            self.storeCurrenciesRatesToHistory(data[0:4])
         return preparedData
 
     def storeCurrenciesRatesToHistory(self, data):
-
-        pass
+        storageFile = 'storage/currencies_rates_history.json'
+        if not JsonFiles.checkFileExist(storageFile):
+            dataToStore = {self.getTodayDate(): data}
+        else:
+            dataToStore = JsonFiles.readDataFromJsonFile(storageFile)
+            dataToStore[self.getTodayDate()] = data
+        JsonFiles.writeToTheLocalJsonStorage(dataToStore, storageFile)
+        return
 
     def getCurrencyName(self, currCode: str=''):
         currNames = {
@@ -66,3 +85,6 @@ class MonoBankApiProvider:
 
     def convertDate(self, data):
         return datetime.fromtimestamp(data)
+    
+    def getTodayDate(self, format: str="%d/%m/%Y"):
+        return datetime.now(zoneinfo.ZoneInfo(self.timezone)).strftime(format)

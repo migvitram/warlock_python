@@ -1,3 +1,6 @@
+from models.providers.MonoBankApiProvider import MonoBankApiProvider
+from models.helpers.Printing import Printing
+
 class FinanceServices:
 
     def __init__(self) -> None:
@@ -5,4 +8,7 @@ class FinanceServices:
 
     def retrieveDailyCurrenciesRate(self):
         # retrieve the data and store it
-        pass
+        bankProvider = MonoBankApiProvider()
+        currenciesRates = bankProvider.getCurrencyRates()
+
+        Printing.printDictionaryAsTable(currenciesRates)

@@ -1,5 +1,6 @@
 import os
 from controllers.CheckProductController import CheckProductController
+from controllers.FinanceServicesController import FinanceServices
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
@@ -66,6 +67,13 @@ def checkTheWish(theWishText: str):
                     productName = askUntilAnswer("Please, enter the product name! \n")
                     productUrl = askUntilAnswer("Please, enter the product URL! \n")
                     checkProduct.addProductForTracking(productName, productUrl)
+                    pass
+
+        if sentence[0] == 'get':
+            if sentence[1] == 'the':
+                if sentence[2] == 'currencies' and sentence[3] == 'rates':
+                    financeService = FinanceServices()
+                    financeService.retrieveDailyCurrenciesRate()
                     pass
 
         if sentence[0] == 'remove' or sentence[0] == 'delete':
