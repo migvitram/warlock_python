@@ -2,17 +2,22 @@
 
 import time
 from models.helpers.Drawing import Drawing
+from models.PersonalSettings import Settings
 from abilities import checkTheWish
 from abilities import checkWishmasterSatisfied
 
 # displayTheImage('storage/images/warlock_image_0003_120.txt')
-Drawing.displayTheImage('storage/images/warlock_image_0003_160.txt')
+if Settings.getAsInt('visits') < 2:
+    Drawing.displayTheImage('storage/images/warlock_image_0003_160.txt')
+else:
+    print("\n")
 Drawing.displayTheImage('storage/images/warlock_word_0006_96_inv.txt')
 time.sleep(1)
 
 print("Warlock is listening... \n")
 time.sleep(1)
 
+Settings.revisit()
 whatToDo = input("What do you want me to do? \n\n")
 
 checkTheWish(whatToDo)
