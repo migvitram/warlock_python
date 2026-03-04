@@ -13,7 +13,7 @@ class JsonFiles:
         # print('storing result : ', result)
 
     @staticmethod
-    def readDataFromJsonFile(fileName, mode='r') -> list:
+    def readDataFromJsonFile(fileName, mode='r') -> object:
         with open(fileName, mode) as file:
             return json.load(file)
 

@@ -10,7 +10,6 @@ class SoupHelper:
         if isinstance(element, bs4.element.Tag):
             string = re.sub(r'[^\w]', '', str(element.get_text()))
             compare = re.sub(r'[^\w]', '', textToCompare)
-            print('stirng : ', string, ' ', len(string), ' compare : ', compare, ' ', len(compare))
             return string.strip().lower() == compare.strip().lower()
         else:
             return False

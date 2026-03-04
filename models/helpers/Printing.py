@@ -31,7 +31,7 @@ class Printing:
             # get alignement
             for row in dataSet:
                 for columnName, column in row.items():
-                    if columnName in columnsToShow:
+                    if columnName in columnsToShow or len(columnsToShow) == 0:
 
                         column = Printing.prepareColumnForTable(column)    
 
@@ -61,7 +61,7 @@ class Printing:
                 rowToPrint = '| '
                 
                 for columnName, column in row.items():
-                    if columnName in columnsToShow:
+                    if columnName in columnsToShow or len(columnsToShow) == 0:
                         column = Printing.prepareColumnForTable(column)    
                         
                         rowToPrint += column
