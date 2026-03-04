@@ -41,6 +41,9 @@ def checkTheWish(theWishText: str):
             if sentence[1] == 'demo':
                 checkProduct.printDemo()
                 pass
+            if sentence[1] == 'demo-multi':
+                checkProduct.printDemoMulti()
+                pass
             if len(sentence) > 2 and sentence[1] == 'demo' and sentence[2] == 'table':
                 checkProduct.printDemoTable()
                 pass

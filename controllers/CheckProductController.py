@@ -118,6 +118,18 @@ class CheckProductController:
         Printing.printDictionaryAsChart("DEMO History diagram (for single data set)", testDict)
         return
 
+    def printDemoMulti(self):
+        testDict = [
+            {'22/05': 153, '12/06': 152, '14/07': 150, '25/08': 148, '14/09': 147, '05/10': 151,
+            '18/11': 155, '02/12': 161, '23/01': 157, '23/02': 163},
+            {'22/05': 154, '12/06': 156, '14/07': 158, '25/08': 159, '14/09': 160, '05/10': 162,
+            '18/11': 161, '02/12': 162, '23/01': 165, '23/02': 163},
+            {'22/05': 144, '12/06': 145, '14/07': 146, '25/08': 148, '14/09': 150, '05/10': 153,
+            '18/11': 155, '02/12': 158, '23/01': 162, '23/02': 166}
+        ]
+        Printing.printDictionaryAsMultiChart("DEMO Multi History diagram (for multi data set)", testDict)
+        return
+
     def printDemoTable(self):
         demoData = [
             {'productName': 'Product 1', 'url': 'http://some.url/for/product-1', 'price': 155, 'presence': 'Yes', 'date': '12/03/2026'},
