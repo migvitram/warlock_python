@@ -152,13 +152,18 @@ class Printing:
 
     @staticmethod
     def printDictionaryAsMultiChart(
-        chartName: str, listOfDictionaries: dict|list, 
+        chartName: str, listOfDictionaries: list[dict], 
         axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: float = 1.0,
+        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int = 1,
         beginFromZero: bool = False
         ):
         hl = horizontalLine
-        chartParams = {'max_X': 0.0, 'min_X': min(listOfDictionaries[0].values())}
+        lineNames = []
+        #  next(iter(my_dict.values()))
+        if isinstance(listOfDictionaries, dict):
+            lineNames = list(listOfDictionaries.keys())
+            listOfDictionaries = list(listOfDictionaries.values())
+        chartParams = {'max_X': 0.0, 'min_X': min( listOfDictionaries[0].values())}
         chart = {"first":''}
         columnLength = 3
         columnsSeparator = ' | '
@@ -189,9 +194,9 @@ class Printing:
                 # chart[0] = 
                 # spaces_from_axe_to_end = axe_Y_number*Y_column_length + 2 space + 1 "|"
 
-        current = float(chartParams['max_X'])
-        lastOne = float(chartParams['min_X']) - 2
-        maxValueLength = len(str(float(chartParams['max_X'])))
+        current = Printing.getRoundedValue(float(chartParams['max_X']), step)
+        lastOne = Printing.getRoundedValue(float(chartParams['min_X']), step) - 2*step
+        maxValueLength = len(str(Printing.getRoundedValue(float(chartParams['max_X']), step)))
 
         firstLine = hl*maxValueLength + "_|" + hl*(areaWidth)
         chart[str(current+step)] = firstLine
@@ -209,7 +214,7 @@ class Printing:
                 dotsInCell = 0
                 for dictIndex, dictionary in enumerate(listOfDictionaries):
 
-                    if dictionary[date] == current:
+                    if Printing.getRoundedValue(dictionary[date], step) == current:
                         dotsInCell += 1
                         resultCell += Printing.colorDot(Printing.getColorsList()[dictIndex])
 
@@ -228,7 +233,10 @@ class Printing:
         for line in chart:
             print(chart[line])
         print("\n")
-
+        
+        # print the legend
+        if len(lineNames) > 0:
+            Printing.printTheLegendFromList(lineNames)
         pass
 
     @staticmethod
@@ -330,6 +338,13 @@ class Printing:
     @staticmethod
     def makeTableHead(tableHeadCellsDict: dict) -> str:
         return '|'+' |'.join(tableHeadCellsDict.values())+' |'
+    
+    @staticmethod
+    def printTheLegendFromList(lineNames: list):
+        print("Chart legend:")
+        for index, lineName in enumerate(lineNames):
+            print("  " + Printing.colorDot(Printing.getColorsList()[index])+" - "+lineName)
+        pass
 
     @staticmethod
     def getRoundedValue(valueToRound: int|float, step: int, roundPlace: str='tens', roundUp: bool=True):
