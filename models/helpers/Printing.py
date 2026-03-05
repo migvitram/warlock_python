@@ -25,7 +25,7 @@ class Printing:
 
         if len(dataSet) > 0:
 
-            devider = ''
+            deviderLine = ''
             maximums = {}
             tableWidth = 0
             tableHeadCells = {}
@@ -36,7 +36,7 @@ class Printing:
                 for columnName, column in row.items():
                     if columnName in columnsToShow or len(columnsToShow) == 0:
 
-                        column = Printing.prepareColumnForTable(column)    
+                        column = Printing.prepareColumnTextForTable(column)    
 
                         length = len(column) if len(column) > len(columnName) else len(columnName)
                         if columnName in maximums.keys(): 
@@ -50,13 +50,13 @@ class Printing:
                         headCell = (" "+columnName+" ") if len(columnName) > maximums[columnName] else (' '+columnName+' '*(maximums[columnName] - len(columnName)))
                         tableHeadCells[columnName] = headCell
 
-            devider = Printing.makeTableDeviderLine(tableHeadCells)
-            straightLine = '-'*len(devider)
+            deviderLine = Printing.makeTableDeviderLine(tableHeadCells)
+            straightLine = '-'*len(deviderLine)
             tableHead = Printing.makeTableHead(tableHeadCells)
 
             print(straightLine)
             print(tableHead)
-            print(devider)
+            print(deviderLine)
 
             # and print
             for row in dataSet:
@@ -65,7 +65,7 @@ class Printing:
                 
                 for columnName, column in row.items():
                     if columnName in columnsToShow or len(columnsToShow) == 0:
-                        column = Printing.prepareColumnForTable(column)    
+                        column = Printing.prepareColumnTextForTable(column)    
                         
                         rowToPrint += column
                         if len(column) < maximums[columnName]:
@@ -84,7 +84,7 @@ class Printing:
     def printDictionaryAsChart(
             chartName: str, dictionary: dict, 
             axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int = 1,
+            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float = 1,
             beginFromZero: bool = False
         ):
         hl = horizontalLine
@@ -92,15 +92,13 @@ class Printing:
         chart = {"first":''}
         columnLength = 3
         columnsSeparator = ' | '
+        shrinkTheKey = 0
+        screenWidth = 250
 
         chartParams['max_X'] = max(dictionary.values())
         chartParams['min_X'] = 0.0 if beginFromZero else min(dictionary.values())
 
-        difference = float(chartParams['max_X']) - float(chartParams['min_X'])
-        if difference > 50 and difference < 100:
-            step = 10
-        if difference >= 100 and difference < 1000:
-            step = 50
+        step = Printing.updateStep(float(chartParams['max_X']), float(chartParams['min_X']))
             
         for key, item in dictionary.items():
             # get min and max of X, get number of Y points
@@ -110,6 +108,9 @@ class Printing:
             columnLength = len(str(key)) if len(str(key)) > 3 else columnLength  # '__|_dot_|_'
             # chart[0] = 
             # spaces_from_axe_to_end = axe_Y_number*Y_column_length + 2 space + 1 "|"
+
+            if len(str(key)) * len(dictionary.items()) > screenWidth: # if len(columnText)*columnsNumber > 10*12
+                shrinkTheKey = -(columnLength//2)
         
         # delta = float(chartParams['max_X']) - float(chartParams['min_X'])
         #step = 1.0   # depends on scale value
@@ -117,7 +118,7 @@ class Printing:
         current = Printing.getRoundedValue(float(chartParams['max_X']), step)
         lastOne = Printing.getRoundedValue(float(chartParams['min_X']), step) - 2*step
         maxValueLength = len(str(float(chartParams['max_X'])))
-        keyLength = Printing.getLengthLongestListItem(dictionary.keys())
+        keyLength = Printing.getLengthLongestListItem(dictionary.keys(), shrinkTheKey)
 
         areaWidth = (keyLength+len(columnsSeparator))*len(dictionary.keys())
         firstLine = hl*maxValueLength + " | " + hl*(areaWidth)
@@ -139,7 +140,7 @@ class Printing:
             chart[str(current)] = chart[str(current)] + newLine if str(current) in chart else newLine
             current -= step
 
-        chart['basic'] = ' '*maxValueLength + " | " + Printing.convertListToString(dictionary.keys(), columnsSeparator)
+        chart['basic'] = ' '*maxValueLength + " | " + Printing.convertListToString(dictionary.keys(), columnsSeparator, shrinkTheKey)
 
         print("\n")
         print("-" * (len(chartName)+keyLength if len(chartName) > areaWidth else keyLength + 3 + areaWidth))
@@ -154,12 +155,11 @@ class Printing:
     def printDictionaryAsMultiChart(
         chartName: str, listOfDictionaries: list[dict], 
         axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int = 1,
+        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float = 1,
         beginFromZero: bool = False
         ):
         hl = horizontalLine
         lineNames = []
-        #  next(iter(my_dict.values()))
         if isinstance(listOfDictionaries, dict):
             lineNames = list(listOfDictionaries.keys())
             listOfDictionaries = list(listOfDictionaries.values())
@@ -176,11 +176,11 @@ class Printing:
         for dictionary in listOfDictionaries:
 
             valuesY = dictionary.keys()
+            valuesX = dictionary.values()
             # dictionary with separeted color
             
-            chartParams['max_X'] = max(dictionary.values()) if max(dictionary.values()) > chartParams['max_X'] else chartParams['max_X']
-            chartParams['min_X'] = min(dictionary.values()) if min(dictionary.values()) < chartParams['min_X'] else chartParams['min_X']
-            # chartParams['min_X'] = min(dictionary.values()) if min(dictionary.values()) < chartParams['min_X'] else chartParams['min_X']
+            chartParams['max_X'] = max(valuesX) if max(valuesX) > chartParams['max_X'] else chartParams['max_X']
+            chartParams['min_X'] = min(valuesX) if min(valuesX) < chartParams['min_X'] else chartParams['min_X']
 
             areaWidth = (keyLength+len(columnsSeparator))*len(dictionary.keys())
             keyLength = Printing.getLengthLongestListItem(dictionary.keys())
@@ -194,6 +194,7 @@ class Printing:
                 # chart[0] = 
                 # spaces_from_axe_to_end = axe_Y_number*Y_column_length + 2 space + 1 "|"
 
+        step = Printing.updateStep(float(chartParams['max_X']), float(chartParams['min_X']))
         current = Printing.getRoundedValue(float(chartParams['max_X']), step)
         lastOne = Printing.getRoundedValue(float(chartParams['min_X']), step) - 2*step
         maxValueLength = len(str(Printing.getRoundedValue(float(chartParams['max_X']), step)))
@@ -248,7 +249,7 @@ class Printing:
         return result
 
     @staticmethod
-    def prepareColumnForTable(column, displayLength: int=65) -> str:
+    def prepareColumnTextForTable(column, displayLength: int=65) -> str:
         if isinstance(column, dict) or isinstance(column, list):
             column = Printing.convertDictToString(column)
         else:
@@ -263,7 +264,7 @@ class Printing:
     @staticmethod
     def alignDotInCenter(stringLength: int, line: str = '_', color: str|bool=False):
         half = stringLength//2
-        return line*half + str(Printing.blackDot(2, color)) + line*(stringLength - half - 1)
+        return line*half + str(Printing.colorDot(color, 2)) + line*(stringLength - half - 1)
 
     @staticmethod
     def alignedDots(length: int, dotsNumber: int, resultCell: str, line: str='_'):
@@ -290,36 +291,31 @@ class Printing:
             return half*line + word + (stringLength - half)*line
 
     @staticmethod
-    def convertListToString(list, separator: str='|') -> str:
-        return separator.join(str(val) for val in list)
+    def convertListToString(list, separator: str='|', shrinkTheKey = 0) -> str:
+        if shrinkTheKey == 0:
+            return separator.join(str(val) for val in list)
+        else:
+            return separator.join(str(val[:shrinkTheKey]) for val in list)
 
     @staticmethod
-    def getLengthLongestListItem(list) -> int:
+    def getLengthLongestListItem(list, shrinkTheKey = 0) -> int:
         longest = 0
         for k in list:
-            longest = len(str(k)) if len(str(k)) > longest else longest
+            longest = len(str(k))+shrinkTheKey if len(str(k))+shrinkTheKey > longest else longest
         return longest
 
     # black Dot for charts with Unicode 
     @staticmethod
-    def blackDot(size: int=2, color: str|bool=False) -> str:
-        preparedColor = ''
-        reset = ''
-        if color != False and color in [Printing.RED, Printing.GREEN, Printing.YELLOW, Printing.CYAN]:
-            preparedColor = color
-            reset = Printing.RESET
-            
-        match size:
-            case 1: return preparedColor + "\u2022" + reset
-            case 3: return preparedColor + "\u2B24" + reset
-            case _: return preparedColor + "\u25CF" + reset
+    def blackDot(size: int=2) -> str:
+        return Printing.colorDot(False, size)
 
     @staticmethod
-    def colorDot(color: str, size: int=2):
+    def colorDot(color: str|bool = False, size: int=2):
         preparedColor = ''
-        reset = Printing.RESET
+        reset = ''
         if color in Printing.getColorsList():
             preparedColor = color
+            reset = Printing.RESET
             
         match size:
             case 1: return preparedColor + "\u2022" + reset
@@ -347,7 +343,7 @@ class Printing:
         pass
 
     @staticmethod
-    def getRoundedValue(valueToRound: int|float, step: int, roundPlace: str='tens', roundUp: bool=True):
+    def getRoundedValue(valueToRound: int|float, step: int|float, roundPlace: str='tens', roundUp: bool=True):
         if step > 1:
             leftOvers = valueToRound%step
             if leftOvers > (4*step/10):
@@ -356,5 +352,16 @@ class Printing:
                 return valueToRound - leftOvers
         return float(math.ceil(valueToRound))
 
+    @staticmethod
     def getColorsList():
         return [Printing.RED, Printing.GREEN, Printing.YELLOW, Printing.CYAN]
+
+    @staticmethod
+    def updateStep(maxValue, minValue) -> int|float:
+        step = 1
+        difference = maxValue - minValue
+        if difference > 50 and difference < 100:
+            step = 10
+        if difference >= 100 and difference < 1000:
+            step = 50
+        return step
