@@ -1,3 +1,5 @@
+import math
+
 class Printing:
 
     # Colors
@@ -81,7 +83,7 @@ class Printing:
     def printDictionaryAsChart(
             chartName: str, dictionary: dict, 
             axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: float = 1.0,
+            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int = 1,
             beginFromZero: bool = False
         ):
         hl = horizontalLine
@@ -92,6 +94,12 @@ class Printing:
 
         chartParams['max_X'] = max(dictionary.values())
         chartParams['min_X'] = 0.0 if beginFromZero else min(dictionary.values())
+
+        difference = float(chartParams['max_X']) - float(chartParams['min_X'])
+        if difference > 50 and difference < 100:
+            step = 10
+        if difference >= 100 and difference < 1000:
+            step = 50
             
         for key, item in dictionary.items():
             # get min and max of X, get number of Y points
@@ -105,8 +113,8 @@ class Printing:
         # delta = float(chartParams['max_X']) - float(chartParams['min_X'])
         #step = 1.0   # depends on scale value
 
-        current = float(chartParams['max_X'])
-        lastOne = float(chartParams['min_X']) - 2
+        current = Printing.getRoundedValue(float(chartParams['max_X']), step)
+        lastOne = Printing.getRoundedValue(float(chartParams['min_X']), step) - 2*step
         maxValueLength = len(str(float(chartParams['max_X'])))
         keyLength = Printing.getLengthLongestListItem(dictionary.keys())
 
@@ -122,7 +130,7 @@ class Printing:
             
             for k,v in dictionary.items():
                 v = float(v)
-                if(v == current):
+                if(Printing.getRoundedValue(v, step) == current): # v need to round to the step value
                     newLine += Printing.alignDotInCenter(keyLength, hl, Printing.GREEN) + hl*len(columnsSeparator)
                 else:
                     newLine += hl*keyLength + hl*len(columnsSeparator)
@@ -203,3 +211,13 @@ class Printing:
     @staticmethod
     def makeTableHead(tableHeadCellsDict: dict) -> str:
         return '|'+' |'.join(tableHeadCellsDict.values())+' |'
+
+    @staticmethod
+    def getRoundedValue(valueToRound: int|float, step: int, roundPlace: str='tens', roundUp: bool=True):
+        if step > 1:
+            leftOvers = valueToRound%step
+            if leftOvers > (4*step/10):
+                return valueToRound - leftOvers + step
+            else:
+                return valueToRound - leftOvers
+        return float(math.ceil(valueToRound))

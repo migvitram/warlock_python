@@ -6,9 +6,6 @@ sys.path.append(os.path.abspath('./..'))
 
 from models.helpers.Printing import Printing
 
-# sys.path.append(os.path.abspath('/usr/local/bin'))
-# import pytest
-
 @pytest.mark.printing
 @pytest.mark.parametrize('set, expected', [
     (1, "\u2022"),
@@ -55,7 +52,25 @@ def test_convertListToString(set, expected, param):
     assert string == expected
 
 def test_blackDot_Exception():
-
     # with pytest.raises(Exception):
         # blackDot('some string')
     pass
+
+@pytest.mark.printing
+@pytest.mark.parametrize('set1, set2, expect', [
+    (1561.98, 10, 1560),
+    (1564.18, 10, 1570),
+    (1563.18, 10, 1560),
+    (1563.18, 100, 1600),
+    (1543.18, 100, 1600),
+    (1533.18, 100, 1500),
+    (1573.18, 50, 1600),
+    (1563.18, 50, 1550),
+    (1543.18, 50, 1550),
+    (1533.18, 50, 1550),
+    (1523.18, 50, 1550),
+    (1520.18, 50, 1550),
+    (1519.18, 50, 1500),
+])
+def test_roundValueForChart(set1, set2, expect):
+    assert Printing.getRoundedValue(set1, set2) == expect
