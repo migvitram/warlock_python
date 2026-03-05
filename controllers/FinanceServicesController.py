@@ -10,12 +10,10 @@ class FinanceServices:
         # retrieve the data and store it
         bankProvider = MonoBankApiProvider()
         currenciesRates = bankProvider.getCurrencyRates()
-
         Printing.printDictionaryAsTable(currenciesRates)
 
     def printTheCurrenciesRateHistory(self):
         bankProvider = MonoBankApiProvider()
-        ratesHistory = bankProvider.returnCurrenciesRatesHistoryPrepared()
-
-        print(ratesHistory)
-        pass
+        # [MonoBankApiProvider.CURR_USD, MonoBankApiProvider.CURR_EUR]
+        ratesHistory = bankProvider.returnCurrenciesRatesHistoryPrepared([MonoBankApiProvider.CURR_USD, MonoBankApiProvider.CURR_EUR])
+        Printing.printDictionaryAsMultiChart('Currencies rates history', ratesHistory)

@@ -61,13 +61,13 @@ class MonoBankApiProvider:
         JsonFiles.writeToTheLocalJsonStorage(dataToStore, storageFile)
         return
 
-    def returnCurrenciesRatesHistoryPrepared(self):
+    def returnCurrenciesRatesHistoryPrepared(self, currenciesToShow: list=[]):
         storageFile = 'storage/currencies_rates_history.json'
         storedData = JsonFiles.readDataFromJsonFile(storageFile)
         preparedData = {}
         for date, list in storedData.items():
             for array in list:
-                if str(array['currencyCodeB']) == self.CURR_UAH:
+                if str(array['currencyCodeB']) == self.CURR_UAH and str(array['currencyCodeA']) in currenciesToShow:
                     currencyName = self.getCurrencyName(str(array['currencyCodeA']))
                     if currencyName not in preparedData:
                         preparedData[currencyName] = {}
