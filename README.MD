@@ -50,25 +50,30 @@ or
 Available (in the future) commands list:
 
 ```bash
-    run the product tracking
     add the product for tracking
     remove the product for tracking
+    run the product tracking
     print the product price history
     print the summary product table
-    search the keyword ' ' in the text {file}
-    search the keyword ' ' among news {url}
-    search the user among messages
-    search the message among messages
-    show the diagram of currencies course
-    show the diagram from the file
-    show the diagram of product price
-    schedule the news tracking
-    schedule the message tracking
+    print demo
+    print demo-multi
+    print demo table
+    
+    * search the keyword ' ' in the text {file}
+    * search the keyword ' ' among news {url}
+    * search the user among messages
+    * search the message among messages
+    * show the diagram of currencies course
+    * show the diagram from the file
+    * show the diagram of product price
+    * schedule the news tracking
+    * schedule the message tracking
     make tests
+
+    * - will be available later
 ```
 
 ### Chapter 1
-
 Okey, boys and girls, let's take a look at the python scripts. I'm new in python, so I will learn it with this project development. If this repo will be usefull for you, please like, subscribe and share. And let's learn Python together.
 
 First I've wrote the single script to get info about the products I like. Then, the functions number rise and scripts became many. Classes, of course, was very useful. But, of course, it was just a first version, scratch. So let's do it beter.
@@ -105,7 +110,6 @@ or with the shell commands:
 ```
 
 ### Chapter 2
-
 At some point we have the web pages of the products we like, that encoded (compressed)  with some compress method (gzip, zstd etc.). That means we need most up-to-date modules and OS components. So I've decide to wrap the project in some simple docker container.
 
 I've also use `Makefile`, quite useful tool. We can `up`, `down` the containers, and acces to Warlock by `shell`:
@@ -119,5 +123,36 @@ I've also use `Makefile`, quite useful tool. We can `up`, `down` the containers,
 ```
 
 ### Chapter 3
-
 To implement the different web shop scraping (which have different pages structure), I've added the Abstract scraping provider class to implement inheritance of some common functions for children classes.
+
+### Chapter 4
+So we have the simple and tiny data web page scraping. Now let's update the Printing library to get beautifull Charts (the multi line charts also). We can watch demo version with `print demo` or `print demo-multi` in the dialog with Warlock.
+```bash
+    ----------------------------------------------------------------------------------------
+              DEMO History diagram (for single data set)
+    ----------------------------------------------------------------------------------------
+    _____ | ________________________________________________________________________________
+    164.0 | __________________________________________________________________________●_____
+    _____ | ________________________________________________________________________________
+    _____ | ________________________________________________________________________________
+    161.0 | __________________________________________________________●_____________________
+    _____ | ________________________________________________________________________________
+    _____ | ________________________________________________________________________________
+    _____ | ________________________________________________________________________________
+    157.0 | __________________________________________________________________●_____________
+    _____ | ________________________________________________________________________________
+    155.0 | __________________________________________________●_____________________________
+    _____ | ________________________________________________________________________________
+    153.0 | __●_____________________________________________________________________________
+    152.0 | __________●_____________________________________________________________________
+    151.0 | __________________________________________●_____________________________________
+    150.0 | __________________●_____________________________________________________________
+    149.0 | __________________________________●_____________________________________________
+    148.0 | __________________________●_____________________________________________________
+    _____ | ________________________________________________________________________________
+          | 22/05 | 12/06 | 14/07 | 25/08 | 14/09 | 05/10 | 18/11 | 02/12 | 23/01 | 23/02
+
+```
+
+For the development, debugging and just in case we going to add the Logger class, and also the PersonalSettings class to store some info between sessions.
+
