@@ -12,3 +12,10 @@ class FinanceServices:
         currenciesRates = bankProvider.getCurrencyRates()
 
         Printing.printDictionaryAsTable(currenciesRates)
+
+    def printTheCurrenciesRateHistory(self):
+        bankProvider = MonoBankApiProvider()
+        ratesHistory = bankProvider.returnCurrenciesRatesHistoryPrepared()
+
+        print(ratesHistory)
+        pass

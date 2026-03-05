@@ -49,7 +49,7 @@ def checkTheWish(theWishText: str):
             if len(sentence) > 2 and sentence[1] == 'demo' and sentence[2] == 'table':
                 checkProduct.printDemoTable()
                 pass
-
+            
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
                     productName = askUntilAnswer("For what product? \n")
@@ -60,6 +60,11 @@ def checkTheWish(theWishText: str):
 
                 if sentence[2] == 'product' and sentence[3] == 'summary' and sentence[4] == 'table':
                     checkProduct.printTheSummaryProductTable()
+
+                if sentence[2] == 'currencies' and sentence[3] == 'rate' and sentence[4] == 'history':
+                    financeService = FinanceServices()
+                    financeService.printTheCurrenciesRateHistory()
+                    pass
 
         if sentence[0] == 'add':
             if sentence[1] == 'the':
