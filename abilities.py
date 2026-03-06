@@ -65,6 +65,15 @@ def checkTheWish(theWishText: str):
                     financeService = FinanceServices()
                     financeService.printTheCurrenciesRateHistory()
                     pass
+                if sentence[2] == 'currency' and sentence[3] == 'rate' and sentence[4] == 'history' and sentence[5] == 'for':
+                    financeService = FinanceServices()
+                    if len(sentence) > 5 and sentence[6] != '':
+                        financeService.printTheCurrencyRateHistory(sentence[6])
+                        pass
+                    if len(sentence) == 5:
+                        currencyName = askUntilAnswer('Please, enter the currency short name (usd, eur, bps) : ')
+                        financeService.printTheCurrencyRateHistory(currencyName)
+                    pass
 
         if sentence[0] == 'add':
             if sentence[1] == 'the':

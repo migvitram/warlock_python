@@ -61,7 +61,7 @@ class MonoBankApiProvider:
         JsonFiles.writeToTheLocalJsonStorage(dataToStore, storageFile)
         return
 
-    def returnCurrenciesRatesHistoryPrepared(self, currenciesToShow: list=[]):
+    def returnCurrenciesRatesHistoryPrepared(self, currenciesToShow: list=[]) -> dict[str, dict]:
         storageFile = 'storage/currencies_rates_history.json'
         storedData = JsonFiles.readDataFromJsonFile(storageFile)
         preparedData = {}
@@ -73,6 +73,29 @@ class MonoBankApiProvider:
                         preparedData[currencyName] = {}
                     preparedData[currencyName][date] = array['rateSell'] if 'rateSell' in array else (array['rateCross'] if 'rateCross' in array else '')
         return preparedData
+        pass
+
+    def returnCurrencyRateHistoryPrepared(self, currencyName: str):
+        storageFile = 'storage/currencies_rates_history.json'
+        storedData = JsonFiles.readDataFromJsonFile(storageFile)
+        preparedData = {}
+        currency = self.getCurrencyCodeByShortName(currencyName)
+
+        for date, list in storedData.items():
+            for array in list:
+                if str(array['currencyCodeB']) == self.CURR_UAH and str(array['currencyCodeA']) in currency:
+                    preparedData[date] = array['rateSell'] if 'rateSell' in array else (array['rateCross'] if 'rateCross' in array else '')
+        return preparedData
+        pass
+
+    def getCurrencyCodeByShortName(self, shortName: str):
+        match shortName.upper():
+            case 'USD':
+                return self.CURR_USD
+            case 'EUR':
+                return self.CURR_EUR
+            case _:
+                return self.CURR_USD
         pass
 
     def getCurrencyName(self, currCode: str=''):
