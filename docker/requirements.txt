@@ -4,3 +4,4 @@ zstandard
 brotli
 dotenv
 requests
+PyYAML
