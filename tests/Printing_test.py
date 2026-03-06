@@ -1,9 +1,4 @@
-import sys
-import os
 import pytest
-
-sys.path.append(os.path.abspath('./..'))
-
 from models.helpers.Printing import Printing
 
 @pytest.mark.printing
@@ -74,3 +69,52 @@ def test_blackDot_Exception():
 ])
 def test_roundValueForChart(set1, set2, expect):
     assert Printing.getRoundedValue(set1, set2) == expect
+
+@pytest.mark.printing
+@pytest.mark.parametrize('set1, set2, expect', [
+    (123.061, 0.1, 123.1),
+    (123.05, 0.1, 123.1),
+    (123.041, 0.1, 123.1),
+    (123.021, 0.1, 123.0),
+    (123.005, 0.1, 123.0),
+    
+    (123.9, 0.5, 124.0),
+    (123.718, 0.5, 124.0),
+    (123.708, 0.5, 124.0),
+    (123.618, 0.5, 123.5),
+    (123.418, 0.5, 123.5),
+    (123.25, 0.5, 123.5),
+    (123.19, 0.5, 123.0),
+    (123.061, 0.5, 123.0),
+    (123.05, 0.5, 123.0),
+    (123.041, 0.5, 123.0),
+    (123.021, 0.5, 123.0),
+    (123.005, 0.5, 123.0),
+
+    (44.0038, 0.01, 44.0),
+    (44.0041, 0.01, 44.01),
+    (44.013, 0.01, 44.01),
+    (44.021, 0.01, 44.02),
+    (44.024, 0.01, 44.02),
+    (44.025, 0.01, 44.03),
+])
+def test_roundLessThanOne(set1, set2, expect):
+    result = Printing.getRoundedValue(set1, set2)
+    assert result == expect
+
+@pytest.mark.printing
+@pytest.mark.parametrize('set, expect', [
+    ('1231.456', 1231.456),
+    ('1231,456', 1231.456),
+    ('1231456', 1231456),
+    ('1231uah', 1231),
+    ('5231 грн', 5231),
+    ('1231,456 грн', 1231.456),
+    ('fsdfewf', 0),
+    ('fsdfewf65', 65),
+    ('15fs.dfe15wf', 15),
+    ('fs.dfe015wf', 15),
+    ('', 0)
+])
+def test_intOrFloatString(set, expect):
+    assert Printing.intOrFloatString(set) == expect

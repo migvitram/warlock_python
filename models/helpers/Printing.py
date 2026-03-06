@@ -1,4 +1,4 @@
-import math
+import re
 from models.helpers.Logger import Logger
 
 class Printing:
@@ -95,10 +95,10 @@ class Printing:
         shrinkTheKey = 0
         screenWidth = 250
 
-        chartParams['max_X'] = max(dictionary.values())
-        chartParams['min_X'] = 0.0 if beginFromZero else min(dictionary.values())
+        chartParams['max_X'] = Printing.intOrFloatString(str(max(dictionary.values())))
+        chartParams['min_X'] = 0 if beginFromZero else Printing.intOrFloatString(str(min(dictionary.values())))
 
-        step = Printing.updateStep(float(chartParams['max_X']), float(chartParams['min_X']))
+        step = Printing.chooseStep(chartParams['max_X'], chartParams['min_X'])
             
         for key, item in dictionary.items():
             # get min and max of X, get number of Y points
@@ -115,9 +115,9 @@ class Printing:
         # delta = float(chartParams['max_X']) - float(chartParams['min_X'])
         #step = 1.0   # depends on scale value
 
-        current = Printing.getRoundedValue(float(chartParams['max_X']), step)
-        lastOne = Printing.getRoundedValue(float(chartParams['min_X']), step) - 2*step
-        maxValueLength = len(str(float(chartParams['max_X'])))
+        current = Printing.getRoundedValue(chartParams['max_X'], step)
+        lastOne = Printing.getRoundedValue(chartParams['min_X'], step) - 2*step
+        maxValueLength = len(str(chartParams['max_X']))
         keyLength = Printing.getLengthLongestListItem(dictionary.keys(), shrinkTheKey)
 
         areaWidth = (keyLength+len(columnsSeparator))*len(dictionary.keys())
@@ -125,10 +125,11 @@ class Printing:
         chart[str(current+step)] = firstLine
 
         while current > lastOne:
+            beautifulKey = Printing.completeString(str(current), maxValueLength)
             if showOnlyDotValues:
-                newLine = (str(current) if current in dictionary.values() else hl*maxValueLength) + " | "
+                newLine = (beautifulKey if current in dictionary.values() else hl*maxValueLength) + " | "
             else:
-                newLine = str(current) + " | "
+                newLine = beautifulKey + " | "
             
             for k,v in dictionary.items():
                 v = float(v)
@@ -138,7 +139,7 @@ class Printing:
                     newLine += hl*keyLength + hl*len(columnsSeparator)
                     
             chart[str(current)] = chart[str(current)] + newLine if str(current) in chart else newLine
-            current -= step
+            current = round(current - step, 5)
 
         chart['basic'] = ' '*maxValueLength + " | " + Printing.convertListToString(dictionary.keys(), columnsSeparator, shrinkTheKey)
 
@@ -153,7 +154,7 @@ class Printing:
 
     @staticmethod
     def printDictionaryAsMultiChart(
-        chartName: str, listOfDictionaries: list[dict], 
+        chartName: str, listOfDictionaries: list[dict]|dict[str, dict], 
         axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
         columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float = 1,
         beginFromZero: bool = False
@@ -194,7 +195,7 @@ class Printing:
                 # chart[0] = 
                 # spaces_from_axe_to_end = axe_Y_number*Y_column_length + 2 space + 1 "|"
 
-        step = Printing.updateStep(float(chartParams['max_X']), float(chartParams['min_X']))
+        step = Printing.chooseStep(float(chartParams['max_X']), float(chartParams['min_X']))
         current = Printing.getRoundedValue(float(chartParams['max_X']), step)
         lastOne = Printing.getRoundedValue(float(chartParams['min_X']), step) - 2*step
         maxValueLength = len(str(Printing.getRoundedValue(float(chartParams['max_X']), step)))
@@ -204,8 +205,9 @@ class Printing:
 
         while current > lastOne:
 
+            beautifulKey = Printing.completeString(str(current), maxValueLength)
             if showOnlyDotValues:
-                newLine = str(current) + " |"
+                newLine = beautifulKey + " |"
             else:
                 newLine = hl*maxValueLength + " |"
 
@@ -222,7 +224,7 @@ class Printing:
                 newLine += hl + Printing.alignedDots(keyLength, dotsInCell, resultCell)
                     
             chart[str(current)] = chart[str(current)] + newLine if str(current) in chart else newLine
-            current -= step
+            current = round(current - step, 5)
 
         chart['basic'] = ' '*maxValueLength + " | " + Printing.convertListToString(valuesY, columnsSeparator)
 
@@ -344,24 +346,65 @@ class Printing:
 
     @staticmethod
     def getRoundedValue(valueToRound: int|float, step: int|float, roundPlace: str='tens', roundUp: bool=True):
-        if step > 1:
+        if step >= 1:
             leftOvers = valueToRound%step
-            if leftOvers > (4*step/10):
+            if leftOvers > (step*0.4):
                 return valueToRound - leftOvers + step
             else:
                 return valueToRound - leftOvers
-        return float(math.ceil(valueToRound))
+        else:
+            leftOvers = round(valueToRound%step, 4)
+            if leftOvers > round((step*0.4), 4):
+                return round(valueToRound - leftOvers + step, 4)
+            else:
+                return round(valueToRound - leftOvers, 4)
+
+    @staticmethod
+    def completeString(string: str, length: int, completeWith: str=' ') -> str:
+        if len(string) < length:
+            string += completeWith*(length-len(string))
+        return string
+
+    @staticmethod
+    def intOrFloatString(stringToCheck: str) -> int|float:
+        if stringToCheck is float or stringToCheck is int:
+            return stringToCheck
+        variant1 = re.findall('(\\d+\\.\\d+)', stringToCheck)
+        variant2 = re.findall('(\\d+\\,\\d+)', stringToCheck)
+        variant3 = re.findall('(\\d+)', stringToCheck)
+        if variant1:
+            return float(variant1.pop())
+        if variant2:
+            return float(str(variant2.pop()).replace(',', '.'))
+        if variant3:
+            return int(variant3.pop())
+        if len(stringToCheck) == 0:
+            return 0
+        else:
+            return 0
 
     @staticmethod
     def getColorsList():
         return [Printing.RED, Printing.GREEN, Printing.YELLOW, Printing.CYAN]
 
     @staticmethod
-    def updateStep(maxValue, minValue) -> int|float:
+    def chooseStep(maxValue, minValue) -> int|float:
         step = 1
         difference = maxValue - minValue
-        if difference > 50 and difference < 100:
-            step = 10
-        if difference >= 100 and difference < 1000:
+        if difference == 0 or difference < 0:
+            return 1
+        if difference > 1000:
+            step = 100
+        if difference <= 1000 and difference > 100:
             step = 50
+        if difference <= 100 and difference > 50:
+            step = 10
+        if difference <= 50 and difference > 10: # default value
+            step = 1
+        if difference <= 10 and difference > 2:
+            step = 0.5
+        if difference <= 2 and difference > 1:
+            step = 0.1
+        if difference < 1 and difference > 0:
+            step = 0.01
         return step
