@@ -20,7 +20,7 @@ class Rozetka(AbstractScrapingProvider):
 
         if isinstance(priceObject, bs4.element.Tag):
             text = priceObject.get_text()
-            value = re.findall('(\\d+)', text)
+            value = re.findall(r"(\d+)", text)
             return ''.join(value)
         else:
             return False

@@ -244,11 +244,11 @@ class Printing:
 
     @staticmethod
     def convertDictToString(dictionary: dict|list) -> str:
-        result = ''
-        for item, key in dictionary.items():
-            result += str(key) + ' : ' + str(item) + ', '
-
-        return result
+        if isinstance(dictionary, dict):
+            return " { dictionary } "
+        if isinstance(dictionary, list):
+            return " [ list ] "
+        return "..."
 
     @staticmethod
     def prepareColumnTextForTable(column, displayLength: int=65) -> str:
@@ -369,9 +369,9 @@ class Printing:
     def intOrFloatString(stringToCheck: str) -> int|float:
         if stringToCheck is float or stringToCheck is int:
             return stringToCheck
-        variant1 = re.findall('(\\d+\\.\\d+)', stringToCheck)
-        variant2 = re.findall('(\\d+\\,\\d+)', stringToCheck)
-        variant3 = re.findall('(\\d+)', stringToCheck)
+        variant1 = re.findall(r"(\d+\.\d+)", stringToCheck)
+        variant2 = re.findall(r"(\d+\,\d+)", stringToCheck)
+        variant3 = re.findall(r"(\d+)", stringToCheck)
         if variant1:
             return float(variant1.pop())
         if variant2:

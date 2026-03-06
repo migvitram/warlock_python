@@ -36,7 +36,7 @@ class HttpProvider:
                 print(f"URL Error: {e.reason}")
                 return ''
         else:
-            print("Url \'"+url+"\'is not valid URL \n")
+            print(f"Url \'{url}\'is not valid URL \n")
             return ''    
     
     @staticmethod
