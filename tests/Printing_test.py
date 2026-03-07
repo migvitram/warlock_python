@@ -1,5 +1,6 @@
 import pytest
-from models.helpers.Printing import Printing
+from libraries.printing.PrintingBasic import PrintingBasic
+from libraries.printing.PrintingCharts import PrintingCharts
 
 @pytest.mark.printing
 @pytest.mark.parametrize('set, expected', [
@@ -10,7 +11,7 @@ from models.helpers.Printing import Printing
     (84984, "\u25CF"),
 ])
 def test_black_dot_function(set, expected):
-    assert Printing.blackDot(set) == expected
+    assert PrintingCharts.blackDot(set) == expected
 
 @pytest.mark.printing
 @pytest.mark.parametrize('set, expected', [
@@ -20,15 +21,15 @@ def test_black_dot_function(set, expected):
     ([], 0)
 ])    
 def test_get_longest_item_lenght(set, expected):
-    assert Printing.getLengthLongestListItem(set) == expected
+    assert PrintingCharts.getLengthLongestListItem(set) == expected
 
 @pytest.mark.printing
 def test_alignDotInCenter():
-    assert Printing.alignDotInCenter(1) == Printing.blackDot()
-    assert Printing.alignDotInCenter(2) == '_'+Printing.blackDot()
-    assert Printing.alignDotInCenter(3) == '_' + Printing.blackDot() + '_'
-    assert Printing.alignDotInCenter(4) == '__' + Printing.blackDot() + '_'
-    assert Printing.alignDotInCenter(5) == '__' + Printing.blackDot() + '__'
+    assert PrintingCharts.alignDotInCenter(1) == PrintingCharts.blackDot()
+    assert PrintingCharts.alignDotInCenter(2) == '_'+PrintingCharts.blackDot()
+    assert PrintingCharts.alignDotInCenter(3) == '_' + PrintingCharts.blackDot() + '_'
+    assert PrintingCharts.alignDotInCenter(4) == '__' + PrintingCharts.blackDot() + '_'
+    assert PrintingCharts.alignDotInCenter(5) == '__' + PrintingCharts.blackDot() + '__'
 
 @pytest.mark.printing
 @pytest.mark.parametrize('set, expected, param', [
@@ -39,9 +40,9 @@ def test_alignDotInCenter():
 ])
 def test_convertListToString(set, expected, param):
     if param is None:
-        string = Printing.convertListToString(set)
+        string = PrintingCharts.convertListToString(set)
     else:
-        string = Printing.convertListToString(set, param)
+        string = PrintingCharts.convertListToString(set, param)
 
     assert type(string) == str
     assert string == expected
@@ -68,7 +69,7 @@ def test_blackDot_Exception():
     (1519.18, 50, 1500),
 ])
 def test_roundValueForChart(set1, set2, expect):
-    assert Printing.getRoundedValue(set1, set2) == expect
+    assert PrintingCharts.getRoundedValue(set1, set2) == expect
 
 @pytest.mark.printing
 @pytest.mark.parametrize('set1, set2, expect', [
@@ -99,7 +100,7 @@ def test_roundValueForChart(set1, set2, expect):
     (44.025, 0.01, 44.03),
 ])
 def test_roundLessThanOne(set1, set2, expect):
-    result = Printing.getRoundedValue(set1, set2)
+    result = PrintingCharts.getRoundedValue(set1, set2)
     assert result == expect
 
 @pytest.mark.printing
@@ -117,4 +118,4 @@ def test_roundLessThanOne(set1, set2, expect):
     ('', 0)
 ])
 def test_intOrFloatString(set, expect):
-    assert Printing.intOrFloatString(set) == expect
+    assert PrintingBasic.intOrFloatString(set) == expect
