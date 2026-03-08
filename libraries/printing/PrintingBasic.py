@@ -1,13 +1,7 @@
 import re
+from libraries.printing.PrintingColor import Color
 
 class PrintingBasic:
-
-    # Colors
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    CYAN = '\033[96m'
-    RESET = '\033[0m'
 
     def __init__(self) -> None:
         pass
@@ -32,4 +26,11 @@ class PrintingBasic:
 
     @staticmethod
     def getColorsList():
-        return [PrintingBasic.RED, PrintingBasic.GREEN, PrintingBasic.YELLOW, PrintingBasic.CYAN]
+        return [Color.RED, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA]
+
+    @staticmethod
+    def completeString(string: str, length: int, completeWith: str=' ') -> str:
+        if len(string) < length:
+            string += completeWith*(length-len(string))
+        return string
+    

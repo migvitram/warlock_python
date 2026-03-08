@@ -2,6 +2,7 @@ import os
 from controllers.CheckProductController import CheckProductController
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
+from libraries.printing.PrintingColor import Color
 from datetime import datetime
 
 def checkWishmasterSatisfied(want: str) -> bool:
@@ -25,7 +26,7 @@ def checkTheWish(theWishText: str):
             if sentence[1] == 'log':
                 deleted = Logger.clean()
                 if deleted:
-                    Printing.print('Log file removed successfuly.', Printing.GREEN)
+                    Printing.print('Log file removed successfuly.', Color.GREEN)
 
         if sentence[0] == 'make':
             if sentence[1] == 'tests' or sentence[1] == 'self-tests':

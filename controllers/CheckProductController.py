@@ -3,6 +3,7 @@ import time
 
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
+from libraries.printing.PrintingColor import Color
 from models.helpers.JsonFiles import JsonFiles
 from models.providers.HttpProvider import HttpProvider
 from datetime import datetime
@@ -62,7 +63,7 @@ class CheckProductController:
                         item['priceHistory'] = {}
                     item['priceHistory'][today.strftime("%d/%m/%Y")] = price
                 else:
-                    Printing.print("Can not find the scraping provider for product \'"+item['productName']+"\'", Printing.YELLOW)
+                    Printing.print("Can not find the scraping provider for product \'"+item['productName']+"\'", Color.YELLOW)
 
         Printing.printDictionaryAsTable(productsSet, ['url', 'productName', 'presence', 'price', 'date'])
 
@@ -87,7 +88,7 @@ class CheckProductController:
             else:
                 result = False
         if result == False:
-            Printing.print("Can not find product \'"+productToDeleteName+"\' ", Printing.RED)
+            Printing.print("Can not find product \'"+productToDeleteName+"\' ", Color.RED)
 
     def printTheSummaryProductTable(self):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
@@ -103,13 +104,13 @@ class CheckProductController:
                 break
 
         if productId is False:
-            Printing.print("There is no Price History for product named \'"+productName+"\'!", Printing.RED)
+            Printing.print("There is no Price History for product named \'"+productName+"\'!", Color.RED)
             return
 
         if 'priceHistory' in productsSet[productId]:
             Printing.printDictionaryAsChart("Price changes for product \'"+productName+"\' for last 5 days", productsSet[productId]['priceHistory'], showOnlyDotValues=False)
         else:
-            Printing.print("There is no Price History for this product yet! \n", Printing.YELLOW)
+            Printing.print("There is no Price History for this product yet! \n", Color.YELLOW)
         return
 
     def printDemo(self):

@@ -1,7 +1,8 @@
 from libraries.printing.PrintingBasic import PrintingBasic
+from libraries.printing.PrintingColor import Color
 from libraries.printing.PrintingText import PrintingText
 
-class PrintingCharts:
+class PrintingCharts(PrintingBasic):
 
     def __init__(self) -> None:
         pass
@@ -21,8 +22,8 @@ class PrintingCharts:
         shrinkTheKey = 0
         screenWidth = 250
 
-        chartParams['max_X'] = PrintingBasic.intOrFloatString(str(max(dictionary.values())))
-        chartParams['min_X'] = 0 if beginFromZero else PrintingBasic.intOrFloatString(str(min(dictionary.values())))
+        chartParams['max_X'] = PrintingCharts.intOrFloatString(str(max(dictionary.values())))
+        chartParams['min_X'] = 0 if beginFromZero else PrintingCharts.intOrFloatString(str(min(dictionary.values())))
 
         step = PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X'])
             
@@ -60,7 +61,7 @@ class PrintingCharts:
             for k,v in dictionary.items():
                 v = float(v)
                 if(PrintingCharts.getRoundedValue(v, step) == current): # v need to round to the step value
-                    newLine += PrintingCharts.alignDotInCenter(keyLength, hl, PrintingBasic.GREEN) + hl*len(columnsSeparator)
+                    newLine += PrintingCharts.alignDotInCenter(keyLength, hl, Color.GREEN) + hl*len(columnsSeparator)
                 else:
                     newLine += hl*keyLength + hl*len(columnsSeparator)
                     
@@ -145,7 +146,7 @@ class PrintingCharts:
 
                     if PrintingCharts.getRoundedValue(dictionary[date], step) == current:
                         dotsInCell += 1
-                        resultCell += PrintingCharts.colorDot(PrintingBasic.getColorsList()[dictIndex])
+                        resultCell += PrintingCharts.colorDot(PrintingCharts.getColorsList()[dictIndex])
 
                 newLine += hl + PrintingCharts.alignedDots(keyLength, dotsInCell, resultCell)
                     
@@ -185,8 +186,8 @@ class PrintingCharts:
         leftOvers = int(stringLength - dotNumbers)
         if leftOvers < 0:
             # shrink the word for one letter ?
-            PrintingText.print("There is more dots then the column width ! ! ! ", PrintingBasic.YELLOW)
-            PrintingText.print("this is the problem when the word is colored dots in ASCII encode", PrintingBasic.YELLOW)
+            PrintingText.print("There is more dots then the column width ! ! ! ", Color.YELLOW)
+            PrintingText.print("this is the problem when the word is colored dots in ASCII encode", Color.YELLOW)
             return '*'*stringLength
         elif leftOvers == 1:
             return line + word
@@ -219,9 +220,9 @@ class PrintingCharts:
     def colorDot(color: str|bool = False, size: int=2):
         preparedColor = ''
         reset = ''
-        if color in PrintingBasic.getColorsList():
+        if color in PrintingCharts.getColorsList():
             preparedColor = color
-            reset = PrintingBasic.RESET
+            reset = Color.RESET
             
         match size:
             case 1: return preparedColor + "\u2022" + reset
@@ -233,7 +234,7 @@ class PrintingCharts:
     def printTheLegendFromList(lineNames: list):
         print("Chart legend:")
         for index, lineName in enumerate(lineNames):
-            print("  " + PrintingCharts.colorDot(PrintingBasic.getColorsList()[index])+" - "+lineName)
+            print("  " + PrintingCharts.colorDot(PrintingCharts.getColorsList()[index])+" - "+lineName)
         pass
 
     @staticmethod
@@ -251,12 +252,6 @@ class PrintingCharts:
             else:
                 return round(valueToRound - leftOvers, 4)
 
-    @staticmethod
-    def completeString(string: str, length: int, completeWith: str=' ') -> str:
-        if len(string) < length:
-            string += completeWith*(length-len(string))
-        return string
-    
     @staticmethod
     def chooseStep(maxValue, minValue) -> int|float:
         step = 1

@@ -1,6 +1,6 @@
 from libraries.printing.PrintingBasic import PrintingBasic
 
-class PrintingTable:
+class PrintingTable(PrintingBasic):
 
     def __init__(self) -> None:
         pass
