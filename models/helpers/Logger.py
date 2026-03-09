@@ -8,7 +8,6 @@ class Logger:
     singletoneInstance = None
     timezone: str = 'UTC'
     loggerStoragePath = 'storage/app.log'
-    loggerStorageInst = False
 
     def __init__(self, timezone: str|None=None) -> None:
         load_dotenv()

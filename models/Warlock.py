@@ -1,4 +1,5 @@
 import time
+from models.AppContext import AppContext
 from models.PersonalSettings import Settings
 from models.helpers.Drawing import Drawing
 from models.helpers.Logger import Logger
@@ -8,6 +9,7 @@ from abilities import checkWishmasterSatisfied
 class Warlock:
 
     def __init__(self) -> None:
+        # AppContext.set('lang', 'ua')
         self.printIntro()
         pass
 
