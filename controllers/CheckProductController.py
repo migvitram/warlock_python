@@ -38,16 +38,16 @@ class CheckProductController:
 
     def runTheTracking(self):
         Logger.log("The product tracking fetch initiated ("+str(self.__class__)+")")
-        print("Running the tracking...")
+        Printing.print("Running the tracking...")
         time.sleep(1)
-        print("this is the processor to parse the data from web-sites...")
+        Printing.print("this is the processor to parse the data from web-sites...")
 
         # according to the root directory (warlock)
         jsonFileStorage = self.jsonFileStorage
 
         productsSet = JsonFiles.readDataFromJsonFile(jsonFileStorage)
 
-        print("Retrieving ... ")
+        Printing.print("Retrieving ... ")
 
         if not isinstance(productsSet, list) and not isinstance(productsSet, dict):
             Logger.log('Error with the product data stored in json file : no data or data not iterable')

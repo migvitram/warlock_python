@@ -6,17 +6,18 @@ from models.helpers.Drawing import Drawing
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
+from monadas.translation import _
 from abilities import checkTheWish
 from abilities import checkWishmasterSatisfied
 
 class Warlock:
 
     def __init__(self) -> None:
-        # AppContext.set('lang', 'ua')
-        self.printIntro()
+        Warlock.printIntro()
         pass
 
-    def printIntro(self):
+    @staticmethod
+    def printIntro():
         # displayTheImage('storage/images/warlock_image_0003_120.txt')
         if Settings.getAsInt('visits') < 2:
             Drawing.displayTheImage('storage/images/warlock_image_0003_160.txt')
@@ -25,7 +26,7 @@ class Warlock:
         Drawing.displayTheImage('storage/images/warlock_word_0006_96_inv.txt')
         time.sleep(1)
 
-        print("Warlock is listening... \n")
+        Printing.print("Warlock is listening...")
         time.sleep(1)
 
         Settings.revisit()
@@ -33,7 +34,7 @@ class Warlock:
 
     def whatToDo(self):
         try:
-            whatToDo = input("What do you want me to do? \n\n")
+            whatToDo = input(_('app', "What do you want me to do?", str(AppContext.get('lang'))) +"\n\n")
             checkTheWish(whatToDo)
             return
         except Exception as e:
@@ -45,15 +46,15 @@ class Warlock:
 
         while wishes == True:
             try:
-                want = input("Do you want something more? \n")
+                want = input(_('app', "Do you want something more?", str(AppContext.get('lang'))) +"\n")
                 if checkWishmasterSatisfied(want):
-                    print("Gooood...")
+                    Printing.print("Gooood...")
                     time.sleep(1)
-                    print("Call me, any time to make your wish come true...")
+                    Printing.print("Call me, any time to make your wish come true...")
                     wishes = False
                     exit
                 else:
-                    checkTheWish(want)    
+                    checkTheWish(want)
             except Exception as e:
                 self.logAnError(e)
         return
