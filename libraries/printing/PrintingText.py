@@ -11,8 +11,8 @@ class PrintingText(PrintingBasic):
     @staticmethod
     def print(text: str, color: bool|str=False, fParam: bool=False):
         if color != False and color in PrintingText.getColorsList():
-            print(f"{color}"+_('app', text, str(AppContext.get('lang')))+f"{Color.RESET}"+" \n")
+            print(f"{color} " + _('app', text, str(AppContext.get('lang'))) + f" {Color.RESET} "+" \n")
         else:
-            print(text)
+            print(_('app', text, str(AppContext.get('lang')))+" \n")
 
     
