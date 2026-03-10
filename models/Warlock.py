@@ -7,6 +7,7 @@ from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
 from models.abilities import Abilities
+from monadas.translation import _
 
 class Warlock:
 
@@ -35,7 +36,7 @@ class Warlock:
             pass
         time.sleep(1)
 
-        print("Warlock is listening... \n")
+        Printing.print("Warlock is listening...")
         time.sleep(1)
 
         Settings.revisit()
@@ -43,7 +44,7 @@ class Warlock:
 
     def whatToDo(self):
         try:
-            whatToDo = input("What do you want me to do? \n\n")
+            whatToDo = input(_('app', "What do you want me to do?", str(AppContext.get('lang'))) +"\n\n")
             self.abilities.checkTheWish(whatToDo)
             return
         except Exception as e:
@@ -55,11 +56,11 @@ class Warlock:
 
         while wishes == True:
             try:
-                want = input("Do you want something more? \n")
+                want = input(_('app', "Do you want something more?", str(AppContext.get('lang'))) +"\n")
                 if self.abilities.checkWishmasterSatisfied(want):
-                    print("Gooood...")
+                    Printing.print("Gooood...")
                     time.sleep(1)
-                    print("Call me, any time to make your wish come true...")
+                    Printing.print("Call me, any time to make your wish come true...")
                     wishes = False
                     exit
                 else:

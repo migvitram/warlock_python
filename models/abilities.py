@@ -11,6 +11,7 @@ from datetime import datetime
 from models.PersonalSettings import Settings
 from dotenv import load_dotenv
 from monadas.translation import _
+from models.AppContext import AppContext
 
 class Abilities:
 
@@ -183,6 +184,12 @@ class Abilities:
                             areYouSure = self.askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
                             if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                                 checkYoutube.removeChannelByName(pageName)
+
+            if sentence[0] == 'change' and sentence[1] == 'the' and sentence[2] == 'language':
+                lang = self.askUntilAnswer("please type the language short code [ua, ru, en] : ")
+                if lang != '':
+                    AppContext.set('lang', lang)
+
             for word in sentence:
                 # print(word)
                 pass
