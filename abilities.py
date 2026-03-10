@@ -8,10 +8,9 @@ from libraries.printing.PrintingColor import Color
 from datetime import datetime
 from dotenv import load_dotenv
 from monadas.translation import _
+from models.AppContext import AppContext
 
 load_dotenv()
-
-lang = os.getenv("APP_LANGUAGE", 'ua')
 
 def checkWishmasterSatisfied(want: str) -> bool:
     sentence = list(filter(correctWord, str.split(want.lower())))
@@ -20,6 +19,8 @@ def checkWishmasterSatisfied(want: str) -> bool:
     return False
 
 def checkTheWish(theWishText: str):
+    lang = str(AppContext.get('lang'))
+
     # split the wish to the words
     jsonProductStoragePass = 'storage/products_to_check.json'
     sentence = str.split(theWishText)
@@ -123,6 +124,10 @@ def checkTheWish(theWishText: str):
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkProduct.removeProductByName(productName)
 
+        if sentence[0] == 'change' and sentence[1] == 'the' and sentence[2] == 'language':
+            lang = askUntilAnswer("please type the language short code [ua, ru, en] : ")
+            if lang != '':
+                AppContext.set('lang', lang)
         for word in sentence:
             # print(word)
             pass
