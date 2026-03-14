@@ -11,21 +11,21 @@ class PrintingCharts(PrintingBasic):
     def printDictionaryAsChart(
             chartName: str, dictionary: dict, 
             axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float = 1,
+            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float|bool = False,
             beginFromZero: bool = False
         ):
         hl = horizontalLine
         chartParams = {'max_X': 0.0, 'min_X': 0.0}
-        chart = {"first":''}
+        chart = {"first": ''}
         columnLength = 3
         columnsSeparator = ' | '
         shrinkTheKey = 0
-        screenWidth = 250
+        screenWidth = 120
 
         chartParams['max_X'] = PrintingCharts.intOrFloatString(str(max(dictionary.values())))
         chartParams['min_X'] = 0 if beginFromZero else PrintingCharts.intOrFloatString(str(min(dictionary.values())))
 
-        step = PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X'])
+        step = step if step else PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X'])
             
         for key, item in dictionary.items():
             # get min and max of X, get number of Y points
@@ -33,7 +33,6 @@ class PrintingCharts(PrintingBasic):
             #   and the other spaces*till_the_end_of_line
 
             columnLength = len(str(key)) if len(str(key)) > 3 else columnLength  # '__|_dot_|_'
-            # chart[0] = 
             # spaces_from_axe_to_end = axe_Y_number*Y_column_length + 2 space + 1 "|"
 
             if len(str(key)) * len(dictionary.items()) > screenWidth: # if len(columnText)*columnsNumber > 10*12
@@ -83,7 +82,7 @@ class PrintingCharts(PrintingBasic):
     def printDictionaryAsMultiChart(
         chartName: str, listOfDictionaries: list[dict]|dict[str, dict], 
         axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float = 1,
+        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float|bool = False,
         beginFromZero: bool = False
         ):
         hl = horizontalLine
@@ -99,6 +98,8 @@ class PrintingCharts(PrintingBasic):
         areaWidth = 0
         colors = {}
         valuesY = []
+        shrinkTheKey = 0
+        screenWidth = 120
 
         # is it dictionary or list ???? {'line name' => {'date': number, ... }, 'line 2' => {}, ... }
         for dictionary in listOfDictionaries:
@@ -110,19 +111,21 @@ class PrintingCharts(PrintingBasic):
             chartParams['max_X'] = max(valuesX) if max(valuesX) > chartParams['max_X'] else chartParams['max_X']
             chartParams['min_X'] = min(valuesX) if min(valuesX) < chartParams['min_X'] else chartParams['min_X']
 
-            areaWidth = (keyLength+len(columnsSeparator))*len(dictionary.keys())
-            keyLength = PrintingCharts.getLengthLongestListItem(dictionary.keys())
-
             for key, item in dictionary.items():
                 # get min and max of X, get number of Y points
                 # draw by lines: line got X value, space, X axe line, space, spaces*to_the_point, point,
                 #   and the other spaces*till_the_end_of_line
 
                 columnLength = len(str(key)) if len(str(key)) > 3 else columnLength  # '__|_dot_|_'
-                # chart[0] = 
                 # spaces_from_axe_to_end = axe_Y_number*Y_column_length + 2 space + 1 "|"
 
-        step = PrintingCharts.chooseStep(float(chartParams['max_X']), float(chartParams['min_X']))
+                if len(str(key)) * len(dictionary.items()) > screenWidth: # if len(columnText)*columnsNumber > 10*12
+                    shrinkTheKey = -(columnLength//2)
+
+            areaWidth = (keyLength+len(columnsSeparator))*len(dictionary.keys())
+            keyLength = PrintingCharts.getLengthLongestListItem(dictionary.keys(), shrinkTheKey)
+
+        step = step if step else PrintingCharts.chooseStep(float(chartParams['max_X']), float(chartParams['min_X']))
         current = PrintingCharts.getRoundedValue(float(chartParams['max_X']), step)
         lastOne = PrintingCharts.getRoundedValue(float(chartParams['min_X']), step) - 2*step
         maxValueLength = len(str(PrintingCharts.getRoundedValue(float(chartParams['max_X']), step)))
@@ -153,7 +156,7 @@ class PrintingCharts(PrintingBasic):
             chart[str(current)] = chart[str(current)] + newLine if str(current) in chart else newLine
             current = round(current - step, 5)
 
-        chart['basic'] = ' '*maxValueLength + " | " + PrintingCharts.convertListToString(valuesY, columnsSeparator)
+        chart['basic'] = ' '*maxValueLength + " | " + PrintingCharts.convertListToString(valuesY, columnsSeparator, shrinkTheKey)
 
         print("\n")
         print("-" * (len(chartName)+keyLength if len(chartName) > areaWidth else keyLength + 3 + areaWidth))
@@ -256,7 +259,7 @@ class PrintingCharts(PrintingBasic):
     def chooseStep(maxValue, minValue) -> int|float:
         step = 1
         difference = maxValue - minValue
-        if difference == 0 or difference < 0:
+        if difference <= 0:
             return 1
         if difference > 1000:
             step = 100
