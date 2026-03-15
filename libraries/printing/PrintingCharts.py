@@ -263,9 +263,11 @@ class PrintingCharts(PrintingBasic):
             return 1
         if difference > 1000:
             step = 100
-        if difference <= 1000 and difference > 100:
+        if difference <= 1000 and difference > 500:
             step = 50
-        if difference <= 100 and difference > 50:
+        if difference <= 500 and difference > 200:
+            step = 20
+        if difference <= 200 and difference > 50:
             step = 10
         if difference <= 50 and difference > 10: # default value
             step = 1

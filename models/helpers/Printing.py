@@ -19,17 +19,15 @@ class Printing:
     def printDictionaryAsChart(
             chartName: str, dictionary: dict, 
             axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float = 1,
-            beginFromZero: bool = False
+            columnsLimit: int = 20, shrinkTheColumnName: bool = True
         ):
-        PrintingCharts.printDictionaryAsChart(chartName, dictionary, axesNames, horizontalLine, showOnlyDotValues, columnsLimit, shrinkTheColumnName, step, beginFromZero)
+        PrintingCharts.printDictionaryAsChart(chartName, dictionary, axesNames, horizontalLine, showOnlyDotValues, columnsLimit, shrinkTheColumnName)
 
     @staticmethod
     def printDictionaryAsMultiChart(
         chartName: str, listOfDictionaries: list[dict]|dict[str, dict], 
         axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float = 1,
-        beginFromZero: bool = False
+        columnsLimit: int = 20, shrinkTheColumnName: bool = True
         ):
-        PrintingCharts.printDictionaryAsMultiChart(chartName, listOfDictionaries, axesNames, horizontalLine, showOnlyDotValues, columnsLimit, shrinkTheColumnName, step, beginFromZero)
+        PrintingCharts.printDictionaryAsMultiChart(chartName, listOfDictionaries, axesNames, horizontalLine, showOnlyDotValues, columnsLimit, shrinkTheColumnName)
 
