@@ -1,8 +1,11 @@
 import time
+import traceback
 from models.AppContext import AppContext
 from models.PersonalSettings import Settings
 from models.helpers.Drawing import Drawing
 from models.helpers.Logger import Logger
+from models.helpers.Printing import Printing
+from libraries.printing.PrintingColor import Color
 from abilities import checkTheWish
 from abilities import checkWishmasterSatisfied
 
@@ -29,22 +32,33 @@ class Warlock:
         pass
 
     def whatToDo(self):
-        whatToDo = input("What do you want me to do? \n\n")
-        checkTheWish(whatToDo)
-        return
+        try:
+            whatToDo = input("What do you want me to do? \n\n")
+            checkTheWish(whatToDo)
+            return
+        except Exception as e:
+            self.logAnError(e)
 
     def checkWishmasterSatisfied(self):
         
         wishes = True
 
         while wishes == True:
-            want = input("Do you want something more? \n")
-            if checkWishmasterSatisfied(want):
-                print("Gooood...")
-                time.sleep(1)
-                print("Call me, any time to make your wish come true...")
-                wishes = False
-                exit
-            else:
-                checkTheWish(want)
+            try:
+                want = input("Do you want something more? \n")
+                if checkWishmasterSatisfied(want):
+                    print("Gooood...")
+                    time.sleep(1)
+                    print("Call me, any time to make your wish come true...")
+                    wishes = False
+                    exit
+                else:
+                    checkTheWish(want)    
+            except Exception as e:
+                self.logAnError(e)
+        return
+    
+    def logAnError(self, e: Exception, message: str=''):
+        Printing.print(f"There was an error during programm running : {e}. Check app.log file for more info.", Color.RED)
+        Logger.log(f"Error : {e}" + "\n" + traceback.format_exc())
         return

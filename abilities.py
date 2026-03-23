@@ -91,10 +91,10 @@ def checkTheWish(theWishText: str):
         # print(sentence)
 
         if sentence[0] == 'exit':
-            print("Glory to you, Wishmaster! \n")
+            Printing.print("Glory to you, Wishmaster! \n", Color.GREEN)
             return exit
     else:
-        print("Please, clearify you wish, Wishmaster! \n")
+        Printing.print("Please, clearify you wish, Wishmaster!", Color.YELLOW)
     return
 
 def askUntilAnswer(question: str) -> str:
