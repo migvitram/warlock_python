@@ -1,4 +1,5 @@
 import re
+from itertools import islice
 from libraries.printing.PrintingColor import Color
 
 class PrintingBasic:
@@ -34,3 +35,8 @@ class PrintingBasic:
             string += completeWith*(length-len(string))
         return string
     
+    @staticmethod
+    def getLastNElements(dictionary: dict, n: int=10):
+        last_n_reversed = list(islice(reversed(dictionary.items()), 0, n))
+        last_n_ordered = list(reversed(last_n_reversed))
+        return dict(last_n_ordered)

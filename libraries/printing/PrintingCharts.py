@@ -11,7 +11,7 @@ class PrintingCharts(PrintingBasic):
     def printDictionaryAsChart(
             chartName: str, dictionary: dict, 
             axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float|bool = False,
+            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float|bool|None = False,
             beginFromZero: bool = False
         ):
         hl = horizontalLine
@@ -21,6 +21,9 @@ class PrintingCharts(PrintingBasic):
         columnsSeparator = ' | '
         shrinkTheKey = 0
         screenWidth = 120
+
+        if len(dictionary) > 19:
+                dictionary = PrintingCharts.getLastNElements(dictionary, 19)
 
         chartParams['max_X'] = PrintingCharts.intOrFloatString(str(max(dictionary.values())))
         chartParams['min_X'] = 0 if beginFromZero else PrintingCharts.intOrFloatString(str(min(dictionary.values())))
@@ -82,7 +85,7 @@ class PrintingCharts(PrintingBasic):
     def printDictionaryAsMultiChart(
         chartName: str, listOfDictionaries: list[dict]|dict[str, dict], 
         axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
-        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float|bool = False,
+        columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float|bool|None = False,
         beginFromZero: bool = False
         ):
         hl = horizontalLine
@@ -103,6 +106,9 @@ class PrintingCharts(PrintingBasic):
 
         # is it dictionary or list ???? {'line name' => {'date': number, ... }, 'line 2' => {}, ... }
         for dictionary in listOfDictionaries:
+
+            if len(dictionary) > 19:
+                dictionary = PrintingCharts.getLastNElements(dictionary, 19)
 
             valuesY = dictionary.keys()
             valuesX = dictionary.values()
