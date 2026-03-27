@@ -74,7 +74,7 @@ Available (in the future) commands list:
 ```
 
 ### Chapter 1
-Okey, boys and girls, let's take a look at the python scripts. I'm new in python, so I will learn it with this project development. If this repo will be usefull for you, please like, subscribe and share. And let's learn Python together.
+Okey, boys and girls, let's take a look at the Python scripts. I'm new in Python, so I will learn it with this project development. If this repo will be usefull for you, please like, subscribe and share. And let's learn Python together.
 
 First I've wrote the single script to get info about the products I like. Then, the functions number rise and scripts became many. Classes, of course, was very useful. But, of course, it was just a first version, scratch. So let's do it beter.
 
