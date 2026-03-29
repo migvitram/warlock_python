@@ -1,5 +1,6 @@
 import os
 import time
+import traceback
 
 from datetime import datetime
 from libraries.printing.PrintingColor import Color
@@ -36,7 +37,7 @@ class CheckProductController:
             return False
 
     def runTheTracking(self):
-        Logger.log("The prouct tracking fetch initiated ("+str(self.__class__)+")")
+        Logger.log("The product tracking fetch initiated ("+str(self.__class__)+")")
         print("Running the tracking...")
         time.sleep(1)
         print("this is the processor to parse the data from web-sites...")
@@ -48,22 +49,36 @@ class CheckProductController:
 
         print("Retrieving ... ")
 
-        for item in productsSet:
+        if not isinstance(productsSet, list) and not isinstance(productsSet, dict):
+            Logger.log('Error with the product data stored in json file : no data or data not iterable')
+            return False
 
+        for item in productsSet:
             if HttpProvider.isHyperlink(item['url']):
                 scrapProvider = self.chooseTheScrapingProvider(item['url'])
                 if scrapProvider is not False:
                     today = datetime.now()
-                    scrapProvider.visitThePage(item['url'])
-                    price = scrapProvider.returnTheProductPrice()
-                    item['presence'] = scrapProvider.returnTheProductPresence()
+                    try:
+                        scrapProvider.visitThePage(item['url'])
+                        price = scrapProvider.returnTheProductPrice()
+                        presence = scrapProvider.returnTheProductPresence()
+                    except Exception as e:
+                        Printing.print(f"Error during one of the product tracking. Check app.log file to see more")
+                        Logger.log(f"Error : {e}" + "\n" + traceback.format_exc())
+                        # fallback
+                        price = None
+                        presence = None
+
+                    item['presence'] = presence
                     item['price'] = price
                     item['date'] = today.strftime("%d/%m/%Y, %H:%M:%S")
                     if 'priceHistory' not in item:
                         item['priceHistory'] = {}
                     item['priceHistory'][today.strftime("%d/%m/%Y")] = price
                 else:
-                    Printing.print("Can not find the scraping provider for product \'"+item['productName']+"\'", Color.YELLOW)
+                    Printing.print(f"Can not find the scraping provider for product \'{item['productName']}\'", Color.YELLOW)
+            else:
+                Printing.print(f"One of the products ({item['productName']}) have no valid url address", Color.YELLOW)
 
         Printing.printDictionaryAsTable(productsSet, ['url', 'productName', 'presence', 'price', 'date'])
 
