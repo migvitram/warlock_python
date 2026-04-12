@@ -3,6 +3,8 @@ from datetime import datetime
 from libraries.printing.PrintingBasic import PrintingBasic
 from libraries.printing.PrintingColor import Color
 from libraries.printing.PrintingText import PrintingText
+from models.AppContext import AppContext
+from monadas.translation import _
 
 class PrintingCharts(PrintingBasic):
 
@@ -319,7 +321,8 @@ class PrintingCharts(PrintingBasic):
 
     @staticmethod
     def printTheLegendFromList(lineNames: list):
-        print("Chart legend:")
+        lang = str(AppContext.get('lang'))
+        print(_('app', "Chart legend", lang)+":")
         for index, lineName in enumerate(lineNames):
             print("  " + PrintingCharts.colorDot(PrintingCharts.getColorsList()[index])+" - "+lineName)
         pass

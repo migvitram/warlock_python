@@ -4,6 +4,7 @@ import traceback
 
 from datetime import datetime
 from libraries.printing.PrintingColor import Color
+from models.AppContext import AppContext
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from models.helpers.JsonFiles import JsonFiles
@@ -13,14 +14,17 @@ from models.providers.scraping.KnigarniaYeProvider import KnigarniaYe
 from models.providers.scraping.KnigolandProvider import Knigoland
 from models.providers.scraping.RozetkaProvider import Rozetka
 from models.providers.scraping.ShopATBProvider import ShopATB
+from monadas.translation import _
 
 class CheckProductController:
 
     jsonFileStorage = ''
+    lang = 'en'
     
     providers: dict[str, type[AbstractScrapingProvider]]
 
     def __init__(self, storageFile: str) -> None:
+        self.lang = str(AppContext.get('lang'))
         self.jsonFileStorage = os.path.abspath(storageFile)
         JsonFiles.runSelfDiagnostics(self.jsonFileStorage)
         self.providers = {
@@ -40,16 +44,16 @@ class CheckProductController:
 
     def runTheTracking(self):
         Logger.log("The product tracking fetch initiated ("+str(self.__class__)+")")
-        Printing.print("Running the tracking...")
+        Printing.print(_('app', "Running the tracking...", self.lang))
         time.sleep(1)
-        Printing.print("this is the processor to parse the data from web-sites...")
+        Printing.print(_('app', "this is the processor to parse the data from web-sites...", self.lang))
 
         # according to the root directory (warlock)
         jsonFileStorage = self.jsonFileStorage
 
         productsSet = JsonFiles.readDataFromJsonFile(jsonFileStorage)
 
-        Printing.print("Retrieving ... ")
+        Printing.print(_('app', "Retrieving ...", self.lang))
 
         if not isinstance(productsSet, list) and not isinstance(productsSet, dict):
             Logger.log('Error with the product data stored in json file : no data or data not iterable')
@@ -125,16 +129,18 @@ class CheckProductController:
             Printing.print("There is no Price History for product named \'"+productName+"\'!", Color.RED)
             return
 
+
+        #  need to compare and to complete
         if len(productsChosen) > 1:
-            Printing.printDictionaryAsMultiChart("Price changes for product \'"+productName+"\' for last 5 days", productsChosen, showOnlyDotValues=False)
+            Printing.printDictionaryAsMultiChart(_('app', "Price changes for product \'", self.lang)+productName+_('app', "\' for last 5 days", self.lang), productsChosen, showOnlyDotValues=False)
         else:
-            Printing.printDictionaryAsChart("Price changes for product \'"+productName+"\' for last 5 days", next(iter(productsChosen.values())), showOnlyDotValues=False)
+            Printing.printDictionaryAsChart(_('app', "Price changes for product \'", self.lang)+productName+_('app', "\' for last 5 days", self.lang), next(iter(productsChosen.values())), showOnlyDotValues=False)
         return
 
     def printDemo(self):
         testDict = {'22/05': 153, '12/06': 152, '14/07': 150, '25/08': 148, '14/09': 149, '05/10': 151,
             '18/11': 155, '02/12': 161, '23/01': 157, '23/02': 164}
-        Printing.printDictionaryAsChart("DEMO History diagram (for single data set)", testDict)
+        Printing.printDictionaryAsChart(_('app', "DEMO History diagram (for single data set)", self.lang), testDict)
         return
 
     def printDemoMulti(self):
@@ -146,7 +152,7 @@ class CheckProductController:
             {'22/05/2025': 144, '12/06/2025': 145, '14/07/2025': 146, '25/08/2025': 148, '14/09/2025': 150, '05/10/2025': 153,
             '18/11/2025': 155, '02/12/2025': 158, '23/01/2026': 162, '23/02/2026': 166, '20/03/2026': 164, '12/04/2026': 160, '3/05/2026': 161, '14/06/2026': 160}
         ]
-        Printing.printDictionaryAsMultiChart("DEMO Multi History diagram (for multi data set)", testDict)
+        Printing.printDictionaryAsMultiChart(_('app', "DEMO Multi History diagram (for multi data set)", self.lang), testDict)
         return
 
     def printDemoTable(self):
