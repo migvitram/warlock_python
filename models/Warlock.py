@@ -15,6 +15,7 @@ class Warlock:
 
     def __init__(self) -> None:
         # AppContext.set('lang', 'ua')
+        AppContext.loadDefaultValues(Settings.readSettings())
         self.abilities = Abilities()
         self.printIntro()
         pass
