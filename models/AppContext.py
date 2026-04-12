@@ -5,6 +5,13 @@ class AppContext:
     contextParams: dict = {}
 
     @staticmethod
+    def loadDefaultValues(dictOfValues: dict) -> bool:
+        reuslt = True
+        for name, param in dictOfValues.items():
+            AppContext.contextParams[name] = param
+        return reuslt
+
+    @staticmethod
     def has(paramName: str) -> bool:
         return paramName in AppContext.contextParams
 
