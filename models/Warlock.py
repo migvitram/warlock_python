@@ -13,6 +13,7 @@ from abilities import checkWishmasterSatisfied
 class Warlock:
 
     def __init__(self) -> None:
+        AppContext.loadDefaultValues(Settings.readSettings())
         Warlock.printIntro()
         pass
 
