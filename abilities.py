@@ -8,6 +8,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from monadas.translation import _
 from models.AppContext import AppContext
+from models.PersonalSettings import Settings as PersonalSettings
 
 load_dotenv()
 
@@ -72,13 +73,13 @@ def checkTheWish(theWishText: str):
                     financeService = FinanceServices()
                     financeService.printTheCurrenciesRateHistory()
                     pass
-                if sentence[2] == 'currency' and sentence[3] == 'rate' and sentence[4] == 'history' and sentence[5] == 'for':
+                if sentence[2] == 'currency' and sentence[3] == 'rate' and sentence[4] == 'history':
                     financeService = FinanceServices()
-                    if len(sentence) > 5 and sentence[6] != '':
+                    if len(sentence) > 5 and sentence[5] == 'for':
                         financeService.printTheCurrencyRateHistory(sentence[6])
                         pass
-                    if len(sentence) == 5:
-                        currencyName = askUntilAnswer('Please, enter the currency short name (usd, eur, bps) : ')
+                    if len(sentence) <= 5:
+                        currencyName = askUntilAnswer(_('app', 'Please, enter the currency short name (usd, eur, bps)', lang)+' : ')
                         financeService.printTheCurrencyRateHistory(currencyName)
                     pass
 
@@ -110,8 +111,9 @@ def checkTheWish(theWishText: str):
                             checkProduct.removeProductByName(productName)
 
         if sentence[0] == 'change' and sentence[1] == 'the' and sentence[2] == 'language':
-            lang = askUntilAnswer("please type the language short code [ua, ru, en] : ")
+            lang = askUntilAnswer(_('app', "Please type the language short code [ua, ru, en]", lang)+" : ")
             if lang != '':
+                PersonalSettings.updateParam('lang', lang)
                 AppContext.set('lang', lang)
         for word in sentence:
             # print(word)

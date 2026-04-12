@@ -10,6 +10,8 @@ class PrintingTable(PrintingBasic):
     @staticmethod
     def printDictionaryAsTable(dataSet: list, columnsToShow: list = []):
 
+        lang = str(AppContext.get('lang'))
+
         if len(dataSet) > 0:
 
             deviderLine = ''
@@ -66,7 +68,7 @@ class PrintingTable(PrintingBasic):
             print(straightLine)
         else:
             print("-" * 120)
-            print(" There is no data to print ")
+            print("  "+_('app', "There is no data to print", lang)+"  ")
             print("-" * 120)
 
     @staticmethod

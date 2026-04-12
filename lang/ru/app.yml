@@ -20,3 +20,15 @@ Running the tracking...: Запускается трекинг...
 this is the processor to parse the data from web-sites...: это процессор для получения данных с веб-сайтов...
 Retrieving ... : Получение ...
 Something went wrong, or there is no product status on the page.: Что-то пошло не так, или на странице нет статуса продукта.
+
+Please type the language short code [ua, ru, en]: Пожалуйста напишите сокращенный индекс языка [ua, ru, en]
+Please, enter the currency short name (usd, eur, bps): Пожалуйста укажите сокращенный индекс валюты (usd, eur, bps)
+Price changes for product \': Изменения цены продукта \'
+\' for last 5 days: \' за прошедшие 5 дней
+There is no Price History for this product yet!: Для этого продукта ещё нет истории изменения цены!
+DEMO History diagram (for single data set): DEMO диаграма истории изменений (для одного набора данных)
+DEMO Multi History diagram (for multi data set): DEMO диаграма истории изменений (для нескольких графиков)
+
+Log file removed successfuly.: Лог файл успешно удалён.
+Catalogue contents: Каталог содержит
+Chart legend: Линии графика
