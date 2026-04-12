@@ -12,6 +12,7 @@ from models.PersonalSettings import Settings
 from dotenv import load_dotenv
 from monadas.translation import _
 from models.AppContext import AppContext
+from models.PersonalSettings import Settings as PersonalSettings
 
 class Abilities:
 
@@ -124,7 +125,7 @@ class Abilities:
                             financeService.printTheCurrencyRateHistory(sentence[6])
                             pass
                         if len(sentence) == 5:
-                            currencyName = self.askUntilAnswer('Please, enter the currency short name (usd, eur, bps) : ')
+                            currencyName = self.askUntilAnswer(_('app', 'Please, enter the currency short name (usd, eur, bps)', self.lang)+' : ')
                             financeService.printTheCurrencyRateHistory(currencyName)
                         pass
 
@@ -186,8 +187,9 @@ class Abilities:
                                 checkYoutube.removeChannelByName(pageName)
 
             if sentence[0] == 'change' and sentence[1] == 'the' and sentence[2] == 'language':
-                lang = self.askUntilAnswer("please type the language short code [ua, ru, en] : ")
+                lang = self.askUntilAnswer(_('app', "Please type the language short code [ua, ru, en]", self.lang)+" : ")
                 if lang != '':
+                    PersonalSettings.updateParam('lang', lang)
                     AppContext.set('lang', lang)
 
             for word in sentence:
