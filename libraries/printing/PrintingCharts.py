@@ -265,19 +265,9 @@ class PrintingCharts(PrintingBasic):
     def chooseStep(maxValue, minValue) -> int|float:
         step = 1
         difference = maxValue - minValue
-        if difference <= 0:
-            return 1
-        if difference > 1000:
-            step = 100
-        if difference <= 1000 and difference > 500:
-            step = 50
-        if difference <= 500 and difference > 200:
-            step = 20
-        if difference <= 200 and difference > 50:
-            step = 10
-        if difference <= 50 and difference > 10: # default value
-            step = 1
-        if difference <= 10 and difference > 2:
+        if difference > 5:
+            step = difference//10
+        if difference <= 5 and difference > 2:
             step = 0.5
         if difference <= 2 and difference > 1:
             step = 0.1
