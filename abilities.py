@@ -1,4 +1,5 @@
 import os
+import subprocess
 from controllers.CheckProductController import CheckProductController
 from controllers.FinanceServicesController import FinanceServices
 from models.helpers.Logger import Logger
@@ -31,7 +32,21 @@ def checkTheWish(theWishText: str):
 
         if sentence[0] == 'make':
             if sentence[1] == 'tests' or sentence[1] == 'self-tests':
-                resultStatus = os.system('cd ./tests && pytest')
+                # resultStatus = os.system('cd ./tests && pytest')
+                try:
+                    result = subprocess.run(
+                        ['pytest'],
+                        cwd='./tests', 
+                        # check=True,  # will raise an Exception
+                        text=True, capture_output=True, encoding='utf-8', errors='ignore'
+                    )
+                    if result.returncode == 0:
+                        Printing.print("Tests passed successfully! Can be merge!", Color.GREEN)
+                    else:
+                        Printing.print("Tests FAILED! CAN NOT merge, or rebase or some else...", Color.RED)
+                        print(f"{result.returncode=}")
+                except Exception as e:
+                    print(e)
 
         if sentence[0] == 'run':
             if sentence[1] == 'the':
