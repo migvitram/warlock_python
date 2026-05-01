@@ -47,11 +47,14 @@ class AbstractScrapingProvider:
         else:
             return False
 
-    def findElementByText(self, elementText: str, tagName: str='span'):
+    def findElementByText(self, elementText: str, tagName: str='span') -> bs4.element.Tag|None:
         return self.soupObject.find(tagName, text=elementText)
     
     def findElementByCssClass(self, tagName: str, cssClass: str) -> bs4.element.Tag|None:
         return self.soupObject.find(tagName, {'class': cssClass})
+    
+    def findElementByCssPath(self, cssPath: str) -> bs4.element.Tag|None:
+        return self.soupObject.select_one(cssPath)
 
     def fetchTheProductPrice(self):
         raise NotImplementedError('You need to implement the fetchTheProductPrice() of base abstract class')

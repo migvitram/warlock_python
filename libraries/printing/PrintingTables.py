@@ -78,7 +78,7 @@ class PrintingTable(PrintingBasic):
         return '|'+' |'.join(tableHeadCellsDict.values())+' |'
 
     @staticmethod
-    def prepareColumnTextForTable(column, displayLength: int=65) -> str:
+    def prepareColumnTextForTable(column, displayLength: int=55) -> str:
         if isinstance(column, dict) or isinstance(column, list):
             column = PrintingTable.convertDictToString(column)
         else:
@@ -87,7 +87,7 @@ class PrintingTable(PrintingBasic):
         return column
 
     @staticmethod
-    def shrinkStringForTable(string: str, displayLength: int=65):
+    def shrinkStringForTable(string: str, displayLength: int=55):
         return string if len(string) < displayLength else string[0:displayLength-3]+'...'
 
     @staticmethod

@@ -12,6 +12,7 @@ from models.providers.scraping.AbstractScrapingProvider import AbstractScrapingP
 from models.providers.scraping.KnigarniaYeProvider import KnigarniaYe
 from models.providers.scraping.KnigolandProvider import Knigoland
 from models.providers.scraping.RozetkaProvider import Rozetka
+from models.providers.scraping.ShopATBProvider import ShopATB
 
 class CheckProductController:
 
@@ -25,7 +26,8 @@ class CheckProductController:
         self.providers = {
             'knigoland.com.ua': Knigoland, 
             'book-ye.com.ua': KnigarniaYe,
-            'rozetka.com.ua': Rozetka
+            'rozetka.com.ua': Rozetka,
+            'www.atbmarket.com': ShopATB
         }
         pass
 
