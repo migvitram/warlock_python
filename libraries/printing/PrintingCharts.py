@@ -1,3 +1,5 @@
+import calendar
+from datetime import datetime
 from libraries.printing.PrintingBasic import PrintingBasic
 from libraries.printing.PrintingColor import Color
 from libraries.printing.PrintingText import PrintingText
@@ -23,7 +25,7 @@ class PrintingCharts(PrintingBasic):
         screenWidth = 120
 
         if len(dictionary) > 19:
-                dictionary = PrintingCharts.getLastNElements(dictionary, 19)
+            dictionary = PrintingCharts.getLastNElements(dictionary, 19)
 
         chartParams['max_X'] = PrintingCharts.intOrFloatString(str(max(dictionary.values())))
         chartParams['min_X'] = 0 if beginFromZero else PrintingCharts.intOrFloatString(str(min(dictionary.values())))
@@ -178,8 +180,77 @@ class PrintingCharts(PrintingBasic):
             PrintingCharts.printTheLegendFromList(lineNames)
         pass
 
+    # TODO : need to improve and refactor
+    @staticmethod            
+    def printDictionaryWithDensityChart(
+            chartName: str, dictionary: dict, 
+            axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
+            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step: int|float|bool|None = False,
+            beginFromZero: bool = False
+        ):
+        hl = horizontalLine
+        chartParams = {'max_X': 0.0, 'min_X': 0.0}
+        chart = {"first": ''}
+        columnLength = 1
+        columnsSeparator = ''
+        shrinkTheKey = 0
+        screenWidth = 120
+
+        max_width = 19*5 + 17*3 # width of screen
+
+        if len(dictionary) > (max_width):
+            dictionary = PrintingCharts.getLastNElements(dictionary, max_width)
+
+        chartParams['max_X'] = PrintingCharts.intOrFloatString(str(max(dictionary.values())))
+        chartParams['min_X'] = 0 if beginFromZero else PrintingCharts.intOrFloatString(str(min(dictionary.values())))
+
+        step = step if step else PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X'])
+
+        # delta = float(chartParams['max_X']) - float(chartParams['min_X'])
+        #step = 1.0   # depends on scale value
+
+        current = PrintingCharts.getRoundedValue(chartParams['max_X'], step)
+        lastOne = PrintingCharts.getRoundedValue(chartParams['min_X'], step) - 2*step
+        maxValueLength = len(str(chartParams['max_X']))
+        keyLength = PrintingCharts.getLengthLongestListItem(dictionary.keys(), shrinkTheKey)
+
+        firstLine = hl*maxValueLength + " | " + hl*(len(dictionary.keys()))
+        chart[str(current+step)] = firstLine
+
+        while current > lastOne:
+            beautifulKey = PrintingCharts.completeString(str(current), maxValueLength)
+            if showOnlyDotValues:
+                newLine = (beautifulKey if current in dictionary.values() else hl*maxValueLength) + " | "
+            else:
+                newLine = beautifulKey + " | "
+            
+            for k,v in dictionary.items():
+                v = float(v)
+                if(PrintingCharts.getRoundedValue(v, step) == current): # v need to round to the step value
+                    newLine += PrintingCharts.alignDotInCenter(1, hl, Color.GREEN)
+                else:
+                    newLine += hl
+                    
+            chart[str(current)] = chart[str(current)] + newLine if str(current) in chart else newLine
+            current = round(current - step, 5)
+
+        # can be grouped (e.g. week, month, quarter)
+        #chart['basic'] = ' '*maxValueLength + " | " + " "*len(dictionary.keys())
+        chart['basic'] = ' '*maxValueLength + " | " + PrintingCharts.groupChartValuesByMonthes(dictionary.keys(), True)
+
+        print("\n")
+        print("-" * (len(chartName) if len(chartName) > max_width else keyLength + 3 + max_width))
+        print(" " * 10 + chartName)
+        print("-" * (len(chartName) if len(chartName) > max_width else keyLength + 3 + max_width))
+
+        for line in chart:
+            print(chart[line])
+        print("\n")
+
     @staticmethod
     def alignDotInCenter(stringLength: int, line: str = '_', color: str|bool=False):
+        if stringLength == 1:
+            return str(PrintingCharts.colorDot(color, 2))
         half = stringLength//2
         return line*half + str(PrintingCharts.colorDot(color, 2)) + line*(stringLength - half - 1)
 
@@ -274,3 +345,26 @@ class PrintingCharts(PrintingBasic):
         if difference < 1 and difference > 0:
             step = 0.01
         return step
+
+    @staticmethod
+    def groupChartValuesByMonthes(keysList: list, fullName: bool|None = False, scale = 1) -> str:
+        result = ''
+        groups = {}
+        for item in keysList:
+            month = PrintingCharts.getMonthFromValue(item)
+            if month not in groups:
+                groups[month] = {'count': 0}
+            groups[month]['count'] += 1  # count another one point
+
+        for groupName, group in groups.items():
+            label = groupName
+            if fullName is True:
+                month_index = int(groupName) if str(groupName).isdigit() else 0 # imporoved by CodeX
+                label = calendar.month_name[month_index] if 1 <= month_index <= 12 else str(groupName)
+
+            if group['count'] > (len(label)+1):
+                result += ' ' * (group['count'] - len(label) - 2) + label + ' |'
+            else:
+                result += ' ' * (group['count'] - 2) + ' |'
+
+        return result

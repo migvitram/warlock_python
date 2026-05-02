@@ -155,4 +155,4 @@ class CheckProductController:
             {'productName': 'Test product 3', 'url': 'http://some.url/for/another-one test-product-3', 'price': 628.00, 'presence': 'Yes', 'date': '8/08/2025'},
         ]
         Printing.printDictionaryAsTable(demoData, ['productName', 'url', 'price', 'presence', 'date'])
-        pass
+        return

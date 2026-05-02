@@ -1,3 +1,4 @@
+from datetime import datetime
 import re
 from itertools import islice
 from libraries.printing.PrintingColor import Color
@@ -40,3 +41,31 @@ class PrintingBasic:
         last_n_reversed = list(islice(reversed(dictionary.items()), 0, n))
         last_n_ordered = list(reversed(last_n_reversed))
         return dict(last_n_ordered)
+    
+    @staticmethod
+    def getMonthFromValue(dateString: str):
+        if (PrintingBasic.is_valid_date(dateString, '%d-%m-%Y')):
+            return (dateString.split('-'))[1]
+        if (PrintingBasic.is_valid_date(dateString, '%d/%m/%Y')):
+            return (dateString.split('/'))[1]
+        if (PrintingBasic.is_valid_date(dateString, '%m-%d-%Y')):
+            return (dateString.split('-'))[0]
+        if (PrintingBasic.is_valid_date(dateString, '%m/%d/%Y')):
+            return (dateString.split('/'))[0]
+        if (PrintingBasic.is_valid_date(dateString, '%Y-%m-%d')):
+            return (dateString.split('-'))[1]
+        if (PrintingBasic.is_valid_date(dateString, '%Y-%d-%m')):
+            return (dateString.split('-'))[2]
+        if (PrintingBasic.is_valid_date(dateString, '%Y/%m/%d')):
+            return (dateString.split('/'))[1]
+        if (PrintingBasic.is_valid_date(dateString, '%Y/%d/%m')):
+            return (dateString.split('/'))[2]
+        return False
+
+    @staticmethod
+    def is_valid_date(date_str, format_str):
+        try:
+            datetime.strptime(date_str, format_str)
+            return True
+        except ValueError:
+            return False

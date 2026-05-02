@@ -24,6 +24,14 @@ class Printing:
         PrintingCharts.printDictionaryAsChart(chartName, dictionary, axesNames, horizontalLine, showOnlyDotValues, columnsLimit, shrinkTheColumnName, step=step)
 
     @staticmethod
+    def printDensityChart(
+            chartName: str, dictionary: dict, 
+            axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,
+            columnsLimit: int = 20, shrinkTheColumnName: bool = True, step = None
+        ):
+        PrintingCharts.printDictionaryWithDensityChart(chartName, dictionary, axesNames, horizontalLine, showOnlyDotValues, columnsLimit, shrinkTheColumnName, step=step)
+
+    @staticmethod
     def printDictionaryAsMultiChart(
         chartName: str, listOfDictionaries: list[dict]|dict[str, dict], 
         axesNames: dict = {}, horizontalLine: str = '_', showOnlyDotValues: bool = True,

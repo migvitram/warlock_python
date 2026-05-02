@@ -22,4 +22,4 @@ class FinanceServices:
     def printTheCurrencyRateHistory(self, currencyName: str):
         bankProvider = MonoBankApiProvider()
         ratesHistory = bankProvider.returnCurrencyRateHistoryPrepared(currencyName)
-        Printing.printDictionaryAsChart('Currency '+currencyName.upper()+' rates history', ratesHistory, showOnlyDotValues=False, step=0.05)
+        Printing.printDensityChart('Currency '+currencyName.upper()+' rates history', ratesHistory, showOnlyDotValues=False, step=0.05)
