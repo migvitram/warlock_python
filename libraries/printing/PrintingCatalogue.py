@@ -14,7 +14,7 @@ class PrintingCatalogue(PrintingBasic):
     def printCatalogueFromDictionary(dictionary: dict, depthLimit: int = 5):
         lang = str(AppContext.get('lang'))
         string = PrintingCatalogue.returnDictionaryIndecesAsString(dictionary, '|', depthLimit)
-        print(_('app', "Catalogue contents", lang)+" : ")
+        print(_('app', "Catalogue contents")+" : ")
         print(string)
 
     @staticmethod

@@ -102,7 +102,7 @@ class Abilities:
                 
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
-                        productName = self.askUntilAnswer(_('app', 'For what product?', self.lang)+" \n")
+                        productName = self.askUntilAnswer(_('app', 'For what product?')+" \n")
                         checkProduct.printTheProductPriceChart(productName)
 
                     if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
@@ -125,7 +125,7 @@ class Abilities:
                             financeService.printTheCurrencyRateHistory(sentence[6])
                             pass
                         if len(sentence) == 5:
-                            currencyName = self.askUntilAnswer(_('app', 'Please, enter the currency short name (usd, eur, bps)', self.lang)+' : ')
+                            currencyName = self.askUntilAnswer(_('app', 'Please, enter the currency short name (usd, eur, bps)')+' : ')
                             financeService.printTheCurrencyRateHistory(currencyName)
                         pass
 
@@ -146,8 +146,8 @@ class Abilities:
             if sentence[0] == 'add':
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                        productName = self.askUntilAnswer(_('app', "Please, enter the product name!", self.lang)+" \n")
-                        productUrl = self.askUntilAnswer(_('app', "Please, enter the product URL!", self.lang)+" \n")
+                        productName = self.askUntilAnswer(_('app', "Please, enter the product name!")+" \n")
+                        productUrl = self.askUntilAnswer(_('app', "Please, enter the product URL!")+" \n")
                         checkProduct.addProductForTracking(productName, productUrl)
                         pass
 
@@ -167,12 +167,12 @@ class Abilities:
             if sentence[0] == 'remove' or sentence[0] == 'delete':
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                        productName = self.askUntilAnswer(_('app', "Please, enter the name of the product you want to REMOVE!", self.lang)+" \n")
+                        productName = self.askUntilAnswer(_('app', "Please, enter the name of the product you want to REMOVE!")+" \n")
                         areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkProduct.removeProductByName(productName)
                         else:
-                            areYouSure = self.askUntilAnswer(_('app', "Please, enter \'yes\' or \'no\', or \'y\' or \'n\'", self.lang)+" \n")
+                            areYouSure = self.askUntilAnswer(_('app', "Please, enter \'yes\' or \'no\', or \'y\' or \'n\'")+" \n")
                             if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                                 checkProduct.removeProductByName(productName)
 
@@ -187,7 +187,7 @@ class Abilities:
                                 checkYoutube.removeChannelByName(pageName)
 
             if sentence[0] == 'change' and sentence[1] == 'the' and sentence[2] == 'language':
-                lang = self.askUntilAnswer(_('app', "Please type the language short code [ua, ru, en]", self.lang)+" : ")
+                lang = self.askUntilAnswer(_('app', "Please type the language short code [ua, ru, en]")+" : ")
                 if lang != '':
                     PersonalSettings.updateParam('lang', lang)
                     AppContext.set('lang', lang)
