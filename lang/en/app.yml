@@ -10,6 +10,12 @@ Do you want something more?: Do you want something more?
 Gooood...: Gooood...
 Call me, any time to make your wish come true...: Call me, any time to make your wish come true...
 
+Can not find product '{productName}'! : Can not find product '{productName}'!
+There is no Price History for product named '{productName}'!: There is no Price History for product named '{productName}'!
+Price changes for product '{productName}' for last {n} days: Price changes for product '{productName}' for last {n} days
+Can not find the scraping provider for product '{productName}': Can not find the scraping provider for product '{productName}
+One of the products ({productName}) have no valid url address: One of the products ({productName}) have no valid url address
+
 For what product?: For what product?
 Please, enter the product name!: Please, enter the product name!
 Please, enter the product URL!: Please, enter the product URL!
