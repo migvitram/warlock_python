@@ -17,9 +17,10 @@ class FinanceServices:
     def printTheCurrenciesRateHistory(self):
         bankProvider = MonoBankApiProvider()
         ratesHistory = bankProvider.returnCurrenciesRatesHistoryPrepared([MonoBankApiProvider.CURR_USD, MonoBankApiProvider.CURR_EUR])
-        Printing.printDictionaryAsMultiChart('Currencies rates history', ratesHistory, step=0.1)
+        Printing.printDictionaryAsMultiChart('Currencies rates history', ratesHistory, step=0.2)
 
     def printTheCurrencyRateHistory(self, currencyName: str):
+        step = 0.05 if currencyName.upper() == 'USD' else 0.1
         bankProvider = MonoBankApiProvider()
         ratesHistory = bankProvider.returnCurrencyRateHistoryPrepared(currencyName)
-        Printing.printDensityChart('Currency '+currencyName.upper()+' rates history', ratesHistory, showOnlyDotValues=False, step=0.05)
+        Printing.printDensityChart('Currency '+currencyName.upper()+' rates history', ratesHistory, showOnlyDotValues=False, step=step)

@@ -2,11 +2,47 @@ from datetime import datetime
 import re
 from itertools import islice
 from libraries.printing.PrintingColor import Color
+from collections.abc import Iterable, Mapping
 
 class PrintingBasic:
 
     def __init__(self) -> None:
         pass
+
+    @staticmethod
+    def checkAndPrepareValues(values: list|dict) -> list|dict:
+        """
+        Replace `None` values with `0`.
+
+        Notes:
+        - `dict.values()` returns `dict_values` (not `list`), so we treat any non-string iterable as a sequence.
+        - When a dict is provided, a new sanitized dict is returned.
+        """
+        def _normalize(value):
+            if value is None:
+                value = 0
+            if isinstance(value, (int, float)):
+                return float(value)
+            if isinstance(value, str):
+                return float(PrintingBasic.intOrFloatString(value))
+            try:
+                return float(value)
+            except (TypeError, ValueError):
+                return value
+
+        if values is None:
+            return []
+
+        if isinstance(values, Mapping):
+            return {k: _normalize(v) for k, v in values.items()}
+
+        if isinstance(values, (list, tuple)):
+            return [_normalize(v) for v in values]
+
+        if isinstance(values, Iterable) and not isinstance(values, (str, bytes)):
+            return [_normalize(v) for v in list(values)]
+
+        return values
 
     @staticmethod
     def intOrFloatString(stringToCheck: str) -> int|float:

@@ -1,6 +1,7 @@
 from libraries.printing.PrintingCharts import PrintingCharts
 from libraries.printing.PrintingText import PrintingText
 from libraries.printing.PrintingTables import PrintingTable
+from libraries.printing.PrintingCatalogue import PrintingCatalogue
 
 class Printing:
 
@@ -39,3 +40,6 @@ class Printing:
         ):
         PrintingCharts.printDictionaryAsMultiChart(chartName, listOfDictionaries, axesNames, horizontalLine, showOnlyDotValues, columnsLimit, shrinkTheColumnName, step=step)
 
+    @staticmethod
+    def printCatalogue(dictionary: dict):
+        PrintingCatalogue.printCatalogueFromDictionary(dictionary)

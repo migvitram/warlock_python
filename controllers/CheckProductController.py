@@ -114,20 +114,21 @@ class CheckProductController:
     def printTheProductPriceChart(self, productName: str):
 
         productsSet = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
-        productId = False
+        productsChosen = {}
         for product in productsSet:
-            if product['productName'] == productName:
-                productId = productsSet.index(product)
-                break
+            if productName.lower() in (product['productName']).lower():
+                productsChosen[product['productName']] = product['priceHistory'] if 'priceHistory' in product else []
 
-        if productId is False:
+        # Printing.printCatalogue(productsChosen)
+
+        if len(productsChosen) == 0:
             Printing.print("There is no Price History for product named \'"+productName+"\'!", Color.RED)
             return
 
-        if 'priceHistory' in productsSet[productId]:
-            Printing.printDictionaryAsChart("Price changes for product \'"+productName+"\' for last 5 days", productsSet[productId]['priceHistory'], showOnlyDotValues=False)
+        if len(productsChosen) > 1:
+            Printing.printDictionaryAsMultiChart("Price changes for product \'"+productName+"\' for last 5 days", productsChosen, showOnlyDotValues=False)
         else:
-            Printing.print("There is no Price History for this product yet! \n", Color.YELLOW)
+            Printing.printDictionaryAsChart("Price changes for product \'"+productName+"\' for last 5 days", next(iter(productsChosen.values())), showOnlyDotValues=False)
         return
 
     def printDemo(self):

@@ -27,8 +27,9 @@ class PrintingCharts(PrintingBasic):
         if len(dictionary) > 19:
             dictionary = PrintingCharts.getLastNElements(dictionary, 19)
 
-        chartParams['max_X'] = PrintingCharts.intOrFloatString(str(max(dictionary.values())))
-        chartParams['min_X'] = 0 if beginFromZero else PrintingCharts.intOrFloatString(str(min(dictionary.values())))
+        dictionary = PrintingCharts.checkAndPrepareValues(dictionary)
+        chartParams['max_X'] = max(dictionary.values())
+        chartParams['min_X'] = 0 if beginFromZero else min(dictionary.values())
 
         step = step if step else PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X'])
             
@@ -95,7 +96,7 @@ class PrintingCharts(PrintingBasic):
         if isinstance(listOfDictionaries, dict):
             lineNames = list(listOfDictionaries.keys())
             listOfDictionaries = list(listOfDictionaries.values())
-        chartParams = {'max_X': 0.0, 'min_X': min( listOfDictionaries[0].values())}
+        chartParams = {'max_X': 0.0, 'min_X': float('inf')}
         chart = {"first":''}
         columnLength = 3
         columnsSeparator = ' | '
@@ -107,13 +108,16 @@ class PrintingCharts(PrintingBasic):
         screenWidth = 120
 
         # is it dictionary or list ???? {'line name' => {'date': number, ... }, 'line 2' => {}, ... }
-        for dictionary in listOfDictionaries:
+        for dictIndex, dictionary in enumerate(listOfDictionaries):
 
             if len(dictionary) > 19:
                 dictionary = PrintingCharts.getLastNElements(dictionary, 19)
+                listOfDictionaries[dictIndex] = dictionary
+
+            listOfDictionaries[dictIndex] = dictionary
 
             valuesY = dictionary.keys()
-            valuesX = dictionary.values()
+            valuesX = PrintingCharts.checkAndPrepareValues(dictionary.values())
             # dictionary with separeted color
             
             chartParams['max_X'] = max(valuesX) if max(valuesX) > chartParams['max_X'] else chartParams['max_X']
@@ -145,9 +149,11 @@ class PrintingCharts(PrintingBasic):
 
             beautifulKey = PrintingCharts.completeString(str(current), maxValueLength)
             if showOnlyDotValues:
-                newLine = beautifulKey + " |"
+                # TODO : need to add checkout of point value equity to axe value
+                #newLine = (beautifulKey if current in dictionary.values() else hl*maxValueLength) + " | "
+                newLine = (beautifulKey if True else hl*maxValueLength) + " | "
             else:
-                newLine = hl*maxValueLength + " |"
+                newLine = beautifulKey + " |"
 
             for date in valuesY:
             
@@ -155,7 +161,8 @@ class PrintingCharts(PrintingBasic):
                 dotsInCell = 0
                 for dictIndex, dictionary in enumerate(listOfDictionaries):
 
-                    if PrintingCharts.getRoundedValue(dictionary[date], step) == current:
+                    value = 0 if dictionary[date] is None else dictionary[date]
+                    if PrintingCharts.getRoundedValue(value, step) == current:
                         dotsInCell += 1
                         resultCell += PrintingCharts.colorDot(PrintingCharts.getColorsList()[dictIndex])
 
@@ -201,8 +208,8 @@ class PrintingCharts(PrintingBasic):
         if len(dictionary) > (max_width):
             dictionary = PrintingCharts.getLastNElements(dictionary, max_width)
 
-        chartParams['max_X'] = PrintingCharts.intOrFloatString(str(max(dictionary.values())))
-        chartParams['min_X'] = 0 if beginFromZero else PrintingCharts.intOrFloatString(str(min(dictionary.values())))
+        chartParams['max_X'] = max(dictionary.values())
+        chartParams['min_X'] = 0 if beginFromZero else min(dictionary.values())
 
         step = step if step else PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X'])
 
