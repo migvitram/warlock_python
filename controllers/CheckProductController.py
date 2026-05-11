@@ -126,14 +126,14 @@ class CheckProductController:
         # Printing.printCatalogue(productsChosen)
 
         if len(productsChosen) == 0:
-            Printing.print(_('app', "There is no Price History for product named \'{productName}\'!", {'productName': productName}), Color.RED)
+            Printing.print(_('app', "There is no Price History for product named '{productName}'!", {'productName': productName}), Color.RED)
             return
 
         #  need to compare and to complete
         if len(productsChosen) > 1:
-            Printing.printDictionaryAsMultiChart(_('app', "Price changes for product \'{productName}\' for last {n} days", {'productName': productName}), productsChosen, showOnlyDotValues=False)
+            Printing.printDictionaryAsMultiChart(_('app', "Price changes for product '{productName}' for last {n} days", {'productName': productName}), productsChosen, showOnlyDotValues=False)
         else:
-            Printing.printDictionaryAsChart(_('app', "Price changes for product \'{productName}\' for last {n} days", {'productName': productName}), next(iter(productsChosen.values())), showOnlyDotValues=False)
+            Printing.printDictionaryAsChart(_('app', "Price changes for product '{productName}' for last {n} days", {'productName': productName}), next(iter(productsChosen.values())), showOnlyDotValues=False)
         return
 
     def printDemo(self):

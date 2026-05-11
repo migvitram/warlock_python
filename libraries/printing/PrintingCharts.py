@@ -370,7 +370,7 @@ class PrintingCharts(PrintingBasic):
             label = groupName
             if fullName is True:
                 month_index = int(groupName) if str(groupName).isdigit() else 0 # imporoved by CodeX
-                label = calendar.month_name[month_index] if 1 <= month_index <= 12 else str(groupName)
+                label = _('app', calendar.month_name[month_index]) if 1 <= month_index <= 12 else str(groupName)
 
             if group['count'] > (len(label)+1):
                 result += ' ' * (group['count'] - len(label) - 2) + label + ' |'

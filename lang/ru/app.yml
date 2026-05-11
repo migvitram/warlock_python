@@ -34,6 +34,22 @@ There is no data to print: Нет данных для отображения
 DEMO History diagram (for single data set): DEMO диаграма истории изменений (для одного набора данных)
 DEMO Multi History diagram (for multi data set): DEMO диаграма истории изменений (для нескольких графиков)
 
+Currencies rates history: Изменения курсов валют
+Currency {currency} rates history: История изменения курса валюты {currency}
+
+January: Январь
+February: Февраль
+March: Март
+April: Апрель
+May: Май
+June: Июнь
+July: Июль
+August: Август
+September: Сентябрь
+October: Октябрь
+November: Ноябрь
+December: Декабрь
+
 Log file removed successfuly.: Лог файл успешно удалён.
 Catalogue contents: Каталог содержит
 Chart legend: Линии графика
