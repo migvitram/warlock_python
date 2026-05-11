@@ -44,16 +44,16 @@ class CheckProductController:
 
     def runTheTracking(self):
         Logger.log("The product tracking fetch initiated ("+str(self.__class__)+")")
-        Printing.print(_('app', "Running the tracking...", self.lang))
+        Printing.print(_('app', "Running the tracking..."))
         time.sleep(1)
-        Printing.print(_('app', "this is the processor to parse the data from web-sites...", self.lang))
+        Printing.print(_('app', "this is the processor to parse the data from web-sites..."))
 
         # according to the root directory (warlock)
         jsonFileStorage = self.jsonFileStorage
 
         productsSet = JsonFiles.readDataFromJsonFile(jsonFileStorage)
 
-        Printing.print(_('app', "Retrieving ...", self.lang))
+        Printing.print(_('app', "Retrieving ..."))
 
         if not isinstance(productsSet, list) and not isinstance(productsSet, dict):
             Logger.log('Error with the product data stored in json file : no data or data not iterable')
@@ -69,8 +69,8 @@ class CheckProductController:
                         price = scrapProvider.returnTheProductPrice()
                         presence = scrapProvider.returnTheProductPresence()
                     except Exception as e:
-                        Printing.print(f"Error during one of the product tracking. Check app.log file to see more")
-                        Logger.log(f"Error : {e}" + "\n" + traceback.format_exc())
+                        Printing.print(_('app', "Error during one of the product tracking. Check app.log file to see more"))
+                        Logger.log(f"{_('app', 'Error')} : {e}" + "\n" + traceback.format_exc())
                         # fallback
                         price = None
                         presence = None
@@ -82,9 +82,9 @@ class CheckProductController:
                         item['priceHistory'] = {}
                     item['priceHistory'][today.strftime("%d/%m/%Y")] = price
                 else:
-                    Printing.print(f"Can not find the scraping provider for product \'{item['productName']}\'", Color.YELLOW)
+                    Printing.print(_('app', "Can not find the scraping provider for product \'{productName}\'", {'productName': item['productName']}), Color.YELLOW)
             else:
-                Printing.print(f"One of the products ({item['productName']}) have no valid url address", Color.YELLOW)
+                Printing.print(_('app', "One of the products ({productName}) have no valid url address", {'productName': item['productName']}), Color.YELLOW)
 
         Printing.printDictionaryAsTable(productsSet, ['url', 'productName', 'presence', 'price', 'date'])
 
@@ -109,7 +109,7 @@ class CheckProductController:
             else:
                 result = False
         if result == False:
-            Printing.print("Can not find product \'"+productToDeleteName+"\' ", Color.RED)
+            Printing.print(_('app', "Can not find product \'{productName}\'!", {'productName': productToDeleteName}), Color.RED)
 
     def printTheSummaryProductTable(self):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
@@ -126,21 +126,20 @@ class CheckProductController:
         # Printing.printCatalogue(productsChosen)
 
         if len(productsChosen) == 0:
-            Printing.print("There is no Price History for product named \'"+productName+"\'!", Color.RED)
+            Printing.print(_('app', "There is no Price History for product named \'{productName}\'!", {'productName': productName}), Color.RED)
             return
-
 
         #  need to compare and to complete
         if len(productsChosen) > 1:
-            Printing.printDictionaryAsMultiChart(_('app', "Price changes for product \'", self.lang)+productName+_('app', "\' for last 5 days", self.lang), productsChosen, showOnlyDotValues=False)
+            Printing.printDictionaryAsMultiChart(_('app', "Price changes for product \'{productName}\' for last {n} days", {'productName': productName}), productsChosen, showOnlyDotValues=False)
         else:
-            Printing.printDictionaryAsChart(_('app', "Price changes for product \'", self.lang)+productName+_('app', "\' for last 5 days", self.lang), next(iter(productsChosen.values())), showOnlyDotValues=False)
+            Printing.printDictionaryAsChart(_('app', "Price changes for product \'{productName}\' for last {n} days", {'productName': productName}), next(iter(productsChosen.values())), showOnlyDotValues=False)
         return
 
     def printDemo(self):
         testDict = {'22/05': 153, '12/06': 152, '14/07': 150, '25/08': 148, '14/09': 149, '05/10': 151,
             '18/11': 155, '02/12': 161, '23/01': 157, '23/02': 164}
-        Printing.printDictionaryAsChart(_('app', "DEMO History diagram (for single data set)", self.lang), testDict)
+        Printing.printDictionaryAsChart(_('app', "DEMO History diagram (for single data set)", language=self.lang), testDict)
         return
 
     def printDemoMulti(self):
@@ -152,7 +151,7 @@ class CheckProductController:
             {'22/05/2025': 144, '12/06/2025': 145, '14/07/2025': 146, '25/08/2025': 148, '14/09/2025': 150, '05/10/2025': 153,
             '18/11/2025': 155, '02/12/2025': 158, '23/01/2026': 162, '23/02/2026': 166, '20/03/2026': 164, '12/04/2026': 160, '3/05/2026': 161, '14/06/2026': 160}
         ]
-        Printing.printDictionaryAsMultiChart(_('app', "DEMO Multi History diagram (for multi data set)", self.lang), testDict)
+        Printing.printDictionaryAsMultiChart(_('app', "DEMO Multi History diagram (for multi data set)", language=self.lang), testDict)
         return
 
     def printDemoTable(self):

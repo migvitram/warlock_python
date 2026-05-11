@@ -23,12 +23,18 @@ Something went wrong, or there is no product status on the page.: Что-то п
 
 Please type the language short code [ua, ru, en]: Пожалуйста напишите сокращенный индекс языка [ua, ru, en]
 Please, enter the currency short name (usd, eur, bps): Пожалуйста укажите сокращенный индекс валюты (usd, eur, bps)
-Price changes for product \': Изменения цены продукта \'
-\' for last 5 days: \' за прошедшие 5 дней
-There is no Price History for this product yet!: Для этого продукта ещё нет истории изменения цены!
+Can not find product '{productName}'! : Невозможно найти продукт '{productName}'!
+There is no Price History for product named '{productName}'!: Для продукта '{productName}' еще нет истории измененний цены!
+Price changes for product '{productName}' for last {n} days: Изменения цены продукта '{productName}' за прошедшие {n} дней
+There is no Price History for this product yet!: Для этого продукта ещё нет истории изменений цены!
+Error during one of the product tracking. Check app.log file to see more: Ошибка во время трекенга продуктов. Проверьте app.log для более детальной информации.
+Can not find the scraping provider for product '{productName}': Невозможно найти провайдер для скрепинга продукта {productName}
+One of the products ({productName}) have no valid url address: Один из продуктов не имеет действительного url адреса.
+There is no data to print: Нет данных для отображения
 DEMO History diagram (for single data set): DEMO диаграма истории изменений (для одного набора данных)
 DEMO Multi History diagram (for multi data set): DEMO диаграма истории изменений (для нескольких графиков)
 
 Log file removed successfuly.: Лог файл успешно удалён.
 Catalogue contents: Каталог содержит
 Chart legend: Линии графика
+Error: Ошибка

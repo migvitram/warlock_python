@@ -75,7 +75,7 @@ def checkTheWish(theWishText: str):
             
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
-                    productName = askUntilAnswer(_('app', 'For what product?', lang)+" \n")
+                    productName = askUntilAnswer(_('app', 'For what product?')+" \n")
                     checkProduct.printTheProductPriceChart(productName)
 
                 if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
@@ -94,15 +94,15 @@ def checkTheWish(theWishText: str):
                         financeService.printTheCurrencyRateHistory(sentence[6])
                         pass
                     if len(sentence) <= 5:
-                        currencyName = askUntilAnswer(_('app', 'Please, enter the currency short name (usd, eur, bps)', lang)+' : ')
+                        currencyName = askUntilAnswer(_('app', 'Please, enter the currency short name (usd, eur, bps)')+' : ')
                         financeService.printTheCurrencyRateHistory(currencyName)
                     pass
 
         if sentence[0] == 'add':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = askUntilAnswer(_('app', "Please, enter the product name!", lang)+" \n")
-                    productUrl = askUntilAnswer(_('app', "Please, enter the product URL!", lang)+" \n")
+                    productName = askUntilAnswer(_('app', "Please, enter the product name!")+" \n")
+                    productUrl = askUntilAnswer(_('app', "Please, enter the product URL!")+" \n")
                     checkProduct.addProductForTracking(productName, productUrl)
                     pass
 
@@ -116,17 +116,17 @@ def checkTheWish(theWishText: str):
         if sentence[0] == 'remove' or sentence[0] == 'delete':
             if sentence[1] == 'the':
                 if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = askUntilAnswer(_('app', "Please, enter the name of the product you want to REMOVE!", lang)+" \n")
+                    productName = askUntilAnswer(_('app', "Please, enter the name of the product you want to REMOVE!")+" \n")
                     areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
                     if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                         checkProduct.removeProductByName(productName)
                     else:
-                        areYouSure = askUntilAnswer(_('app', "Please, enter \'yes\' or \'no\', or \'y\' or \'n\'", lang)+" \n")
+                        areYouSure = askUntilAnswer(_('app', "Please, enter \'yes\' or \'no\', or \'y\' or \'n\'")+" \n")
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkProduct.removeProductByName(productName)
 
         if sentence[0] == 'change' and sentence[1] == 'the' and sentence[2] == 'language':
-            lang = askUntilAnswer(_('app', "Please type the language short code [ua, ru, en]", lang)+" : ")
+            lang = askUntilAnswer(_('app', "Please type the language short code [ua, ru, en]")+" : ")
             if lang != '':
                 PersonalSettings.updateParam('lang', lang)
                 AppContext.set('lang', lang)

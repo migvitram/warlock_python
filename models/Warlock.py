@@ -35,7 +35,7 @@ class Warlock:
 
     def whatToDo(self):
         try:
-            whatToDo = input(_('app', "What do you want me to do?", str(AppContext.get('lang'))) +"\n\n")
+            whatToDo = input(_('app', "What do you want me to do?") +"\n\n")
             checkTheWish(whatToDo)
             return
         except Exception as e:
@@ -47,7 +47,7 @@ class Warlock:
 
         while wishes == True:
             try:
-                want = input(_('app', "Do you want something more?", str(AppContext.get('lang'))) +"\n")
+                want = input(_('app', "Do you want something more?") +"\n")
                 if checkWishmasterSatisfied(want):
                     Printing.print("Gooood...")
                     time.sleep(1)

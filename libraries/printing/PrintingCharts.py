@@ -322,7 +322,7 @@ class PrintingCharts(PrintingBasic):
     @staticmethod
     def printTheLegendFromList(lineNames: list):
         lang = str(AppContext.get('lang'))
-        print(_('app', "Chart legend", lang)+":")
+        print(_('app', "Chart legend")+":")
         for index, lineName in enumerate(lineNames):
             print("  " + PrintingCharts.colorDot(PrintingCharts.getColorsList()[index])+" - "+lineName)
         pass

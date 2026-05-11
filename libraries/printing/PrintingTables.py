@@ -27,7 +27,7 @@ class PrintingTable(PrintingBasic):
 
                         column = PrintingTable.prepareColumnTextForTable(column)    
 
-                        preparedColumnName = _('app', columnName, str(AppContext.get('lang'))).strip()
+                        preparedColumnName = _('app', columnName).strip()
                         # preparedColumnName = columnName
                         length = len(column) if len(column) > len(preparedColumnName) else len(preparedColumnName)
                         if columnName in maximums.keys(): 
@@ -68,7 +68,7 @@ class PrintingTable(PrintingBasic):
             print(straightLine)
         else:
             print("-" * 120)
-            print("  "+_('app', "There is no data to print", lang)+"  ")
+            print("  "+_('app', "There is no data to print")+"  ")
             print("-" * 120)
 
     @staticmethod
