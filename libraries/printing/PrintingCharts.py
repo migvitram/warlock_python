@@ -333,14 +333,17 @@ class PrintingCharts(PrintingBasic):
 
     @staticmethod
     def getRoundedValue(valueToRound: int|float, step: int|float, roundPlace: str='tens', roundUp: bool=True):
+        
+        valueToRound = PrintingBasic.intOrFloatString(valueToRound)
+
         if step >= 1:
-            leftOvers = valueToRound%step
+            leftOvers = valueToRound % step
             if leftOvers > (step*0.4):
                 return valueToRound - leftOvers + step
             else:
                 return valueToRound - leftOvers
         else:
-            leftOvers = round(valueToRound%step, 4)
+            leftOvers = round(valueToRound % step, 4)
             if leftOvers > round((step*0.4), 4):
                 return round(valueToRound - leftOvers + step, 4)
             else:

@@ -45,8 +45,8 @@ class PrintingBasic:
         return values
 
     @staticmethod
-    def intOrFloatString(stringToCheck: str) -> int|float:
-        if stringToCheck is float or stringToCheck is int:
+    def intOrFloatString(stringToCheck: str|int|float) -> int|float:
+        if isinstance(stringToCheck, (float, int)):
             return stringToCheck
         variant1 = re.findall(r"(\d+\.\d+)", stringToCheck)
         variant2 = re.findall(r"(\d+\,\d+)", stringToCheck)

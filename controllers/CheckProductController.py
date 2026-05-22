@@ -13,6 +13,7 @@ from models.providers.scraping.KnigarniaYeProvider import KnigarniaYe
 from models.providers.scraping.KnigolandProvider import Knigoland
 from models.providers.scraping.RozetkaProvider import Rozetka
 from models.providers.scraping.ShopATBProvider import ShopATB
+from models.Product import Product
 
 class CheckProductController:
 
@@ -113,14 +114,8 @@ class CheckProductController:
 
     def printTheProductPriceChart(self, productName: str):
 
-        productsSet = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
-        productsChosen = {}
-        for product in productsSet:
-            if productName.lower() in (product['productName']).lower():
-                productsChosen[product['productName']] = product['priceHistory'] if 'priceHistory' in product else []
-
-        # Printing.printCatalogue(productsChosen)
-
+        productsChosen = Product.getProductsPriceHistoryByName(productName)
+        
         if len(productsChosen) == 0:
             Printing.print("There is no Price History for product named \'"+productName+"\'!", Color.RED)
             return
