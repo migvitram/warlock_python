@@ -31,6 +31,28 @@ def test_alignDotInCenter():
     assert PrintingCharts.alignDotInCenter(4) == '__' + PrintingCharts.blackDot() + '_'
     assert PrintingCharts.alignDotInCenter(5) == '__' + PrintingCharts.blackDot() + '__'
 
+@pytest.mark.tmp
+@pytest.mark.printing
+@pytest.mark.parametrize('set, expected', [
+    (0, '\033[91m'),
+    (1, '\033[92m'),
+    (2, '\033[93m'),
+    (3, '\033[96m'),
+    (4, '\033[95m'),
+    (5, '\033[94m'),
+    (6, '\033[97m'),
+    (7, '\033[90m'),
+    (8, '\033[91m'),
+    (9, '\033[92m'),
+    (11, '\033[96m'),
+    (16, '\033[91m'),
+    (21, '\033[94m'),
+    (35, '\033[96m'),
+    (-2, '\033[93m'),
+])
+def test_getColorByIndex(set, expected):
+    assert PrintingCharts.getColorByIndex(set) == expected
+
 @pytest.mark.printing
 @pytest.mark.parametrize('set, expected, param', [
     (['apple', 'banana', 'cocoa', 'marakuija'], 'apple|banana|cocoa|marakuija', None),

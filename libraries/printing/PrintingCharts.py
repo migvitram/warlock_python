@@ -164,7 +164,7 @@ class PrintingCharts(PrintingBasic):
                     value = 0 if dictionary[date] is None else dictionary[date]
                     if PrintingCharts.getRoundedValue(value, step) == current:
                         dotsInCell += 1
-                        resultCell += PrintingCharts.colorDot(PrintingCharts.getColorsList()[dictIndex])
+                        resultCell += PrintingCharts.colorDot(PrintingCharts.getColorByIndex(dictIndex))
 
                 newLine += hl + PrintingCharts.alignedDots(keyLength, dotsInCell, resultCell)
                     
@@ -318,10 +318,17 @@ class PrintingCharts(PrintingBasic):
         pass
 
     @staticmethod
+    def getColorByIndex(index: int):
+        index = abs(index)
+        colors = PrintingBasic.getColorsList()
+        index = index%len(colors) if index >= len(colors) else index
+        return colors[index]
+
+    @staticmethod
     def printTheLegendFromList(lineNames: list):
         print("Chart legend:")
         for index, lineName in enumerate(lineNames):
-            print("  " + PrintingCharts.colorDot(PrintingCharts.getColorsList()[index])+" - "+lineName)
+            print("  " + PrintingCharts.colorDot(PrintingCharts.getColorByIndex(index))+" - "+lineName)
         pass
 
     @staticmethod

@@ -64,7 +64,10 @@ class PrintingBasic:
 
     @staticmethod
     def getColorsList():
-        return [Color.RED, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA]
+        return [
+            Color.RED, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA, 
+            Color.BLUE, Color.WHITE, Color.BLACK
+        ]
 
     @staticmethod
     def completeString(string: str, length: int, completeWith: str=' ') -> str:
