@@ -2,6 +2,7 @@ import os
 import subprocess
 from controllers.CheckProductController import CheckProductController
 from controllers.FinanceServicesController import FinanceServices
+from controllers.FuelPriceController import FuelPriceController
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
@@ -23,6 +24,10 @@ def checkTheWish(theWishText: str):
 
         iterator = filter(correctWord, sentence)
         sentence = list(iterator)
+
+        if sentence[0] == 'fuel' and sentence[1] == 'check':
+            contr = FuelPriceController()
+            contr.checkPrices()
 
         if sentence[0] == 'clean' or sentence[0] == 'clear' or sentence[0] == 'purge':
             if sentence[1] == 'log':
@@ -89,6 +94,16 @@ def checkTheWish(theWishText: str):
                         currencyName = askUntilAnswer('Please, enter the currency short name (usd, eur, bps) : ')
                         financeService.printTheCurrencyRateHistory(currencyName)
                     pass
+
+                if sentence[2] == 'fuel' and sentence[3] == 'price' and sentence[4] == 'history':
+                    contr = FuelPriceController()
+                    if len(sentence) > 5:
+                        if sentence[5] == 'for' and len(sentence[6]) > 0:
+                            fuelBrand = sentence[6].strip()
+                            contr.printBrandPriceHistory(fuelBrand)
+                            return
+                    contr.printPriceHistory()
+                    return
 
         if sentence[0] == 'add':
             if sentence[1] == 'the':
