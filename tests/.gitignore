@@ -1,2 +1,4 @@
 /temp
-/storage
+/storage/*
+
+!/storage/existed_empty_test_file.json

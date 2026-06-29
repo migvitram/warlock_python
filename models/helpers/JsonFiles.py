@@ -24,19 +24,25 @@ class JsonFiles:
             pass
 
     @staticmethod
-    def runSelfDiagnostics(storageFileName):
+    def runSelfDiagnostics(storageFileName, default = {}):
         if not JsonFiles.checkFileExist(storageFileName):
-            JsonFiles.initiateJsonStorageFile(storageFileName, [])
+            JsonFiles.initiateJsonStorageFile(storageFileName, defaultStructure=default)
 
     @staticmethod
     def checkFileExist(fileName: str) -> bool:
         return os.path.exists(fileName) and os.path.isfile(fileName)
 
     @staticmethod
-    def initiateJsonStorageFile(fileName: str, defaultStructure):
-        file = open(fileName, 'w+')
-        file.write(json.dumps([]))
-        pass    
+    def initiateJsonStorageFile(fileName: str, defaultStructure = {}):
+        fileName = os.path.abspath(fileName)
+        try:
+            file = open(fileName, 'w+')
+            file.write(json.dumps(defaultStructure))
+        except Exception as e:
+            print('JsonFiles.py can not initiate json file.')
+            print(e)
+            return False
+        return True
 
     @staticmethod
     def checkPropertyInDictAndCreateIfNotExist(dictionary: dict, propName: str, propValue: str=''):
@@ -46,3 +52,13 @@ class JsonFiles:
     @staticmethod
     def defaultStructureOfJsonStorage() -> list:
         return [{'productName': '', 'url': '', 'presence': '', 'price': '', 'priceHistory': {}}]
+
+    @staticmethod
+    def deleteJsonFile(filePath: str):
+        filePath = os.path.abspath(filePath)
+        if JsonFiles.checkFileExist(filePath):
+            os.remove(filePath)
+            return True
+        else:
+            print(f"There is no file found : {filePath} !")
+            return False

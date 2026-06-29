@@ -11,3 +11,10 @@ To run the tests:
     cd /you/warlock/directory/tests
     pytest
 ```
+
+or run within the Warlock docker container:
+
+```bash
+    make up
+    make pytests
+```
