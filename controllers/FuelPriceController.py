@@ -24,6 +24,7 @@ class FuelPriceController:
 
         today = datetime.now().strftime("%d/%m/%Y")
         brands = prov.getBrands()
+        result = []
         
         for brand in brands.keys():
             brandName = brands[brand]['s_brand_']
@@ -39,8 +40,10 @@ class FuelPriceController:
                 price = None
 
             pricesSet[brand]['priceHistory'][today] = price
-            
+            result.append({'brand': brand, 'price': price, 'date': today})
+
         JsonFiles.writeToTheLocalJsonStorage(pricesSet, self.jsonFileStorage)
+        Printing.printDictionaryAsTable(result)
 
     def printPriceHistory(self):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
