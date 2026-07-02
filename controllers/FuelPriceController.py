@@ -5,6 +5,7 @@ from models.providers.scraping.WOGProvider import WOGProvider
 from models.helpers.JsonFiles import JsonFiles
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
+from monadas.translation import _
 
 class FuelPriceController:
 
@@ -50,7 +51,7 @@ class FuelPriceController:
         preparedData = {}
         for brandName, brandData in storedData.items():
             preparedData[brandName] = brandData['priceHistory']
-        Printing.printDictionaryAsMultiChart('Fuel prices history', preparedData, step=0.5)
+        Printing.printDictionaryAsMultiChart(_('app', 'Fuel prices history'), preparedData, step=0.5)
 
     def printBrandPriceHistory(self, fuelBrand: str):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
@@ -58,4 +59,4 @@ class FuelPriceController:
         for brandName, brandData in storedData.items():
             if brandName == fuelBrand:
                 preparedData = brandData['priceHistory']
-        Printing.printDictionaryAsChart('Fuel prices history for brand '+fuelBrand, preparedData, showOnlyDotValues=False, step=0.5)
+        Printing.printDictionaryAsChart(_('app', 'Fuel prices history for brand {brand}', {'brand': fuelBrand}), preparedData, showOnlyDotValues=False, step=0.5)

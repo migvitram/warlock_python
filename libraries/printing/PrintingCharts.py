@@ -26,6 +26,10 @@ class PrintingCharts(PrintingBasic):
         shrinkTheKey = 0
         screenWidth = 120
 
+        if(len(dictionary) == 0):
+            PrintingCharts.printMessageForEmptyData()
+            return
+
         if len(dictionary) > 19:
             dictionary = PrintingCharts.getLastNElements(dictionary, 19)
 
@@ -105,6 +109,10 @@ class PrintingCharts(PrintingBasic):
         valuesY = []
         shrinkTheKey = 0
         screenWidth = 120
+
+        if(len(listOfDictionaries) == 0):
+            PrintingCharts.printMessageForEmptyData()
+            return
 
         # is it dictionary or list ???? {'line name' => {'date': number, ... }, 'line 2' => {}, ... }
         for dictIndex, dictionary in enumerate(listOfDictionaries):
