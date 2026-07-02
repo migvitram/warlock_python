@@ -5,6 +5,13 @@ class WOGProvider(AbstractFuelPriceProvider):
     soupObject = False
     url = 'https://wog.ua/ua/fuels/'
 
+    fuel_brands = {
+        'ДП':   {'s_type_': 'ДП', 's_brand_': 'Євро5'},
+        'A95':  {'s_type_': '95', 's_brand_': 'Євро5-Е10'},
+        'A95M': {'s_type_': '95', 's_brand_': 'Mustang Євро5-Е10'},
+        # 'A100': {'s_type_': '100', 's_brand_': 'Mustang Євро5-Е0'}
+    }
+
     priceItemStructure = {
         's_fuel_list': {
             's_fuel_item_': {
