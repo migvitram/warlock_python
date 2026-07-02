@@ -4,6 +4,7 @@ import re
 from itertools import islice
 from libraries.printing.PrintingColor import Color
 from collections.abc import Iterable, Mapping
+from monadas.translation import _
 
 class PrintingBasic:
 
@@ -118,3 +119,9 @@ class PrintingBasic:
         except OSError:
             width = 190
         return width
+        
+    @staticmethod
+    def printMessageForEmptyData():
+        print("\n" + "-" * 120)
+        print("  "+_('app', "There is no data to print")+"  ")
+        print("-" * 120 + "\n")
