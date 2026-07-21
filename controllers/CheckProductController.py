@@ -126,6 +126,16 @@ class CheckProductController:
             Printing.printDictionaryAsChart("Price changes for product \'"+productName+"\' for last 5 days", next(iter(productsChosen.values())), showOnlyDotValues=False)
         return
 
+    def printTheProductDetailView(self, productName: str):
+        productsChosen = Product.getProductDetailsByName(productName)
+        
+        if len(productsChosen) == 0:
+            Printing.print("There is no Price History for product named \'"+productName+"\'!", Color.RED)
+            return
+
+        Printing.printDictionaryAsTable(productsChosen, ['parameter', 'value'])
+        return
+
     def printDemo(self):
         testDict = {'22/05': 153, '12/06': 152, '14/07': 150, '25/08': 148, '14/09': 149, '05/10': 151,
             '18/11': 155, '02/12': 161, '23/01': 157, '23/02': 164}

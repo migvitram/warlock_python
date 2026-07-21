@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 import re
 from itertools import islice
@@ -108,3 +109,8 @@ class PrintingBasic:
             return True
         except ValueError:
             return False
+
+    @staticmethod
+    def getTerminalWidth() -> int:
+        size = os.get_terminal_size()
+        return size.columns

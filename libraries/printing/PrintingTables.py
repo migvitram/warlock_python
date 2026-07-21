@@ -15,13 +15,20 @@ class PrintingTable(PrintingBasic):
             tableWidth = 0
             tableHeadCells = {}
             tableHead = ''
+            columnWidthLimit = 55
 
             # get alignement
             for row in dataSet:
                 for columnName, column in row.items():
+
+                    columnsNumber = len(row)    
+                    terminalWidth = PrintingBasic.getTerminalWidth()
+
                     if columnName in columnsToShow or len(columnsToShow) == 0:
 
-                        column = PrintingTable.prepareColumnTextForTable(column)    
+                        columnWidthLimit = terminalWidth if columnsNumber == 2 else 55 # addhoc, TODO : need to refactor
+
+                        column = PrintingTable.prepareColumnTextForTable(column, columnWidthLimit)
 
                         length = len(column) if len(column) > len(columnName) else len(columnName)
                         if columnName in maximums.keys(): 
@@ -50,7 +57,7 @@ class PrintingTable(PrintingBasic):
                 
                 for columnName, column in row.items():
                     if columnName in columnsToShow or len(columnsToShow) == 0:
-                        column = PrintingTable.prepareColumnTextForTable(column)    
+                        column = PrintingTable.prepareColumnTextForTable(column, columnWidthLimit)    
                         
                         rowToPrint += column
                         if len(column) < maximums[columnName]:

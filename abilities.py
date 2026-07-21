@@ -81,6 +81,10 @@ def checkTheWish(theWishText: str):
                 if sentence[2] == 'product' and sentence[3] == 'summary' and sentence[4] == 'table':
                     checkProduct.printTheSummaryProductTable()
 
+                if sentence[2] == 'product' and sentence[3] == 'details':
+                    productName = askUntilAnswer("For what product? \n")
+                    checkProduct.printTheProductDetailView(productName)
+
                 if sentence[2] == 'currencies' and sentence[3] == 'rate' and sentence[4] == 'history':
                     financeService = FinanceServices()
                     financeService.printTheCurrenciesRateHistory()

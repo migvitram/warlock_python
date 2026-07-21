@@ -352,7 +352,7 @@ class PrintingCharts(PrintingBasic):
     @staticmethod
     def chooseStep(maxValue, minValue) -> int|float:
         step = 1
-        difference = maxValue - minValue
+        difference = int(maxValue - minValue)
         if difference > 5:
             step = difference//10
         if difference <= 5 and difference > 2:

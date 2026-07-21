@@ -13,6 +13,21 @@ class Product:
         return f"Product(name={self.name}, price={self.price})"
     
     @staticmethod
+    def getProductDetailsByName(productName: str) -> dict:
+        productsSet = JsonFiles.readDataFromJsonFile(Product.jsonProductStorage)
+        for product in productsSet:
+            if productName.lower() in (product['productName']).lower():
+                details = [
+                    {'parameter': 'productName', 'value': product['productName']},
+                    {'parameter': 'url', 'value': product['url']},
+                    {'parameter': 'price', 'value': product['price']},
+                    {'parameter': 'presence', 'value': product['presence']},
+                    {'parameter': 'date', 'value': product['date']},
+                ]
+                return details
+        return {}
+
+    @staticmethod
     def getProductsPriceHistoryByName(productName: str) -> dict:
         products = {}
         productsSet = JsonFiles.readDataFromJsonFile(Product.jsonProductStorage)
