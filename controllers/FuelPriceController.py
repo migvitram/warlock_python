@@ -50,7 +50,7 @@ class FuelPriceController:
         preparedData = {}
         for brandName, brandData in storedData.items():
             preparedData[brandName] = brandData['priceHistory']
-        Printing.printDictionaryAsMultiChart('Fuel prices history', preparedData)
+        Printing.printDictionaryAsMultiChart('Fuel prices history', preparedData, step=0.5)
 
     def printBrandPriceHistory(self, fuelBrand: str):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
@@ -58,4 +58,4 @@ class FuelPriceController:
         for brandName, brandData in storedData.items():
             if brandName == fuelBrand:
                 preparedData = brandData['priceHistory']
-        Printing.printDictionaryAsChart('Fuel prices history for brand '+fuelBrand, preparedData, showOnlyDotValues=False)
+        Printing.printDictionaryAsChart('Fuel prices history for brand '+fuelBrand, preparedData, showOnlyDotValues=False, step=0.5)

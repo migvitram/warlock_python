@@ -112,5 +112,9 @@ class PrintingBasic:
 
     @staticmethod
     def getTerminalWidth() -> int:
-        size = os.get_terminal_size()
-        return size.columns
+        try:
+            size = os.get_terminal_size(1)
+            width = size.columns
+        except OSError:
+            width = 190
+        return width
