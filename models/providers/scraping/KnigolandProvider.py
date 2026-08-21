@@ -25,10 +25,15 @@ class Knigoland(AbstractScrapingProvider):
     def fetchTheProductPresence(self):
         presenceCheckResult = super().checkElementPresentByText('В наявності', 'span')
         absenceCheckResult = super().checkElementPresentByText('Немає в наявності', 'span')
+        awaitingCheckResult = super().checkElementPresentByText('Очікується', 'span')
 
         if presenceCheckResult == False and absenceCheckResult == False:
-            print("something went wrong, or there is no product status on the page")
-            Logger.log("Did not find the element (in "+self.__class__.__name__+")")
-            return False
+
+            if awaitingCheckResult == True:
+                return 'No'
+            else:
+                print("something went wrong, or there is no product status on the page")
+                Logger.log("Did not find the element (in "+self.__class__.__name__+")")
+                return False
         else:
             return 'Yes' if presenceCheckResult else 'No'
