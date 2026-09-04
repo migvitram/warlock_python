@@ -6,7 +6,7 @@ from models.helpers.Drawing import Drawing
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
-from abilities import Abilities
+from models.abilities import Abilities
 
 class Warlock:
 
@@ -69,15 +69,19 @@ class Warlock:
         return
 
     def checkToDisplayTheLogo(self) -> bool:
+
         if not Settings.paramExists('showLogo'):
             Settings.updateParam('showLogo', True)
+            return True
 
         doDisplay = Settings.getStrict('showLogo')
 
-        if isinstance(doDisplay, int):
-            return doDisplay < Settings.getAsInt('visits')
-
-        return False
+        if doDisplay is True:
+            return True
+        elif( isinstance(doDisplay, int)):
+            return int(doDisplay) > Settings.getAsInt('visits')
+        else:
+            return False
     
     def logAnError(self, e: Exception, message: str=''):
         Printing.print(f"There was an error during programm running : {e}. Check app.log file for more info.", Color.RED)

@@ -1,5 +1,5 @@
 import pytest
-from abilities import Abilities
+from models.abilities import Abilities
 
 @pytest.mark.abilities
 @pytest.mark.parametrize('set, expected', [

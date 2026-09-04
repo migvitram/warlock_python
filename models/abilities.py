@@ -26,11 +26,20 @@ class Abilities:
         sentence = str.split(theWishText)
         checkProduct = CheckProductController(jsonProductStoragePass)
 
+        if sentence[0] == 'exit' and len(sentence) == 1:
+            Printing.print("Glory to you, Wishmaster! \n", Color.GREEN)
+            return exit
+
         if len(sentence) > 1:
 
             iterator = filter(self.correctWord, sentence)
             sentence = list(iterator)
 
+            if sentence[0] == 'do' and sentence[1] == 'not' and sentence[2] == 'show' and sentence[3] == 'logo' and sentence[4] == 'on' and sentence[5] == 'start':
+                # make the setting to not to show the logo on startup
+                Settings.updateParam('showLogo', False)
+                pass
+            
             if sentence[0] == 'fuel' and sentence[1] == 'check':
                 contr = FuelPriceController()
                 contr.checkPrices()
@@ -152,9 +161,7 @@ class Abilities:
             # print('args type', type(sentence))
             # print(sentence)
 
-            if sentence[0] == 'exit':
-                Printing.print("Glory to you, Wishmaster! \n", Color.GREEN)
-                return exit
+            
         else:
             Printing.print("Please, clearify you wish, Wishmaster!", Color.YELLOW)
         return
