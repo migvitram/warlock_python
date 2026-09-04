@@ -9,6 +9,7 @@ def test_checkSettingStorage():
     assert os.path.exists(filePath) == False
 
     Settings.checkSettingStorage()
+
     assert os.path.exists(filePath) == True
 
     os.remove(filePath)
@@ -53,4 +54,41 @@ def test_getAsInt(set, expect):
         file.write(json.dumps({'paramName': set}))
     
     assert Settings.getAsInt('paramName') == expect
+    os.remove(filePath)
+
+@pytest.mark.settings
+@pytest.mark.parametrize('set, expect', [
+    ('existedTestParam', True),
+    ('nonExistentParam', False)
+])
+def test_paramExists(set, expect):
+    filePath = 'storage/personal_settings.json'
+    with open(filePath, 'w') as file:
+        file.write(json.dumps({'existedTestParam': 'value'}))
+    
+    assert Settings.paramExists(set) == expect
+
+    os.remove(filePath)
+
+@pytest.mark.settings
+@pytest.mark.parametrize('set1, set2, expect', [
+    ('paramBool', True, True),
+    ('paramNoneRaw', None, None),
+    ('paramInt', 15514, 15514),
+    ('paramString', 'some string', 'some string'),
+    ('paramList', ['a', 'b', 'c'], ['a', 'b', 'c']),
+    ('paramDict', {'key1': 'value1', 'key2': 123}, {'key1': 'value1', 'key2': 123}),
+    ('paramTuple', ('a', 'b'), ['a', 'b']),
+    ('paramListEmpty', [], []),
+    ('paramDictEmpty', {}, {}),
+    ('paramTuplEmpty', (), []),
+])
+def test_getStrict(set1, set2, expect):
+    filePath = 'storage/personal_settings.json'
+    with open(filePath, 'w') as file:
+        file.write(json.dumps({set1: set2}))
+    
+    assert Settings.getStrict(set1) == expect
+    assert Settings.getStrict('nonExistentParam') == None
+
     os.remove(filePath)

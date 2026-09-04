@@ -6,6 +6,7 @@ class Settings:
     storageFile = 'storage/personal_settings.json'
 
     def __init__(self) -> None:
+        # Settings.checkSettingStorage()
         pass
 
     # method to make some settings about visits (e.g. stop to show the intro)
@@ -43,6 +44,13 @@ class Settings:
         else:
             return 0
 
+    # PAY ATTENTION: Tuples will be returened to dictionaries, because of JSON format !!!
+    @staticmethod
+    def getStrict(paramName: str) -> str|int|dict|list|tuple|bool|None:
+        Settings.checkSettingStorage()
+        settings = Settings.readSettings()
+        return settings[paramName] if paramName in settings else None
+
     @staticmethod
     def checkSettingStorage():
         if not os.path.exists(Settings.storageFile):
@@ -56,6 +64,12 @@ class Settings:
             'visits': 0,
             'language': 'en'
         }
+
+    @staticmethod
+    def paramExists(paramName: str) -> bool:
+        Settings.checkSettingStorage()
+        settings = Settings.readSettings()
+        return paramName in settings.keys()
     
     @staticmethod
     def readSettings() -> dict:

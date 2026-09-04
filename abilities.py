@@ -7,175 +7,181 @@ from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
 from datetime import datetime
+from models.PersonalSettings import Settings
 
-def checkWishmasterSatisfied(want: str) -> bool:
-    sentence = list(filter(correctWord, str.split(want.lower())))
-    if ('no' in sentence) or 'no,' in sentence or ('exit' in sentence) or ('exit,' in sentence):
-        return True
-    return False
+class Abilities:
 
-def checkTheWish(theWishText: str):
-    # split the wish to the words
-    jsonProductStoragePass = 'storage/products_to_check.json'
-    sentence = str.split(theWishText)
-    checkProduct = CheckProductController(jsonProductStoragePass)
+    def __init__(self) -> None:
+        pass
 
-    if len(sentence) > 1:
+    def checkWishmasterSatisfied(self, want: str) -> bool:
+        sentence = list(filter(self.correctWord, str.split(want.lower())))
+        if ('no' in sentence) or 'no,' in sentence or ('exit' in sentence) or ('exit,' in sentence):
+            return True
+        return False
 
-        iterator = filter(correctWord, sentence)
-        sentence = list(iterator)
+    def checkTheWish(self, theWishText: str):
+        # split the wish to the words
+        jsonProductStoragePass = 'storage/products_to_check.json'
+        sentence = str.split(theWishText)
+        checkProduct = CheckProductController(jsonProductStoragePass)
 
-        if sentence[0] == 'fuel' and sentence[1] == 'check':
-            contr = FuelPriceController()
-            contr.checkPrices()
+        if len(sentence) > 1:
 
-        if sentence[0] == 'clean' or sentence[0] == 'clear' or sentence[0] == 'purge':
-            if sentence[1] == 'log':
-                deleted = Logger.clean()
-                if deleted:
-                    Printing.print('Log file removed successfuly.', Color.GREEN)
+            iterator = filter(self.correctWord, sentence)
+            sentence = list(iterator)
 
-        if sentence[0] == 'make':
-            if sentence[1] == 'tests' or sentence[1] == 'self-tests':
-                # resultStatus = os.system('cd ./tests && pytest')
-                try:
-                    result = subprocess.run(
-                        ['pytest'],
-                        cwd='./tests', 
-                        # check=True,  # will raise an Exception
-                        text=True, capture_output=True, encoding='utf-8', errors='ignore'
-                    )
-                    if result.returncode == 0:
-                        Printing.print("Tests passed successfully! Can be merge!", Color.GREEN)
-                    else:
-                        Printing.print("Tests FAILED! CAN NOT merge, or rebase or some else...", Color.RED)
-                        print(f"{result.returncode=}")
-                except Exception as e:
-                    print(e)
+            if sentence[0] == 'fuel' and sentence[1] == 'check':
+                contr = FuelPriceController()
+                contr.checkPrices()
 
-        if sentence[0] == 'run':
-            if sentence[1] == 'the':
-                if sentence[2] == 'product':
-                    if sentence[3] == 'tracking':
-                        checkProduct.runTheTracking()
+            if sentence[0] == 'clean' or sentence[0] == 'clear' or sentence[0] == 'purge':
+                if sentence[1] == 'log':
+                    deleted = Logger.clean()
+                    if deleted:
+                        Printing.print('Log file removed successfuly.', Color.GREEN)
 
-        if sentence[0] == 'print':
-            if sentence[1] == 'demo':
-                checkProduct.printDemo()
-                pass
-            if sentence[1] == 'demo-multi':
-                checkProduct.printDemoMulti()
-                pass
-            if len(sentence) > 2 and sentence[1] == 'demo' and sentence[2] == 'table':
-                checkProduct.printDemoTable()
-                pass
-            
-            if sentence[1] == 'the':
-                if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
-                    productName = askUntilAnswer("For what product? \n")
-                    checkProduct.printTheProductPriceChart(productName)
+            if sentence[0] == 'make':
+                if sentence[1] == 'tests' or sentence[1] == 'self-tests':
+                    # resultStatus = os.system('cd ./tests && pytest')
+                    try:
+                        result = subprocess.run(
+                            ['pytest'],
+                            cwd='./tests', 
+                            # check=True,  # will raise an Exception
+                            text=True, capture_output=True, encoding='utf-8', errors='ignore'
+                        )
+                        if result.returncode == 0:
+                            Printing.print("Tests passed successfully! Can be merge!", Color.GREEN)
+                        else:
+                            Printing.print("Tests FAILED! CAN NOT merge, or rebase or some else...", Color.RED)
+                            print(f"{result.returncode=}")
+                    except Exception as e:
+                        print(e)
 
-                if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
-                    checkProduct.printTheSummaryProductTable()
+            if sentence[0] == 'run':
+                if sentence[1] == 'the':
+                    if sentence[2] == 'product':
+                        if sentence[3] == 'tracking':
+                            checkProduct.runTheTracking()
 
-                if sentence[2] == 'product' and sentence[3] == 'summary' and sentence[4] == 'table':
-                    checkProduct.printTheSummaryProductTable()
-
-                if sentence[2] == 'product' and sentence[3] == 'details':
-                    productName = askUntilAnswer("For what product? \n")
-                    checkProduct.printTheProductDetailView(productName)
-
-                if sentence[2] == 'currencies' and sentence[3] == 'rate' and sentence[4] == 'history':
-                    financeService = FinanceServices()
-                    financeService.printTheCurrenciesRateHistory()
+            if sentence[0] == 'print':
+                if sentence[1] == 'demo':
+                    checkProduct.printDemo()
                     pass
-                if sentence[2] == 'currency' and sentence[3] == 'rate' and sentence[4] == 'history' and sentence[5] == 'for':
-                    financeService = FinanceServices()
-                    if len(sentence) > 5 and sentence[6] != '':
-                        financeService.printTheCurrencyRateHistory(sentence[6])
+                if sentence[1] == 'demo-multi':
+                    checkProduct.printDemoMulti()
+                    pass
+                if len(sentence) > 2 and sentence[1] == 'demo' and sentence[2] == 'table':
+                    checkProduct.printDemoTable()
+                    pass
+                
+                if sentence[1] == 'the':
+                    if sentence[2] == 'product' and sentence[3] == 'price' and sentence[4] == 'history':
+                        productName = self.askUntilAnswer("For what product? \n")
+                        checkProduct.printTheProductPriceChart(productName)
+
+                    if sentence[2] == 'summary' and sentence[3] == 'product' and sentence[4] == 'table':
+                        checkProduct.printTheSummaryProductTable()
+
+                    if sentence[2] == 'product' and sentence[3] == 'summary' and sentence[4] == 'table':
+                        checkProduct.printTheSummaryProductTable()
+
+                    if sentence[2] == 'product' and sentence[3] == 'details':
+                        productName = self.askUntilAnswer("For what product? \n")
+                        checkProduct.printTheProductDetailView(productName)
+
+                    if sentence[2] == 'currencies' and sentence[3] == 'rate' and sentence[4] == 'history':
+                        financeService = FinanceServices()
+                        financeService.printTheCurrenciesRateHistory()
                         pass
-                    if len(sentence) == 5:
-                        currencyName = askUntilAnswer('Please, enter the currency short name (usd, eur, bps) : ')
-                        financeService.printTheCurrencyRateHistory(currencyName)
-                    pass
+                    if sentence[2] == 'currency' and sentence[3] == 'rate' and sentence[4] == 'history' and sentence[5] == 'for':
+                        financeService = FinanceServices()
+                        if len(sentence) > 5 and sentence[6] != '':
+                            financeService.printTheCurrencyRateHistory(sentence[6])
+                            pass
+                        if len(sentence) == 5:
+                            currencyName = self.askUntilAnswer('Please, enter the currency short name (usd, eur, bps) : ')
+                            financeService.printTheCurrencyRateHistory(currencyName)
+                        pass
 
-                if sentence[2] == 'fuel' and sentence[3] == 'price' and sentence[4] == 'history':
-                    contr = FuelPriceController()
-                    if len(sentence) > 5:
-                        if sentence[5] == 'for' and len(sentence[6]) > 0:
-                            fuelBrand = sentence[6].strip()
-                            contr.printBrandPriceHistory(fuelBrand)
-                            return
-                    contr.printPriceHistory()
-                    return
+                    if sentence[2] == 'fuel' and sentence[3] == 'price' and sentence[4] == 'history':
+                        contr = FuelPriceController()
+                        if len(sentence) > 5:
+                            if sentence[5] == 'for' and len(sentence[6]) > 0:
+                                fuelBrand = sentence[6].strip()
+                                contr.printBrandPriceHistory(fuelBrand)
+                                return
+                        contr.printPriceHistory()
+                        return
 
-        if sentence[0] == 'add':
-            if sentence[1] == 'the':
-                if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = askUntilAnswer("Please, enter the product name! \n")
-                    productUrl = askUntilAnswer("Please, enter the product URL! \n")
-                    checkProduct.addProductForTracking(productName, productUrl)
-                    pass
+            if sentence[0] == 'add':
+                if sentence[1] == 'the':
+                    if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
+                        productName = self.askUntilAnswer("Please, enter the product name! \n")
+                        productUrl = self.askUntilAnswer("Please, enter the product URL! \n")
+                        checkProduct.addProductForTracking(productName, productUrl)
+                        pass
 
-        if sentence[0] == 'get':
-            if sentence[1] == 'the':
-                if sentence[2] == 'currencies' and sentence[3] == 'rates':
-                    financeService = FinanceServices()
-                    financeService.retrieveDailyCurrenciesRate()
-                    pass
+            if sentence[0] == 'get':
+                if sentence[1] == 'the':
+                    if sentence[2] == 'currencies' and sentence[3] == 'rates':
+                        financeService = FinanceServices()
+                        financeService.retrieveDailyCurrenciesRate()
+                        pass
 
-        if sentence[0] == 'remove' or sentence[0] == 'delete':
-            if sentence[1] == 'the':
-                if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                    productName = askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
-                    areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
-                    if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
-                        checkProduct.removeProductByName(productName)
-                    else:
-                        areYouSure = askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
+            if sentence[0] == 'remove' or sentence[0] == 'delete':
+                if sentence[1] == 'the':
+                    if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
+                        productName = self.askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
+                        areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkProduct.removeProductByName(productName)
+                        else:
+                            areYouSure = self.askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
+                            if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
+                                checkProduct.removeProductByName(productName)
 
-        for word in sentence:
-            # print(word)
-            pass
+            for word in sentence:
+                # print(word)
+                pass
 
-        # to see the construction to_verb -> the_noun
-        # if sentence has one or more consturctions -> try to execute (set to the queue)
+            # to see the construction to_verb -> the_noun
+            # if sentence has one or more consturctions -> try to execute (set to the queue)
 
-        # print('args type', type(sentence))
-        # print(sentence)
+            # print('args type', type(sentence))
+            # print(sentence)
 
-        if sentence[0] == 'exit':
-            Printing.print("Glory to you, Wishmaster! \n", Color.GREEN)
-            return exit
-    else:
-        Printing.print("Please, clearify you wish, Wishmaster!", Color.YELLOW)
-    return
+            if sentence[0] == 'exit':
+                Printing.print("Glory to you, Wishmaster! \n", Color.GREEN)
+                return exit
+        else:
+            Printing.print("Please, clearify you wish, Wishmaster!", Color.YELLOW)
+        return
 
-def askUntilAnswer(question: str) -> str:
-    param = ''
-    while param == '':
-        param = input(question)
-    return param
+    def askUntilAnswer(self, question: str) -> str:
+        param = ''
+        while param == '':
+            param = input(question)
+        return param
 
-# List of abbilities
-# to run the file, to write the text, to check the text by hyperlink and check some word/data
-# to search the specified data among text/news
-def knownComands() -> dict:
-    return {
-        'run': {
-            'spider': {
-                'file': 'controllers/run.py'
-            }
-        }, 
-        'write': [], 
-        'check': [], 
-        'find': []
-    }
+    # List of abbilities
+    # to run the file, to write the text, to check the text by hyperlink and check some word/data
+    # to search the specified data among text/news
+    def knownComands(self) -> dict:
+        return {
+            'run': {
+                'spider': {
+                    'file': 'controllers/run.py'
+                }
+            }, 
+            'write': [], 
+            'check': [], 
+            'find': []
+        }
 
-def correctWord(word: str):
-    return not wrongWord(word)
+    def correctWord(self, word: str):
+        return not self.wrongWord(word)
 
-def wrongWord(word: str):
-    return word.lower() in ('please', 'please,', ',', 'damn', 'shit')
+    def wrongWord(self, word: str):
+        return word.lower() in ('please', 'please,', ',', 'damn', 'shit')

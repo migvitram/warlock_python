@@ -1,5 +1,5 @@
 import pytest
-import abilities
+from abilities import Abilities
 
 @pytest.mark.abilities
 @pytest.mark.parametrize('set, expected', [
@@ -16,6 +16,7 @@ import abilities
     ('spider', False),
 ])
 def test_wrongWords(set, expected):
+    abilities = Abilities()
     assert abilities.wrongWord(set) == expected
 
 @pytest.mark.abilities
@@ -34,10 +35,12 @@ def test_wrongWords(set, expected):
     ('spider', False),
 ])
 def test_checkWishmasterSatisfied(set, expected):
+    abilities = Abilities()
     assert abilities.checkWishmasterSatisfied(set) == expected
 
 
 def test_filter():
+    abilities = Abilities()
     sentence = ['some', 'please', 'word', 'run', 'shit', 'spider']
     result = filter(abilities.correctWord, sentence)
     assert list(result) == ['some', 'word', 'run', 'spider']
