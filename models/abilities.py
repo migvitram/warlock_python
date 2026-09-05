@@ -3,6 +3,7 @@ import subprocess
 from controllers.CheckProductController import CheckProductController
 from controllers.FinanceServicesController import FinanceServices
 from controllers.FuelPriceController import FuelPriceController
+from controllers.YouTubeNewsController import YouTubeNewsController
 from models.helpers.Logger import Logger
 from models.helpers.Printing import Printing
 from libraries.printing.PrintingColor import Color
@@ -25,6 +26,7 @@ class Abilities:
         jsonProductStoragePass = 'storage/products_to_check.json'
         sentence = str.split(theWishText)
         checkProduct = CheckProductController(jsonProductStoragePass)
+        checkYoutube = YouTubeNewsController()
 
         if sentence[0] == 'exit' and len(sentence) == 1:
             Printing.print("Glory to you, Wishmaster! \n", Color.GREEN)
@@ -43,6 +45,9 @@ class Abilities:
             if sentence[0] == 'fuel' and sentence[1] == 'check':
                 contr = FuelPriceController()
                 contr.checkPrices()
+
+            if sentence[0] == 'check' and sentence[1] == 'youtube':
+                checkYoutube.runTheCheckout()
 
             if sentence[0] == 'clean' or sentence[0] == 'clear' or sentence[0] == 'purge':
                 if sentence[1] == 'log':
@@ -124,12 +129,22 @@ class Abilities:
                         contr.printPriceHistory()
                         return
 
+                    if sentence[2] == 'youtube' and sentence[3] == 'summary':
+                        checkYoutube.printSummary()
+                        return
+
             if sentence[0] == 'add':
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
                         productName = self.askUntilAnswer("Please, enter the product name! \n")
                         productUrl = self.askUntilAnswer("Please, enter the product URL! \n")
                         checkProduct.addProductForTracking(productName, productUrl)
+                        pass
+
+                    if sentence[2] == 'channel' and sentence[3] == 'for' and sentence[4] == 'tracking':
+                        channelName = self.askUntilAnswer("Please, enter the channel name! \n")
+                        channelUrl = self.askUntilAnswer("Please, enter the channel URL! \n")
+                        checkYoutube.addChannelForTracking(channelName, channelUrl)
                         pass
 
             if sentence[0] == 'get':
@@ -151,6 +166,15 @@ class Abilities:
                             if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                                 checkProduct.removeProductByName(productName)
 
+                    if sentence[2] == 'channel' and sentence[3] == 'for' and sentence[4] == 'tracking':
+                        pageName = self.askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
+                        areYouSure = input("Are you sure, you want to delete product \""+pageName+"\" from trackin? \n")
+                        if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
+                            checkYoutube.removeChannelByName(pageName)
+                        else:
+                            areYouSure = self.askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
+                            if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
+                                checkYoutube.removeChannelByName(pageName)
             for word in sentence:
                 # print(word)
                 pass

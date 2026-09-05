@@ -4,6 +4,7 @@ import urllib.error
 from urllib.parse import urlparse
 import gzip
 import zstandard as zstd
+import brotli
 from models.helpers.JsonFiles import JsonFiles
 
 class HttpProvider:
@@ -63,8 +64,9 @@ class HttpProvider:
                 content_bytes = gzip_file.read()
                 return content_bytes.decode('utf-8')
         elif response.info().get('Content-Encoding') == 'zstd':
-            uncompressed_data = zstd.ZstdDecompressor().decompress(response.read(), max_output_size=100*1024*1024)
-            return uncompressed_data
+            return zstd.ZstdDecompressor().decompress(response.read(), max_output_size=100*1024*1024)
+        elif response.info().get('Content-Encoding') == 'br':
+            return brotli.decompress(bytearray(response.read())).decode('utf-8')
         else:
             content_bytes = response.read()
             return content_bytes.decode('utf-8')
