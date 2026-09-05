@@ -26,7 +26,8 @@ class PrintingTable(PrintingBasic):
 
                     if columnName in columnsToShow or len(columnsToShow) == 0:
 
-                        columnWidthLimit = terminalWidth if columnsNumber == 2 else 55 # addhoc, TODO : need to refactor
+                        # TODO : need to improve the adaptive column width
+                        columnWidthLimit = terminalWidth//(columnsNumber-1) if columnsNumber < 4 else 55 # addhoc, TODO : need to refactor
 
                         column = PrintingTable.prepareColumnTextForTable(column, columnWidthLimit)
 

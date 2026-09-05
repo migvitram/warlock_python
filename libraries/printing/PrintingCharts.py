@@ -31,7 +31,7 @@ class PrintingCharts(PrintingBasic):
         chartParams['max_X'] = max(dictionary.values())
         chartParams['min_X'] = 0 if beginFromZero else min(dictionary.values())
 
-        step = step if step else PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X'])
+        step = PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X']) if step is False else step
             
         for key, item in dictionary.items():
             # get min and max of X, get number of Y points
@@ -285,7 +285,7 @@ class PrintingCharts(PrintingBasic):
             return half*line + word + (stringLength - half)*line
 
     @staticmethod
-    def convertListToString(list, separator: str='|', shrinkTheKey = 0) -> str:
+    def convertListToString(list, separator: str='|', shrinkTheKey: int = 0) -> str:
         if shrinkTheKey == 0:
             return separator.join(str(val) for val in list)
         else:
