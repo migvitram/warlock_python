@@ -31,7 +31,7 @@ class PrintingCharts(PrintingBasic):
         chartParams['max_X'] = max(dictionary.values())
         chartParams['min_X'] = 0 if beginFromZero else min(dictionary.values())
 
-        step = PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X']) if step is False else step
+        step = PrintingCharts.chooseStep(chartParams['max_X'], chartParams['min_X']) if (step is False or step is None) else step
             
         for key, item in dictionary.items():
             # get min and max of X, get number of Y points
@@ -76,10 +76,7 @@ class PrintingCharts(PrintingBasic):
         chart['basic'] = ' '*maxValueLength + " | " + PrintingCharts.convertListToString(dictionary.keys(), columnsSeparator, shrinkTheKey)
 
         print("\n")
-        print("-" * (len(chartName)+keyLength if len(chartName) > areaWidth else keyLength + 3 + areaWidth))
-        print(" " * 10 + chartName)
-        print("-" * (len(chartName)+keyLength if len(chartName) > areaWidth else keyLength + 3 + areaWidth))
-
+        PrintingCharts.printChartHead(chartName, areaWidth, keyLength)
         for line in chart:
             print(chart[line])
         print("\n")
@@ -137,7 +134,7 @@ class PrintingCharts(PrintingBasic):
             areaWidth = (keyLength+len(columnsSeparator))*len(dictionary.keys())
             keyLength = PrintingCharts.getLengthLongestListItem(dictionary.keys(), shrinkTheKey)
 
-        step = step if step else PrintingCharts.chooseStep(float(chartParams['max_X']), float(chartParams['min_X']))
+        step = PrintingCharts.chooseStep(float(chartParams['max_X']), float(chartParams['min_X'])) if (step is False or step is None) else step
         current = PrintingCharts.getRoundedValue(float(chartParams['max_X']), step)
         lastOne = PrintingCharts.getRoundedValue(float(chartParams['min_X']), step) - 2*step
         maxValueLength = len(str(PrintingCharts.getRoundedValue(float(chartParams['max_X']), step)))
@@ -174,10 +171,7 @@ class PrintingCharts(PrintingBasic):
         chart['basic'] = ' '*maxValueLength + " | " + PrintingCharts.convertListToString(valuesY, columnsSeparator, shrinkTheKey)
 
         print("\n")
-        print("-" * (len(chartName)+keyLength if len(chartName) > areaWidth else keyLength + 3 + areaWidth))
-        print(" " * 10 + chartName)
-        print("-" * (len(chartName)+keyLength if len(chartName) > areaWidth else keyLength + 3 + areaWidth))
-
+        PrintingCharts.printChartHead(chartName, areaWidth, keyLength)
         for line in chart:
             print(chart[line])
         print("\n")
@@ -246,10 +240,7 @@ class PrintingCharts(PrintingBasic):
         chart['basic'] = ' '*maxValueLength + " | " + PrintingCharts.groupChartValuesByMonthes(dictionary.keys(), True)
 
         print("\n")
-        print("-" * (len(chartName) if len(chartName) > max_width else keyLength + 3 + max_width))
-        print(" " * 10 + chartName)
-        print("-" * (len(chartName) if len(chartName) > max_width else keyLength + 3 + max_width))
-
+        PrintingCharts.printChartHead(chartName, max_width, keyLength)
         for line in chart:
             print(chart[line])
         print("\n")
@@ -330,6 +321,12 @@ class PrintingCharts(PrintingBasic):
         for index, lineName in enumerate(lineNames):
             print("  " + PrintingCharts.colorDot(PrintingCharts.getColorByIndex(index))+" - "+lineName)
         pass
+
+    @staticmethod
+    def printChartHead(chartName: str, maxWidth: int, keyLength: int):
+        print("-" * (len(chartName)+keyLength if len(chartName) > maxWidth else keyLength + 3 + maxWidth))
+        print(" " * 10 + chartName)
+        print("-" * (len(chartName)+keyLength if len(chartName) > maxWidth else keyLength + 3 + maxWidth))
 
     @staticmethod
     def getRoundedValue(valueToRound: int|float, step: int|float, roundPlace: str='tens', roundUp: bool=True):
