@@ -6,7 +6,9 @@ from models.PersonalSettings import Settings
 @pytest.mark.settings
 def test_checkSettingStorage():
     filePath = 'storage/personal_settings.json'
-    assert os.path.exists(filePath) == False
+    if os.path.exists(filePath):
+        os.remove(filePath)
+    # assert os.path.exists(filePath) == False
 
     Settings.checkSettingStorage()
 

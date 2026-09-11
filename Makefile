@@ -37,4 +37,4 @@ params ?=
 
 # make pytests params='-m ddd'	
 pytests:
-	@docker compose -f ${DOCKER_CONFIG} exec python-tests bash -c "cd ./tests && pytest $(params)"
+	@docker compose -f ${DOCKER_CONFIG} exec python-tests bash -c "cd ./tests && pytest $(params) --cache-clear"
