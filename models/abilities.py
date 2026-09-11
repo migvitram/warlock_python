@@ -48,6 +48,7 @@ class Abilities:
 
             if sentence[0] == 'check' and sentence[1] == 'youtube':
                 checkYoutube.runTheCheckout()
+                checkYoutube.printSummary()
 
             if sentence[0] == 'clean' or sentence[0] == 'clear' or sentence[0] == 'purge':
                 if sentence[1] == 'log':
