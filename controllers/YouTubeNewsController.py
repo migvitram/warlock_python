@@ -20,11 +20,11 @@ class YouTubeNewsController:
     def addChannelForTracking(self, pageName: str, url: str):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)
 
-        if pageName not in storedData:
+        if isinstance(storedData, dict) and pageName in storedData:
+            print(f"There is already exists channel with name '{pageName}'!")            
+        else:
             storedData[pageName] = {'url': url, 'newestVideo': {'videoName': '', 'date': ''}}
             JsonFiles.writeToTheLocalJsonStorage(storedData, self.jsonFileStorage)
-        else:
-            Printing.print("There is already exists channel with name !")
         
     def removeChannelByName(self, pageToDeleteName: str):
         storedData = JsonFiles.readDataFromJsonFile(self.jsonFileStorage)

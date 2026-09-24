@@ -3,6 +3,11 @@ productName: Наименование продукта
 url: url
 price: цена
 presence: наличие
+parameter: параметр
+param: параметр
+value: значение
+pageName: название страницы
+newestVideo: последнее видео
 
 Warlock is listening...: Колдун слушает...
 What do you want me to do?: Что ты желаешь, чтобы я сделал?
@@ -14,12 +19,18 @@ For what product?: Для какого продукта?
 Please, enter the product name!: Пожалуйста, укажите название продукта
 Please, enter the product URL!: Пожалуйста, укажите URL продукта
 Please, enter the name of the product you want to REMOVE!: Пожалуйста, введите название продукта, который вы хотите УДАЛИТЬ!
-Please, enter \'yes\' or \'no\', or \'y\' or \'n\': Пожалуйста, введите с клавиатуры \'yes\' или \'no\', или \'y\' или \'n\'
+Are you sure, you want to delete product '{productName}' from tracking?: Вы уверены, что хотите удалить продукт "{productName}" из списка отслеживания?
+Please, enter 'yes' or 'no', or 'y' or 'n': Пожалуйста, введите с клавиатуры 'yes' или 'no', или 'y' или 'n'
 
 Running the tracking...: Запускается трекинг...
 this is the processor to parse the data from web-sites...: это процессор для получения данных с веб-сайтов...
 Retrieving ... : Получение ...
 Something went wrong, or there is no product status on the page.: Что-то пошло не так, или на странице нет статуса продукта.
+
+Please, enter the channel name!: Пожалуйста, укажите название канала
+Please, enter the channel URL!: Пожалуйста, укажите URL канала
+Please, enter the name of the channel you want to REMOVE!: Пожалуйста, введите название канала, который вы хотите УДАЛИТЬ!
+Are you sure, you want to delete channel '{pageName}' from tracking?: Вы уверены, что хотите удалить канал "{pageName}" из списка отслеживания?
 
 Please type the language short code [ua, ru, en]: Пожалуйста напишите сокращенный индекс языка [ua, ru, en]
 Please, enter the currency short name (usd, eur, bps): Пожалуйста укажите сокращенный индекс валюты (usd, eur, bps)

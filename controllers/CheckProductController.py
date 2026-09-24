@@ -135,7 +135,7 @@ class CheckProductController:
         productsChosen = Product.getProductDetailsByName(productName)
         
         if len(productsChosen) == 0:
-            Printing.print("There is no Price History for product named \'"+productName+"\'!", Color.RED)
+            Printing.print(_('app', "There is no Price History for product named '{productName}'!", {'productName': productName}), Color.RED)
             return
 
         Printing.printDictionaryAsTable(productsChosen, ['parameter', 'value'])

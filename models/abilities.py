@@ -112,7 +112,7 @@ class Abilities:
                         checkProduct.printTheSummaryProductTable()
 
                     if sentence[2] == 'product' and sentence[3] == 'details':
-                        productName = self.askUntilAnswer("For what product? \n")
+                        productName = self.askUntilAnswer(_('app', "For what product?")+" \n")
                         checkProduct.printTheProductDetailView(productName)
 
                     if sentence[2] == 'currencies' and sentence[3] == 'rate' and sentence[4] == 'history':
@@ -152,8 +152,8 @@ class Abilities:
                         pass
 
                     if sentence[2] == 'channel' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                        channelName = self.askUntilAnswer("Please, enter the channel name! \n")
-                        channelUrl = self.askUntilAnswer("Please, enter the channel URL! \n")
+                        channelName = self.askUntilAnswer(_('app', "Please, enter the channel name!")+" \n")
+                        channelUrl = self.askUntilAnswer(_('app', "Please, enter the channel URL!")+" \n")
                         checkYoutube.addChannelForTracking(channelName, channelUrl)
                         pass
 
@@ -168,7 +168,7 @@ class Abilities:
                 if sentence[1] == 'the':
                     if sentence[2] == 'product' and sentence[3] == 'for' and sentence[4] == 'tracking':
                         productName = self.askUntilAnswer(_('app', "Please, enter the name of the product you want to REMOVE!")+" \n")
-                        areYouSure = input("Are you sure, you want to delete product \""+productName+"\" from trackin? \n")
+                        areYouSure = input(_('app', "Are you sure, you want to delete product \'{productName}\' from tracking?", {'productName': productName})+" \n")
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkProduct.removeProductByName(productName)
                         else:
@@ -177,12 +177,12 @@ class Abilities:
                                 checkProduct.removeProductByName(productName)
 
                     if sentence[2] == 'channel' and sentence[3] == 'for' and sentence[4] == 'tracking':
-                        pageName = self.askUntilAnswer("Please, enter the name of the product you want to REMOVE! \n")
-                        areYouSure = input("Are you sure, you want to delete product \""+pageName+"\" from trackin? \n")
+                        pageName = self.askUntilAnswer(_('app', "Please, enter the name of the channel you want to REMOVE!")+" \n")
+                        areYouSure = input(_('app', "Are you sure, you want to delete channel \'{pageName}\' from tracking?", {'pageName': pageName})+" \n")
                         if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                             checkYoutube.removeChannelByName(pageName)
                         else:
-                            areYouSure = self.askUntilAnswer("Please, enter \"yes\" or \"no\", or \"y\" or \"n\" \n")
+                            areYouSure = self.askUntilAnswer(_('app', "Please, enter \'yes\' or \'no\', or \'y\' or \'n\'")+" \n")
                             if areYouSure.lower() == 'yes' or areYouSure.lower() == 'y':
                                 checkYoutube.removeChannelByName(pageName)
 
