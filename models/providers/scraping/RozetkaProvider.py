@@ -29,12 +29,21 @@ class Rozetka(AbstractScrapingProvider):
         presenceObject = self.findElementByCssClass('p', 'status-label')
         presenceCheckResult = SoupHelper.checkElementTextEquals(presenceObject, 'Є в наявності')
         absenceCheckResult = SoupHelper.checkElementTextEquals(presenceObject, 'Немає в наявності')
+        endingCheckResult = SoupHelper.checkElementTextEquals(presenceObject, 'Закінчується')
+        endedCheckResult = SoupHelper.checkElementTextEquals(presenceObject, 'Товар закінчився')
+        abandonedCheckResult = SoupHelper.checkElementTextEquals(presenceObject, 'Знято з виробництва')
 
         if presenceCheckResult == True and absenceCheckResult == True:
             Logger.log("Some shit : " + str(self.__class__) + ' with presence check' + presenceObject.get_text() + str(len(presenceObject.get_text())))
 
         if presenceCheckResult == False and absenceCheckResult == False:
+            if endingCheckResult == True:
+                return 'Yes'
+            if abandonedCheckResult == True or endedCheckResult == True:
+                return 'No'
+            
             Printing.print("Something went wrong, or there is no product status on the page.")
+            Logger.log(f"Some unknown product status on page {self.currentPage}")
             return False
         else:
             return 'Yes' if presenceCheckResult else 'No'

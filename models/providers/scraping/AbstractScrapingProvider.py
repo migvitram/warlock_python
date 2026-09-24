@@ -17,12 +17,14 @@ class AbstractScrapingProvider:
     
     productPrice = 0
     productPresence = False
+    currentPage = ''
 
     def __init__(self) -> None:
         self.soupObject = False
         pass
 
     def visitThePage(self, url: str):
+        self.currentPage = url
         self.requestResult = self.fetchHtml(url)
         self.makeSoupObject()
         self.productPresence = self.fetchTheProductPresence()
