@@ -2,6 +2,8 @@ import bs4
 import re
 from bs4 import BeautifulSoup as BS
 from models.providers.HttpProvider import HttpProvider
+from models.helpers.Printing import Printing
+from libraries.printing.PrintingColor import Color
 import json
 
 class YouTubePvovider:
@@ -35,16 +37,21 @@ class YouTubePvovider:
             match = re.search(r'var ytInitialData = (.*?);', script_text, re.DOTALL)
 
             if match:
-                a = json.loads(match.group(1))
-                videoTab = a['contents']['twoColumnBrowseResultsRenderer']['tabs'][1]
-                firstVideo = videoTab['tabRenderer']['content']['richGridRenderer']['contents'][0]['richItemRenderer']
-                videoMeta = firstVideo['content']['lockupViewModel']['metadata']['lockupMetadataViewModel']
-                videoName = videoMeta['title']['content']
-                videoDate = videoMeta['metadata']['contentMetadataViewModel']['metadataRows'][0]['metadataParts'][1]['text']['content']
-                # print(f"{videoName=} {videoDate=}")
-                return {'videoName': videoName, 'date': videoDate}
+                try:
+                    a = json.loads(match.group(1))
+                    videoTab = a['contents']['twoColumnBrowseResultsRenderer']['tabs'][1]
+                    firstVideo = videoTab['tabRenderer']['content']['richGridRenderer']['contents'][0]['richItemRenderer']
+                    videoMeta = firstVideo['content']['lockupViewModel']['metadata']['lockupMetadataViewModel']
+                    videoName = videoMeta['title']['content']
+                    videoDate = self.getVideoDate(videoMeta)
+                    # print(f"{videoName=} {videoDate=}")
+                    return {'videoName': videoName, 'date': videoDate}
+                except Exception as e:
+                    Printing.print(f"Error parsing Youtube JSON (maybe cause of structure) for {self.page}: {e}", Color.RED)
+                    return {'videoName': self.page, 'date': 'error'}
             else:
                 print(f"not match !")
+                return {'videoName': self.page, 'date': 'error: not match'}
         pass
 
     def fetchHtml(self, url: str):
@@ -59,3 +66,14 @@ class YouTubePvovider:
         
     def findElementByCssPath(self, cssPath: str) -> bs4.element.Tag|None:
         return self.soupObject.select_one(cssPath)
+
+    def getVideoDate(self, videoMeta: dict) -> str:
+        try:
+            metaDataParts = videoMeta['metadata']['contentMetadataViewModel']['metadataRows'][0]['metadataParts']
+            if len(metaDataParts) < 2: # means that video for sponsors
+                return metaDataParts[0]['text']['content']
+            else:
+                return metaDataParts[1]['text']['content']
+        except Exception as e:
+            Printing.print(f"Error parsing Youtube video date, for {self.page}: {e}", Color.YELLOW)
+            return ''
